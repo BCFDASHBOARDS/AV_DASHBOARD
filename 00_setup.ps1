@@ -90,7 +90,7 @@ OK "Git-Benutzer: $(git config --global user.name) <$(git config --global user.e
 
 # -- 4. Ordnerstruktur --------------------------------------
 Banner "4/6  Ordnerstruktur"
-$dirs = @("_source","_data","scripts","dashboard","dashboard\_data","logs")
+$dirs = @("_source","_data","scripts","docs","docs\_data","logs")
 foreach ($d in $dirs) {
     $p = Join-Path $BASE $d
     if (-not (Test-Path $p)) {

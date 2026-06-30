@@ -27,5 +27,5 @@ $RECYCLE.BIN/
 
 # ── dashboard/_data/ NICHT ignorieren ──────────────────────
 # GitHub Pages braucht diese JSONs
-!dashboard/_data/
-!dashboard/_data/*.json
+!docs/_data/
+!docs/_data/*.json

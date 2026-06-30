@@ -54,10 +54,10 @@ foreach ($step in $steps) {
 # GitHub Push (nur wenn kein kritischer Fehler in JSON-Export)
 if ($failed -notcontains "Excel → JSON konvertieren") {
     Log "--- GitHub Push ---" "Yellow"
-    $dashDir = Join-Path $BASE "dashboard"
+    $dashDir = Join-Path $BASE "docs"
 
     try {
-        # _data nach dashboard/_data kopieren damit GitHub Pages die JSON-Dateien hostet
+        # _data nach docs/_data kopieren damit GitHub Pages die JSON-Dateien hostet
         $dataSrc = Join-Path $BASE "_data"
         $dataDst = Join-Path $dashDir "_data"
         if (-not (Test-Path $dataDst)) { New-Item -ItemType Directory -Path $dataDst | Out-Null }
