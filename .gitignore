@@ -1,0 +1,31 @@
+# ── Rohdaten & Staging ─────────────────────────────────────
+# Excel-Quelldateien nie committen (sensible Produktionsdaten, groß)
+_source/
+
+# Root-_data/ nicht committen (wird nach dashboard/_data/ kopiert)
+_data/
+
+# ── Logs ───────────────────────────────────────────────────
+logs/
+*.log
+
+# ── Credentials & Tokens ───────────────────────────────────
+Token.txt
+*.token
+*.cred
+.graph_token_cache.json
+
+# ── Excel-Temporärdateien ──────────────────────────────────
+~$*.xlsx
+~$*.xls
+~$*.xlsm
+
+# ── Windows ────────────────────────────────────────────────
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ── dashboard/_data/ NICHT ignorieren ──────────────────────
+# GitHub Pages braucht diese JSONs
+!docs/_data/
+!docs/_data/*.json
