@@ -100,7 +100,14 @@ body {
   padding: 40px 32px; text-align: center; margin-bottom: 14px;
   color: var(--text-sec); font-size: 13px;
 }
-.state-card.err { color: var(--red); border-color: #fecaca; }
+.state-card.err  { color: var(--red);    border-color: #fecaca; }
+.state-card.warn { color: #92400e;       border-color: #fde68a; background: #fffbeb; }
+.notice-bar {
+  background: #fffbeb; border: 1px solid #fde68a;
+  border-radius: var(--r); padding: 10px 16px; margin-bottom: 14px;
+  font-size: 12px; color: #92400e; display: flex; align-items: center; gap: 8px;
+}
+.notice-bar b { font-weight: 700; }
 @media (max-width: 599px) {
   .page-content { padding: 12px 12px 0; }
   .tab-bar { padding: 0 12px; }
@@ -130,7 +137,12 @@ body {
 <div class="page-content">
 
   <div id="root-loading" class="state-card">Daten werden geladen&hellip;</div>
-  <div id="root-error" class="state-card err" style="display:none">Keine Daten verf&uuml;gbar &mdash; bitte Dashboard-Update pr&uuml;fen.</div>
+  <div id="root-error" class="state-card err" style="display:none"></div>
+
+  <div id="notice-bar" class="notice-bar" style="display:none">
+    <span>&#9888;</span>
+    <span id="notice-text"></span>
+  </div>
 
   <div id="root-data" style="display:none">
 
@@ -205,10 +217,7 @@ function fmtEur(v) {
 }
 
 function esc(s) {
-  return String(s)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
 
 var AG_LABELS = {
@@ -225,12 +234,7 @@ var AG_LABELS = {
   "Sonstiges":         "Sonstiges"
 };
 
-var KD_LABELS = {
-  "Wuerth":  "W\u00fcrth",
-  "ITW":     "ITW",
-  "Kyocera": "Kyocera",
-  "Hilti":   "Hilti"
-};
+var KD_LABELS = {"Wuerth":"W\u00fcrth","ITW":"ITW","Kyocera":"Kyocera","Hilti":"Hilti"};
 function kundeLabel(k) { return KD_LABELS[k] || k; }
 
 function rowHtml(name, wert, maxWert, total) {
@@ -256,8 +260,7 @@ function bindCollapse(headerId, chevId, bodyId) {
   hdr.addEventListener("click", function () {
     var open = body.style.display !== "none";
     body.style.display = open ? "none" : "";
-    if (open) { chev.classList.add("collapsed"); }
-    else      { chev.classList.remove("collapsed"); }
+    if (open) { chev.classList.add("collapsed"); } else { chev.classList.remove("collapsed"); }
   });
 }
 
@@ -290,19 +293,20 @@ function render(d) {
   var kunden = Array.isArray(d.alle_kunden) ? d.alle_kunden
              : (Array.isArray(d.top5_kunden) ? d.top5_kunden : []);
   var KA_FIXED = 3;
-  var maxKa  = kunden.length > 0 ? (+kunden[0].Wert || 0) : 1;
+  var maxKa = kunden.length > 0 ? (+kunden[0].Wert || 0) : 1;
   var kaTopH = ""; var kaMoreH = "";
   for (var i = 0; i < kunden.length; i++) {
     var kRow  = kunden[i];
     var kName = kundeLabel(kRow.Kunde || kRow.kunde || "");
     var kWert = +kRow.Wert || +kRow.wert || 0;
-    var rh = rowHtml(kName, kWert, maxKa, gesamt);
-    if (i < KA_FIXED) { kaTopH += rh; } else { kaMoreH += rh; }
+    if (i < KA_FIXED) { kaTopH += rowHtml(kName, kWert, maxKa, gesamt); }
+    else              { kaMoreH += rowHtml(kName, kWert, maxKa, gesamt); }
   }
-  var kaTopEl = document.getElementById("ka-top");
-  var kaMoreEl = document.getElementById("ka-more");
-  kaTopEl.innerHTML  = kaTopH  || "<div style=\"padding:14px 18px;color:#6b7280;font-size:13px\">Keine Kundendaten verf\u00fcgbar.</div>";
-  kaMoreEl.innerHTML = kaMoreH;
+  if (!kaTopH && kunden.length === 0) {
+    kaTopH = "<div style=\"padding:14px 18px;color:#6b7280;font-size:13px\">Noch kein Datenstand.</div>";
+  }
+  document.getElementById("ka-top").innerHTML  = kaTopH;
+  document.getElementById("ka-more").innerHTML = kaMoreH;
   if (kaMoreH) { bindExpand("ka-xbtn", "ka-more", kunden.length, KA_FIXED); }
 
   // Artikelgruppen
@@ -319,13 +323,14 @@ function render(d) {
   var agTopH = ""; var agMoreH = "";
   for (var aj = 0; aj < agArr.length; aj++) {
     var agR = agArr[aj];
-    var rh2 = rowHtml(agR.label, agR.wert, maxAg, gesamt);
-    if (aj < AG_FIXED) { agTopH += rh2; } else { agMoreH += rh2; }
+    if (aj < AG_FIXED) { agTopH += rowHtml(agR.label, agR.wert, maxAg, gesamt); }
+    else               { agMoreH += rowHtml(agR.label, agR.wert, maxAg, gesamt); }
   }
-  var agTopEl = document.getElementById("ag-top");
-  var agMoreEl = document.getElementById("ag-more");
-  agTopEl.innerHTML  = agTopH  || "<div style=\"padding:14px 18px;color:#6b7280;font-size:13px\">Keine Gruppenddaten verf\u00fcgbar.</div>";
-  agMoreEl.innerHTML = agMoreH;
+  if (!agTopH && agArr.length === 0) {
+    agTopH = "<div style=\"padding:14px 18px;color:#6b7280;font-size:13px\">Noch kein Datenstand.</div>";
+  }
+  document.getElementById("ag-top").innerHTML  = agTopH;
+  document.getElementById("ag-more").innerHTML = agMoreH;
   if (agMoreH) { bindExpand("ag-xbtn", "ag-more", agArr.length, AG_FIXED); }
 
   // Plausi-Badges
@@ -336,46 +341,77 @@ function render(d) {
     var sym  = ok ? "\u2713" : "\u2717";
     var dStr = (diff != null && +diff > 0) ? " (\u00b1" + (+diff).toFixed(4) + " \u20ac)" : "";
     return "<span class=\"plausi-badge " + cls + "\">" +
-      "<span class=\"plausi-dot\"></span>" + sym + " " + esc(label) + dStr +
-    "</span>";
+      "<span class=\"plausi-dot\"></span>" + sym + " " + esc(label) + dStr + "</span>";
   }
   var pHtml = "";
-  var grpOk   = (pl.gruppen_ok != null) ? !!pl.gruppen_ok : !!d.check_ok;
-  var grpDiff = (pl.diff_gruppen != null) ? pl.diff_gruppen : d.check_diff;
-  pHtml += badge(grpOk, "Artikelgruppen-Summe", grpDiff);
-  if (pl.kunden_ok != null) {
-    pHtml += badge(!!pl.kunden_ok, "Kunden-Summe", pl.diff_kunden);
+  if (d.plausi != null || d.check_ok != null) {
+    var grpOk   = (pl.gruppen_ok != null) ? !!pl.gruppen_ok : !!d.check_ok;
+    var grpDiff = (pl.diff_gruppen != null) ? pl.diff_gruppen : d.check_diff;
+    pHtml += badge(grpOk, "Artikelgruppen-Summe", grpDiff);
+    if (pl.kunden_ok != null) {
+      pHtml += badge(!!pl.kunden_ok, "Kunden-Summe", pl.diff_kunden);
+    }
   }
   plausiBar.innerHTML = pHtml;
 
   // Timestamp
   var tsBar = document.getElementById("ts-bar");
   if (d.timestamp) {
-    try {
-      tsBar.textContent = "Datenstand: " + new Date(d.timestamp).toLocaleString("de-DE");
-    } catch (e) { tsBar.textContent = "Datenstand: " + d.timestamp; }
+    try { tsBar.textContent = "Datenstand: " + new Date(d.timestamp).toLocaleString("de-DE"); }
+    catch (e) { tsBar.textContent = "Datenstand: " + d.timestamp; }
+  } else {
+    tsBar.textContent = "";
   }
 }
 
+function showNotice(msg) {
+  var nb = document.getElementById("notice-bar");
+  var nt = document.getElementById("notice-text");
+  if (nb && nt) { nt.innerHTML = msg; nb.style.display = ""; }
+}
+
+function showStructure() {
+  document.getElementById("root-loading").style.display = "none";
+  document.getElementById("root-data").style.display    = "";
+  bindCollapse("wh-ka", "chev-ka", "wb-ka");
+  bindCollapse("wh-ag", "chev-ag", "wb-ag");
+}
+
+var EMPTY = { gesamtbestand: null, tageseingang: null, wocheneingang: null,
+              monatseingang: null, davon_ankernaegel: null,
+              alle_kunden: [], artikelgruppen: {}, plausi: null };
+
 fetch("_data/auftragsbestand.json?t=" + Date.now())
   .then(function (r) {
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    return r.json();
+    if (r.status === 404) { return { _kein_datenstand: true }; }
+    if (!r.ok) { return { _error: "HTTP " + r.status }; }
+    return r.json().catch(function () { return { _error: "JSON parse-Fehler" }; });
   })
   .then(function (data) {
-    document.getElementById("root-loading").style.display = "none";
-    document.getElementById("root-data").style.display    = "";
+    if (data._kein_datenstand) {
+      showStructure();
+      showNotice("<b>Noch kein Datenstand</b> \u2014 bitte run_all.ps1 ausf\u00fchren um Daten zu generieren.");
+      render(EMPTY);
+      return;
+    }
+    if (data._error) {
+      showStructure();
+      showNotice("<b>Ladefehler:</b> " + esc(data._error) + " \u2014 bitte run_all.ps1 und GitHub-Push pr\u00fcfen.");
+      render(EMPTY);
+      return;
+    }
+    showStructure();
     render(data);
-    bindCollapse("wh-ka", "chev-ka", "wb-ka");
-    bindCollapse("wh-ag", "chev-ag", "wb-ag");
   })
   .catch(function (err) {
-    document.getElementById("root-loading").style.display = "none";
-    document.getElementById("root-error").style.display   = "";
+    showStructure();
+    showNotice("<b>Netzwerkfehler:</b> " + esc(String(err)) + " \u2014 Bitte Internetverbindung pr\u00fcfen.");
+    render(EMPTY);
     console.error("Dashboard-Fehler:", err);
   });
 
 }());
+
 </script>
 </body>
 </html>
