@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auftragsbestand &mdash; BCF Dashboard</title>
+<title>AB 3 &mdash; BCF Dashboard</title>
 <style>
 :root {
   --bg:        #f5f6f8;
@@ -72,6 +72,8 @@ body {
 .row-item:last-child { border-bottom: none; }
 .row-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
 .row-name  { font-size: 13px; font-weight: 600; color: var(--text); }
+.row-name.row-link { color: var(--accent); text-decoration: none; cursor: pointer; }
+.row-name.row-link:hover { text-decoration: underline; }
 .row-right { display: flex; align-items: center; gap: 10px; }
 .row-val   { font-size: 13px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
 .row-share { font-size: 11px; color: var(--text-sec); min-width: 40px; text-align: right; }
@@ -85,6 +87,44 @@ body {
   cursor: pointer; text-align: center; transition: background .12s, border-color .12s;
 }
 .expand-btn:hover { background: #eff6ff; border-color: var(--accent); }
+/* AG detail sub-panel */
+.ag-row-item {
+  padding: 9px 18px; border-bottom: 1px solid #f1f3f6; cursor: pointer;
+  transition: background .12s;
+}
+.ag-row-item:last-child { border-bottom: none; }
+.ag-row-item:hover { background: #f8fafc; }
+.ag-row-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+.ag-row-label { display: flex; align-items: center; gap: 8px; }
+.ag-row-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.ag-row-chev { font-size: 9px; color: var(--text-sec); transition: transform .2s; display: inline-block; }
+.ag-row-chev.open { transform: rotate(90deg); }
+.ag-detail-panel {
+  background: #f8fafc; border-top: 1px solid var(--border);
+  padding: 10px 18px 14px; display: none;
+}
+.ag-detail-panel.open { display: block; }
+.ag-detail-section { margin-bottom: 10px; }
+.ag-detail-section:last-child { margin-bottom: 0; }
+.ag-detail-title {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+  color: var(--text-sec); margin-bottom: 6px;
+}
+.ag-art-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #edf0f4; }
+.ag-art-row:last-child { border-bottom: none; }
+.ag-art-info { flex: 1; min-width: 0; }
+.ag-art-text { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ag-art-nr   { font-size: 11px; color: var(--text-sec); margin-top: 1px; }
+.ag-art-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.ag-art-val  { font-size: 12px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+.ag-art-share { font-size: 11px; color: var(--text-sec); min-width: 36px; text-align: right; }
+.ag-kun-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #edf0f4; }
+.ag-kun-row:last-child { border-bottom: none; }
+.ag-kun-name { font-size: 12px; font-weight: 500; color: var(--text); }
+.ag-kun-right { display: flex; align-items: center; gap: 8px; }
+.ag-kun-val  { font-size: 12px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+.ag-kun-share { font-size: 11px; color: var(--text-sec); min-width: 36px; text-align: right; }
+/* Plausi */
 .plausi-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
 .plausi-badge {
   display: inline-flex; align-items: center; gap: 5px;
@@ -116,6 +156,7 @@ body {
   .kpi-card  { padding: 12px 14px; }
   .widget-header { padding: 12px 14px; }
   .row-item  { padding: 8px 14px; }
+  .ag-row-item { padding: 8px 14px; }
   .expand-wrap { padding: 6px 14px 10px; }
 }
 @media (min-width: 600px) and (max-width: 1023px) {
@@ -130,9 +171,9 @@ body {
 <body>
 
 <nav class="tab-bar">
-  <a href="auftragsbestand.html" class="active">Auftragsbestand</a>
+  <a href="auftragsbestand.html">Auftragsbestand</a>
   <a href="auftragsbestand2.html">Auftragsbestand 2</a>
-  <a href="auftragsbestand3.html">AB 3</a>
+  <a href="auftragsbestand3.html" class="active">AB 3</a>
   <a href="presserei.html">Presserei</a>
 </nav>
 
@@ -183,11 +224,11 @@ body {
 
     <div class="widget-card">
       <div class="widget-header" id="wh-ag">
-        <span class="widget-title">Artikelgruppen</span>
+        <span class="widget-title">Produktgruppen</span>
         <span class="widget-chevron" id="chev-ag">&#9650;</span>
       </div>
       <div id="wb-ag">
-        <div id="ag-top"></div>
+        <div id="ag-rows"></div>
         <div id="ag-more" style="display:none"></div>
         <div class="expand-wrap" id="ag-xwrap" style="display:none">
           <button class="expand-btn" id="ag-xbtn"></button>
@@ -210,6 +251,7 @@ body {
 </div>
 
 <script>
+
 (function () {
 "use strict";
 
@@ -236,7 +278,6 @@ var AG_LABELS = {
   "Sonstiges":         "Sonstiges"
 };
 
-// Anzeigenamen f\u00fcr konsolidierte Kundenschl\u00fcssel
 var KD_LABELS = {
   "Wuerth":    "W\u00fcrth",
   "ITW":       "ITW",
@@ -246,7 +287,6 @@ var KD_LABELS = {
 };
 function kundeLabel(k) { return KD_LABELS[k] || k; }
 
-// Artikel-Row (kein Link)
 function rowHtml(name, wert, maxWert, total) {
   var pct   = maxWert > 0 ? Math.round(wert / maxWert * 100) : 0;
   var share = total  > 0 ? (wert / total * 100).toFixed(1) : "0.0";
@@ -262,7 +302,6 @@ function rowHtml(name, wert, maxWert, total) {
   "</div>";
 }
 
-// Kunden-Row MIT Link zu kunde.html
 function kundeRowHtml(key, displayName, wert, maxWert, total) {
   var pct   = maxWert > 0 ? Math.round(wert / maxWert * 100) : 0;
   var share = total  > 0 ? (wert / total * 100).toFixed(1) : "0.0";
@@ -307,6 +346,96 @@ function bindExpand(btnId, moreId, totalCount, fixedCount) {
   });
 }
 
+/* Build AG group row HTML with embedded detail panel */
+function agGroupHtml(idx, agKey, agLabel, agWert, maxWert, gesamt, detail) {
+  var pct   = maxWert > 0 ? Math.round(agWert / maxWert * 100) : 0;
+  var share = gesamt  > 0 ? (agWert / gesamt * 100).toFixed(1) : "0.0";
+  var hasDetail = detail && ((detail.top_artikel && detail.top_artikel.length > 0) ||
+                             (detail.top_kunden  && detail.top_kunden.length  > 0));
+
+  var chevHtml = hasDetail
+    ? "<span class=\"ag-row-chev\" id=\"ag-chev-" + idx + "\">&#9658;</span>"
+    : "";
+
+  var rowHtmlStr =
+    "<div class=\"ag-row-item\" id=\"ag-row-" + idx + "\">" +
+      "<div class=\"ag-row-top\">" +
+        "<span class=\"ag-row-label\">" +
+          chevHtml +
+          "<span class=\"ag-row-name\">" + esc(agLabel) + "</span>" +
+        "</span>" +
+        "<span class=\"row-right\">" +
+          "<span class=\"row-val\">"   + fmtEur(agWert) + "</span>" +
+          "<span class=\"row-share\">" + share + " %" + "</span>" +
+        "</span>" +
+      "</div>" +
+      "<div class=\"row-bar\"><div class=\"row-bar-fill\" style=\"width:" + pct + "%\"></div></div>" +
+    "</div>";
+
+  if (!hasDetail) return rowHtmlStr;
+
+  /* Detail sub-panel */
+  var detailHtml = "<div class=\"ag-detail-panel\" id=\"ag-detail-" + idx + "\">";
+
+  /* Top-5 Artikel */
+  var arts = detail.top_artikel || [];
+  if (arts.length > 0) {
+    detailHtml += "<div class=\"ag-detail-section\"><div class=\"ag-detail-title\">Top-5 Artikel</div>";
+    var maxArt = +arts[0].wert || 1;
+    for (var ai = 0; ai < arts.length; ai++) {
+      var a = arts[ai];
+      var aShare = agWert > 0 ? (+a.wert / agWert * 100).toFixed(1) : "0.0";
+      detailHtml +=
+        "<div class=\"ag-art-row\">" +
+          "<div class=\"ag-art-info\">" +
+            "<div class=\"ag-art-text\">" + esc(a.text || a.artnr) + "</div>" +
+            "<div class=\"ag-art-nr\">"   + esc(a.artnr) + "</div>" +
+          "</div>" +
+          "<div class=\"ag-art-right\">" +
+            "<span class=\"ag-art-val\">"   + fmtEur(a.wert) + "</span>" +
+            "<span class=\"ag-art-share\">" + aShare + " %" + "</span>" +
+          "</div>" +
+        "</div>";
+    }
+    detailHtml += "</div>";
+  }
+
+  /* Top-5 Kunden (roh) */
+  var kuns = detail.top_kunden || [];
+  if (kuns.length > 0) {
+    detailHtml += "<div class=\"ag-detail-section\"><div class=\"ag-detail-title\">Top-5 Kunden</div>";
+    var maxKun = +kuns[0].wert || 1;
+    for (var ki = 0; ki < kuns.length; ki++) {
+      var ku = kuns[ki];
+      var kShare = agWert > 0 ? (+ku.wert / agWert * 100).toFixed(1) : "0.0";
+      detailHtml +=
+        "<div class=\"ag-kun-row\">" +
+          "<span class=\"ag-kun-name\">" + esc(ku.kunde) + "</span>" +
+          "<div class=\"ag-kun-right\">" +
+            "<span class=\"ag-kun-val\">"   + fmtEur(ku.wert) + "</span>" +
+            "<span class=\"ag-kun-share\">" + kShare + " %" + "</span>" +
+          "</div>" +
+        "</div>";
+    }
+    detailHtml += "</div>";
+  }
+
+  detailHtml += "</div>";  /* close ag-detail-panel */
+  return rowHtmlStr + detailHtml;
+}
+
+function bindAgToggle(idx) {
+  var row    = document.getElementById("ag-row-"    + idx);
+  var panel  = document.getElementById("ag-detail-" + idx);
+  var chev   = document.getElementById("ag-chev-"   + idx);
+  if (!row || !panel) return;
+  row.addEventListener("click", function () {
+    var open = panel.classList.contains("open");
+    panel.classList.toggle("open", !open);
+    if (chev) chev.classList.toggle("open", !open);
+  });
+}
+
 function render(d) {
   document.getElementById("kv-gesamt").textContent = fmtEur(d.gesamtbestand);
   document.getElementById("kv-tages").textContent  = fmtEur(d.tageseingang);
@@ -316,7 +445,7 @@ function render(d) {
 
   var gesamt = +d.gesamtbestand || 0;
 
-  // Key Accounts \u2014 mit Links
+  /* Key Accounts */
   var kunden = Array.isArray(d.alle_kunden) ? d.alle_kunden
              : (Array.isArray(d.top5_kunden) ? d.top5_kunden : []);
   var KA_FIXED = 3;
@@ -337,31 +466,40 @@ function render(d) {
   document.getElementById("ka-more").innerHTML = kaMoreH;
   if (kaMoreH) { bindExpand("ka-xbtn", "ka-more", kunden.length, KA_FIXED); }
 
-  // Artikelgruppen
-  var agRaw = d.artikelgruppen || {};
+  /* Produktgruppen mit ausklappbarem Detail */
+  var agRaw    = d.artikelgruppen || {};
+  var agDetail = d.gruppen_detail  || {};
   var agArr = [];
-  var keys  = Object.keys(agRaw);
-  for (var ai = 0; ai < keys.length; ai++) {
-    var k = keys[ai];
-    agArr.push({ label: (AG_LABELS[k] || k), wert: +agRaw[k] || 0 });
+  var agKeys = Object.keys(agRaw);
+  for (var ai = 0; ai < agKeys.length; ai++) {
+    var k = agKeys[ai];
+    agArr.push({ key: k, label: (AG_LABELS[k] || k), wert: +agRaw[k] || 0 });
   }
   agArr.sort(function (a, b) { return b.wert - a.wert; });
+
   var AG_FIXED = 5;
   var maxAg = agArr.length > 0 ? agArr[0].wert : 1;
   var agTopH = ""; var agMoreH = "";
+  var toggleIdxs = [];
   for (var aj = 0; aj < agArr.length; aj++) {
-    var agR = agArr[aj];
-    if (aj < AG_FIXED) { agTopH += rowHtml(agR.label, agR.wert, maxAg, gesamt); }
-    else               { agMoreH += rowHtml(agR.label, agR.wert, maxAg, gesamt); }
+    var agR    = agArr[aj];
+    var detail = agDetail[agR.key] || null;
+    var html   = agGroupHtml(aj, agR.key, agR.label, agR.wert, maxAg, gesamt, detail);
+    if (aj < AG_FIXED) { agTopH += html; } else { agMoreH += html; }
+    if (detail) { toggleIdxs.push(aj); }
   }
   if (!agTopH && agArr.length === 0) {
     agTopH = "<div style=\"padding:14px 18px;color:#6b7280;font-size:13px\">Noch kein Datenstand.</div>";
   }
-  document.getElementById("ag-top").innerHTML  = agTopH;
+  document.getElementById("ag-rows").innerHTML = agTopH;
   document.getElementById("ag-more").innerHTML = agMoreH;
   if (agMoreH) { bindExpand("ag-xbtn", "ag-more", agArr.length, AG_FIXED); }
+  /* Bind toggles after DOM insertion */
+  for (var ti = 0; ti < toggleIdxs.length; ti++) {
+    bindAgToggle(toggleIdxs[ti]);
+  }
 
-  // Plausi-Badges
+  /* Plausi */
   var plausiBar = document.getElementById("plausi-bar");
   var pl = d.plausi || {};
   function badge(ok, label, diff) {
@@ -382,7 +520,7 @@ function render(d) {
   }
   plausiBar.innerHTML = pHtml;
 
-  // Timestamp
+  /* Timestamp */
   var tsBar = document.getElementById("ts-bar");
   if (d.timestamp) {
     try { tsBar.textContent = "Datenstand: " + new Date(d.timestamp).toLocaleString("de-DE"); }
@@ -405,7 +543,7 @@ function showStructure() {
 
 var EMPTY = { gesamtbestand: null, tageseingang: null, wocheneingang: null,
               monatseingang: null, davon_ankernaegel: null,
-              alle_kunden: [], artikelgruppen: {}, plausi: null };
+              alle_kunden: [], artikelgruppen: {}, gruppen_detail: {}, plausi: null };
 
 fetch("_data/auftragsbestand.json?t=" + Date.now())
   .then(function (r) {
@@ -431,4 +569,11 @@ fetch("_data/auftragsbestand.json?t=" + Date.now())
     showStructure();
     showNotice("<b>Netzwerkfehler:</b> " + esc(String(err)));
     render(EMPTY);
-    console.error("Dashboard-Fehler:", err
+    console.error("Dashboard-Fehler:", err);
+  });
+
+}());
+
+</script>
+</body>
+</html>

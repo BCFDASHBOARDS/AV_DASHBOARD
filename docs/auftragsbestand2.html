@@ -132,6 +132,7 @@ body {
 <nav class="tab-bar">
   <a href="auftragsbestand.html">Auftragsbestand</a>
   <a href="auftragsbestand2.html" class="active">Auftragsbestand 2</a>
+  <a href="auftragsbestand3.html">AB 3</a>
   <a href="presserei.html">Presserei</a>
 </nav>
 
@@ -408,11 +409,4 @@ fetch("_data/auftragsbestand.json?t=" + Date.now())
     showStructure();
     showNotice("<b>Netzwerkfehler:</b> " + esc(String(err)) + " \u2014 Bitte Internetverbindung pr\u00fcfen.");
     render(EMPTY);
-    console.error("Dashboard-Fehler:", err);
-  });
-
-}());
-
-</script>
-</body>
-</html>
+    console.error("Dashboard-Fehler:", err

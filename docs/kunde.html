@@ -77,6 +77,7 @@ body{background:var(--bg);color:var(--text);
 <nav class="tab-bar">
   <a href="auftragsbestand.html">Auftragsbestand</a>
   <a href="auftragsbestand2.html">Auftragsbestand 2</a>
+  <a href="auftragsbestand3.html">AB 3</a>
   <a href="presserei.html">Presserei</a>
 </nav>
 
@@ -223,10 +224,4 @@ fetch("_data/auftragsbestand.json?t=" + Date.now())
   .catch(function (err) {
     document.getElementById("root-loading").textContent =
       "Fehler beim Laden: " + err.message;
-    console.error(err);
-  });
-
-}());
-</script>
-</body>
-</html>
+    console.error(er

@@ -117,7 +117,8 @@ $gruppen = @{
     "Sonstiges"         = 0.0
 }
 $kundenMap    = @{}
-$kundenDetail = @{}   # Artikel je Kunde: $kundenDetail[$kName][$artnr] = @{Wert=...; Text=...}
+$kundenDetail = @{}   # Artikel je Kunde (konsolidiert): $kundenDetail[$kName][$artnr] = @{Wert=...; Text=...}
+$gruppenDetail = @{}  # Top-Artikel + Top-Kunden (roh) je Gruppe
 $gesamt       = 0.0
 $maxAuftrag   = 0
 $davonAnker   = 0.0
@@ -143,12 +144,27 @@ foreach ($xlRow in $xlRows) {
     if ($kundenMap.ContainsKey($kName)) { $kundenMap[$kName] += $wert }
     else { $kundenMap[$kName] = $wert }
 
-    # Kunden-Detail: Artikel aggregieren
+    # Kunden-Detail: Artikel aggregieren (je konsolidiertem Kunden)
     if (-not $kundenDetail.ContainsKey($kName)) { $kundenDetail[$kName] = @{} }
     if ($kundenDetail[$kName].ContainsKey($artnr)) {
         $kundenDetail[$kName][$artnr].Wert += $wert
     } else {
         $kundenDetail[$kName][$artnr] = @{ Wert = $wert; Text = $ktext }
+    }
+
+    # Gruppen-Detail: Top-Artikel + Top-Kunden (roh, nicht konsolidiert)
+    if (-not $gruppenDetail.ContainsKey($gr)) {
+        $gruppenDetail[$gr] = @{ Artikel = @{}; Kunden = @{} }
+    }
+    if ($gruppenDetail[$gr].Artikel.ContainsKey($artnr)) {
+        $gruppenDetail[$gr].Artikel[$artnr].Wert += $wert
+    } else {
+        $gruppenDetail[$gr].Artikel[$artnr] = @{ Wert = $wert; Text = $ktext }
+    }
+    if ($gruppenDetail[$gr].Kunden.ContainsKey($kRaw)) {
+        $gruppenDetail[$gr].Kunden[$kRaw] += $wert
+    } else {
+        $gruppenDetail[$gr].Kunden[$kRaw] = $wert
     }
 }
 
@@ -157,15 +173,47 @@ $kundenDetailOut = @{}
 foreach ($kd in $kundenDetail.GetEnumerator()) {
     $kundenDetailOut[$kd.Key] = @(
         $kd.Value.GetEnumerator() |
-        Sort-Object { $_.Value.Wert } -Descending |
+        Sort-Object { [double]$_.Value.Wert } -Descending |
         ForEach-Object {
             [PSCustomObject]@{
-                artnr = $_.Key
-                text  = $_.Value.Text
-                wert  = [Math]::Round($_.Value.Wert, 2)
+                artnr = [string]$_.Key
+                text  = [string]$_.Value.Text
+                wert  = [Math]::Round([double]$_.Value.Wert, 2)
             }
         }
     )
+}
+
+# Gruppen-Detail: Top-5 Artikel + Top-5 Kunden je Gruppe
+$gruppenDetailOut = @{}
+foreach ($gd in $gruppenDetail.GetEnumerator()) {
+    $topArtikel = @(
+        $gd.Value.Artikel.GetEnumerator() |
+        Sort-Object { [double]$_.Value.Wert } -Descending |
+        Select-Object -First 5 |
+        ForEach-Object {
+            [PSCustomObject]@{
+                artnr = [string]$_.Key
+                text  = [string]$_.Value.Text
+                wert  = [Math]::Round([double]$_.Value.Wert, 2)
+            }
+        }
+    )
+    $topKunden = @(
+        $gd.Value.Kunden.GetEnumerator() |
+        Sort-Object { [double]$_.Value } -Descending |
+        Select-Object -First 5 |
+        ForEach-Object {
+            [PSCustomObject]@{
+                kunde = [string]$_.Key
+                wert  = [Math]::Round([double]$_.Value, 2)
+            }
+        }
+    )
+    $gruppenDetailOut[$gd.Key] = [PSCustomObject]@{
+        top_artikel = $topArtikel
+        top_kunden  = $topKunden
+    }
 }
 
 # Alle Kunden (vollstaendige Liste, absteigend sortiert)
@@ -287,44 +335,4 @@ $logZeile = [PSCustomObject]@{
     Umpack_Dachpapp_EUR   = [Math]::Round($gruppen["Umpack_Dachpapp"], 2)
     Sonstiges_EUR         = [Math]::Round($gruppen["Sonstiges"], 2)
     Davon_Ankernaegel_EUR = [Math]::Round($davonAnker, 2)
-    Gruppen_Summe_EUR     = [Math]::Round($gruppenGesamt, 2)
-    Check_OK              = $checkOk
-    Check_Diff_EUR        = [Math]::Round($checkDiff, 4)
-}
-
-# Heutigen Eintrag ersetzen oder neu anhaengen
-$logNeu = @($logDaten | Where-Object {
-    $_.Datum -ne $null -and ([datetime]$_.Datum).Date -ne $heute
-})
-$logNeu += $logZeile
-
-try {
-    $logNeu | Export-Excel -Path $LOG_XLS -WorksheetName "Log" `
-              -TableName "AuftragsbestandLog" -TableStyle Medium2 `
-              -AutoSize -ClearSheet -ErrorAction Stop
-    Write-Host "[OK] Log geschrieben: $LOG_XLS" -ForegroundColor Green
-} catch {
-    Write-Host "[ERR] Log konnte nicht geschrieben werden: $_" -ForegroundColor Red
-}
-
-# --- JSON fuer Dashboard ---------------------------------------
-$jsonObj = [PSCustomObject]@{
-    timestamp          = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
-    gesamtbestand      = [Math]::Round($gesamt, 2)
-    max_auftragsnr     = $maxAuftrag
-    tageseingang       = [Math]::Round($tageseingang, 2)
-    wocheneingang      = [Math]::Round($wocheneingang, 2)
-    letzte_woche       = [Math]::Round($letzteWocheEingang, 2)
-    monatseingang      = [Math]::Round($monatseingang, 2)
-    alle_kunden        = @($alleKunden)
-    kunden_detail      = $kundenDetailOut
-    plausi             = [PSCustomObject]@{
-        kunden_summe  = [Math]::Round($kundenGesamt, 2)
-        gruppen_summe = [Math]::Round($gruppenGesamt, 2)
-        kunden_ok     = $kundenCheckOk
-        gruppen_ok    = $checkOk
-        diff_kunden   = [Math]::Round([Math]::Abs($gesamt - $kundenGesamt), 4)
-        diff_gruppen  = [Math]::Round($checkDiff, 4)
-    }
-    artikelgruppen     = [PSCustomObject]@{
-        Maschinenstifte   = [Math]::Round($gruppen["Maschinenstif
+    Gruppen_Summe_EUR     = [M
