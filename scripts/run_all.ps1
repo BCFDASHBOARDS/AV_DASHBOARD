@@ -1,9 +1,6 @@
 # ============================================================
-# run_all.ps1  —  Master-Skript Dashboard-Update
+# run_all.ps1  --  Master-Skript Dashboard-Update
 # Ruft alle Teilskripte auf, loggt Ergebnisse, pusht zu GitHub
-# ============================================================
-# Portabel: läuft für jeden Benutzer via %USERNAME% / $env:USERNAME
-# Arbeitsordner: ...\050 Claude planned Tasks\051 Dashboard\
 # ============================================================
 
 $SCRIPTS = Split-Path -Parent $MyInvocation.MyCommand.Path   # .../051 Dashboard/scripts/
@@ -23,50 +20,69 @@ function Log($msg, $color = "White") {
 
 Log "===== Dashboard-Update gestartet ($DATE $TIME) =====" "Cyan"
 
-$steps = @(
-    @{ Name = "Netzwerkdateien kopieren";      Script = "01_copy_network.ps1"       }
-    @{ Name = "Draht-Übersicht Query-Refresh"; Script = "02_refresh_ubersicht.ps1"  }
-    @{ Name = "SharePoint-Dateien laden";      Script = "03_sharepoint_download.ps1"}
-    @{ Name = "Excel → JSON konvertieren";     Script = "04_excel_to_json.ps1"      }
-)
-
 $failed = @()
 
-foreach ($step in $steps) {
-    Log "--- $($step.Name) ---" "Yellow"
-    $scriptPath = Join-Path $SCRIPTS $step.Script
-
-    if (-not (Test-Path $scriptPath)) {
-        Log "[SKIP] Skript nicht gefunden: $($step.Script)" "DarkGray"
-        continue
-    }
-
+# -- Schritt 1: Netzwerkdateien kopieren --------------------
+Log "--- Netzwerkdateien kopieren ---" "Yellow"
+$s1 = Join-Path $SCRIPTS "01_copy_network.ps1"
+if (Test-Path $s1) {
     try {
-        & $scriptPath 2>&1 | ForEach-Object { Log "  $_" }
+        & $s1 2>&1 | ForEach-Object { Log "  $_" }
         if ($LASTEXITCODE -ne 0) { throw "Exit-Code $LASTEXITCODE" }
-        Log "[OK] $($step.Name)" "Green"
+        Log "[OK] Netzwerkdateien kopieren" "Green"
     } catch {
-        Log "[ERR] $($step.Name): $_" "Red"
-        $failed += $step.Name
+        Log "[ERR] Netzwerkdateien kopieren: $_" "Red"
+        $failed += "Netzwerkdateien kopieren"
     }
-}
+} else { Log "[SKIP] 01_copy_network.ps1 nicht gefunden" "DarkGray" }
 
-# GitHub Push (nur wenn kein kritischer Fehler in JSON-Export)
-if ($failed -notcontains "Excel → JSON konvertieren") {
+# -- Schritt 2: Draht-Uebersicht Query-Refresh --------------
+Log "--- Draht-Uebersicht Query-Refresh ---" "Yellow"
+$s2 = Join-Path $SCRIPTS "02_refresh_ubersicht.ps1"
+if (Test-Path $s2) {
+    try {
+        & $s2 2>&1 | ForEach-Object { Log "  $_" }
+        if ($LASTEXITCODE -ne 0) { throw "Exit-Code $LASTEXITCODE" }
+        Log "[OK] Draht-Uebersicht Query-Refresh" "Green"
+    } catch {
+        Log "[ERR] Draht-Uebersicht Query-Refresh: $_" "Red"
+        $failed += "Draht-Uebersicht Query-Refresh"
+    }
+} else { Log "[SKIP] 02_refresh_ubersicht.ps1 nicht gefunden" "DarkGray" }
+
+# -- Schritt 3: SharePoint-Dateien laden --------------------
+# KEIN Pipe-Redirect: Device-Code-Prompt muss im Terminal sichtbar sein
+Log "--- SharePoint-Dateien laden ---" "Yellow"
+$s3 = Join-Path $SCRIPTS "03_sharepoint_download.ps1"
+if (Test-Path $s3) {
+    try {
+        & $s3
+        if ($LASTEXITCODE -ne 0) { throw "Exit-Code $LASTEXITCODE" }
+        Log "[OK] SharePoint-Dateien laden" "Green"
+    } catch {
+        Log "[ERR] SharePoint-Dateien laden: $_" "Red"
+        $failed += "SharePoint-Dateien laden"
+    }
+} else { Log "[SKIP] 03_sharepoint_download.ps1 nicht gefunden" "DarkGray" }
+
+# -- Schritt 4: Excel -> JSON (deaktiviert bis Datenstruktur definiert) --
+Log "--- Excel -> JSON konvertieren: UEBERSPRUNGEN (in Arbeit) ---" "DarkGray"
+
+# -- GitHub Push --------------------------------------------
+if ($true) {
     Log "--- GitHub Push ---" "Yellow"
     $dashDir = Join-Path $BASE "docs"
 
     try {
-        # _data nach docs/_data kopieren damit GitHub Pages die JSON-Dateien hostet
         $dataSrc = Join-Path $BASE "_data"
         $dataDst = Join-Path $dashDir "_data"
         if (-not (Test-Path $dataDst)) { New-Item -ItemType Directory -Path $dataDst | Out-Null }
         Copy-Item -Path "$dataSrc\*" -Destination $dataDst -Recurse -Force
 
         Push-Location $BASE
-        git add -A                                   2>&1 | ForEach-Object { Log "  git: $_" }
-        git commit -m "Auto-Update $DATE $TIME"      2>&1 | ForEach-Object { Log "  git: $_" }
-        git push                                     2>&1 | ForEach-Object { Log "  git: $_" }
+        git add -A                                  2>&1 | ForEach-Object { Log "  git: $_" }
+        git commit -m "Auto-Update $DATE $TIME"     2>&1 | ForEach-Object { Log "  git: $_" }
+        git push                                    2>&1 | ForEach-Object { Log "  git: $_" }
         Pop-Location
 
         Log "[OK] GitHub Push erfolgreich" "Green"
@@ -76,15 +92,15 @@ if ($failed -notcontains "Excel → JSON konvertieren") {
         Pop-Location -ErrorAction SilentlyContinue
     }
 } else {
-    Log "[SKIP] GitHub Push übersprungen (JSON-Export fehlerhaft)" "DarkGray"
+    Log "[SKIP] GitHub Push uebersprungen (JSON-Export fehlerhaft)" "DarkGray"
 }
 
-# Abschlussstatus
+# -- Abschluss ----------------------------------------------
 Log "====================================================" "Cyan"
 if ($failed.Count -eq 0) {
-    Log "FERTIG — Alle Schritte erfolgreich." "Cyan"
+    Log "FERTIG -- Alle Schritte erfolgreich." "Cyan"
     exit 0
 } else {
-    Log "FERTIG MIT FEHLERN — Fehlgeschlagen: $($failed -join ', ')" "Red"
+    Log "FERTIG MIT FEHLERN -- Fehlgeschlagen: $($failed -join ', ')" "Red"
     exit 1
 }

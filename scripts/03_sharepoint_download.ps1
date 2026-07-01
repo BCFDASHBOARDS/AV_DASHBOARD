@@ -1,94 +1,83 @@
 # ============================================================
 # 03_sharepoint_download.ps1
-# Lädt freigegebene SharePoint/OneDrive-Dateien via
-# Microsoft Graph API herunter (MSAL Device-Code-Flow,
-# Token wird gecacht für spätere Läufe).
-# ============================================================
-# Voraussetzung (einmalig):
-#   Install-Module Microsoft.Graph.Authentication -Scope CurrentUser
-#   Install-Module Microsoft.Graph.Files         -Scope CurrentUser
+# Laedt SharePoint-Dateien via MSAL.PS (Refresh-Token auf Disk)
+# Erster Lauf: Device Code Login. Danach: lautlos.
 # ============================================================
 
-$BASE   = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
-$SOURCE = Join-Path $BASE "_source"
-$TOKEN_CACHE = Join-Path $BASE "scripts\.graph_token_cache.json"
+$SCRIPTS = $PSScriptRoot
+$BASE    = Split-Path -Parent $SCRIPTS
+$SOURCE  = Join-Path $BASE "_source"
 
-# --- SharePoint-Dateien (DriveItem-Download-URLs) -----------
-# Format: @{ Dateiname = "SharePoint-Web-URL" }
 $SP_FILES = @{
     "Offene_Bestellungen_Draht.xlsx" = "https://baussmannfi-my.sharepoint.com/personal/j_bischopink_baussmann_de/Documents/01_Einkauf/Offene%20Bestellungen_Draht.xlsx"
     "Planung_Pressen_NEU.xlsx"       = "https://baussmannfi-my.sharepoint.com/personal/j_rubner_baussmann_de/Documents/AV_NEU/Produktionsplanung%20und%20BDE/Pressen/Planung_Pressen_NEU.xlsx"
 }
 
-# --- Graph-Verbindung herstellen ----------------------------
-Write-Host "Verbinde mit Microsoft Graph ..."
+$clientId = "14d82eec-204b-4c2f-b7e8-296a70dab67e"
+$tenantId = "baussmannfi.onmicrosoft.com"
+$scopes   = @("https://graph.microsoft.com/Files.Read.All","https://graph.microsoft.com/Sites.Read.All")
+
+# --- MSAL.PS installieren falls noetig ----------------------
+if (-not (Get-Module -ListAvailable -Name MSAL.PS)) {
+    Write-Host "Installiere MSAL.PS ..." -ForegroundColor Yellow
+    Install-Module MSAL.PS -Scope CurrentUser -Force -AllowClobber -ErrorAction Stop
+}
+Import-Module MSAL.PS -ErrorAction Stop
+Write-Host "[OK] MSAL.PS geladen." -ForegroundColor Green
+
+# --- Token holen (silent aus Cache, sonst Device Code) ------
+Write-Host "Hole Graph-Token ..."
+$tok = $null
 
 try {
-    Import-Module Microsoft.Graph.Authentication -ErrorAction Stop
-    Import-Module Microsoft.Graph.Files         -ErrorAction Stop
+    $tok = Get-MsalToken -ClientId $clientId -TenantId $tenantId -Scopes $scopes -Silent -ErrorAction Stop
+    Write-Host "[OK] Token aus Cache." -ForegroundColor Green
 } catch {
-    Write-Host "[ERR] Microsoft.Graph Module nicht installiert." -ForegroundColor Red
-    Write-Host "Bitte einmalig ausführen:" -ForegroundColor Yellow
-    Write-Host "  Install-Module Microsoft.Graph.Authentication -Scope CurrentUser" -ForegroundColor Yellow
-    Write-Host "  Install-Module Microsoft.Graph.Files         -Scope CurrentUser" -ForegroundColor Yellow
+    Write-Host "Erster Login erforderlich (einmalig):" -ForegroundColor Yellow
+    try {
+        $tok = Get-MsalToken -ClientId $clientId -TenantId $tenantId -Scopes $scopes -DeviceCode -ErrorAction Stop
+        Write-Host "[OK] Login erfolgreich." -ForegroundColor Green
+    } catch {
+        Write-Host "[ERR] Login fehlgeschlagen: $_" -ForegroundColor Red
+        exit 1
+    }
+}
+
+if (-not $tok -or -not $tok.AccessToken) {
+    Write-Host "[ERR] Kein Access Token." -ForegroundColor Red
     exit 1
 }
 
-# Interaktiver Login (Tenant: baussmannfi)
-$tenantId = "baussmannfi.onmicrosoft.com"
-Connect-MgGraph -TenantId $tenantId -Scopes "Files.Read.All", "Sites.Read.All" -NoWelcome
+$headers = @{ Authorization = "Bearer $($tok.AccessToken)" }
 
+# --- Dateien laden ------------------------------------------
 $errors = 0
 
 foreach ($entry in $SP_FILES.GetEnumerator()) {
     $fileName = $entry.Key
     $webUrl   = $entry.Value
-    $dstFile  = Join-Path $SOURCE $fileName
+    $dstFile  = [string](Join-Path $SOURCE $fileName)
 
     Write-Host "Lade: $fileName ..."
 
     try {
-        # SharePoint-URL → DriveItem auflösen
-        # Kodierung bereinigen für Graph-Aufruf
-        $encodedUrl = [System.Web.HttpUtility]::UrlEncode($webUrl)
-        $graphUrl   = "https://graph.microsoft.com/v1.0/shares/u!$([Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($webUrl)).Replace('=','').Replace('+','-').Replace('/','_'))/driveItem/content"
+        $bytes    = [System.Text.Encoding]::UTF8.GetBytes($webUrl)
+        $b64      = [Convert]::ToBase64String($bytes).TrimEnd('=').Replace('+','-').Replace('/','_')
+        $shareId  = "u!$b64"
+        $graphUri = "https://graph.microsoft.com/v1.0/shares/$shareId/driveItem/content"
 
-        # Download via Graph
-        $headers = @{ Authorization = "Bearer $((Get-MgContext).AccessToken)" }
-        Invoke-WebRequest -Uri $graphUrl -Headers $headers -OutFile $dstFile -ErrorAction Stop
-
-        Write-Host "[OK]  $fileName → $dstFile" -ForegroundColor Green
-
+        Invoke-WebRequest -Uri $graphUri -Headers $headers -OutFile $dstFile -ErrorAction Stop
+        Write-Host "[OK]  $fileName" -ForegroundColor Green
     } catch {
-        # Fallback: direkt als authenticated download versuchen
-        try {
-            $token = (Get-MgContext).AccessToken
-            if (-not $token) { throw "Kein Access Token verfügbar" }
-
-            # SharePoint REST API Fallback
-            $shareUrl   = $webUrl -replace "%20", " "
-            $siteBase   = ($shareUrl -split "/personal/")[0] + "/personal/" + ($shareUrl -split "/personal/")[1].Split("/")[0]
-            $docPath    = "/" + (($shareUrl -split "/personal/")[1] -split "/",2)[1]
-
-            $restUrl    = "$siteBase/_api/web/GetFileByServerRelativeUrl('$docPath')/`$value"
-            $authHeader = @{ Authorization = "Bearer $token"; Accept = "application/json;odata=verbose" }
-
-            Invoke-WebRequest -Uri $restUrl -Headers $authHeader -OutFile $dstFile -ErrorAction Stop
-            Write-Host "[OK]  $fileName (REST-Fallback) → $dstFile" -ForegroundColor Green
-
-        } catch {
-            Write-Host "[ERR] $fileName : $_" -ForegroundColor Red
-            $errors++
-        }
+        Write-Host "[ERR] $fileName : $_" -ForegroundColor Red
+        $errors++
     }
 }
-
-Disconnect-MgGraph -ErrorAction SilentlyContinue | Out-Null
 
 if ($errors -gt 0) {
     Write-Warning "03_sharepoint_download: $errors Datei(en) fehlgeschlagen."
     exit 1
 } else {
-    Write-Host "03_sharepoint_download: Alle SharePoint-Dateien geladen." -ForegroundColor Cyan
+    Write-Host "03_sharepoint_download: Alle Dateien geladen." -ForegroundColor Cyan
     exit 0
 }
