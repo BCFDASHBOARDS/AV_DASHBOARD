@@ -74,7 +74,28 @@ if (-not (Test-Path $SRC_XLS)) {
     Write-Host "[ERR] Quelldatei nicht gefunden: $SRC_XLS" -ForegroundColor Red; exit 1
 }
 
-$xlRows = Import-Excel -Path $SRC_XLS -WorksheetName "Tabelle1" -ErrorAction Stop
+# Duplikate in Kopfzeile abfangen: Header manuell lesen + eindeutig machen
+$pkg = Open-ExcelPackage -Path $SRC_XLS
+$ws  = $pkg.Workbook.Worksheets["Tabelle1"]
+$colCount = $ws.Dimension.Columns
+$headerNames = @()
+$seen = @{}
+for ($c = 1; $c -le $colCount; $c++) {
+    $h = [string]$ws.Cells[1, $c].Value
+    if ([string]::IsNullOrWhiteSpace($h)) { $h = "Spalte$c" }
+    if ($seen.ContainsKey($h)) {
+        $seen[$h]++
+        $h = "${h}_$($seen[$h])"
+    } else {
+        $seen[$h] = 0
+    }
+    $headerNames += $h
+}
+Close-ExcelPackage $pkg -NoSave
+Write-Host "  Spalten ($colCount): $($headerNames -join ', ')"
+
+$xlRows = Import-Excel -Path $SRC_XLS -WorksheetName "Tabelle1" `
+          -HeaderName $headerNames -StartRow 2 -ErrorAction Stop
 
 # --- Auswerten -------------------------------------------------
 $gruppen = @{
