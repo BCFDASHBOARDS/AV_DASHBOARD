@@ -130,8 +130,8 @@ body {
 <body>
 
 <nav class="tab-bar">
-  <a href="auftragsbestand.html" class="active">Auftragsbestand</a>
-  <a href="auftragsbestand2.html">Auftragsbestand 2</a>
+  <a href="auftragsbestand.html">Auftragsbestand</a>
+  <a href="auftragsbestand2.html" class="active">Auftragsbestand 2</a>
   <a href="presserei.html">Presserei</a>
 </nav>
 
@@ -235,40 +235,15 @@ var AG_LABELS = {
   "Sonstiges":         "Sonstiges"
 };
 
-// Anzeigenamen f\u00fcr konsolidierte Kundenschl\u00fcssel
-var KD_LABELS = {
-  "Wuerth":    "W\u00fcrth",
-  "ITW":       "ITW",
-  "Kyocera":   "Kyocera Group",
-  "Hilti":     "Hilti",
-  "Milwaukee": "Milwaukee"
-};
+var KD_LABELS = {"Wuerth":"W\u00fcrth","ITW":"ITW","Kyocera":"Kyocera","Hilti":"Hilti"};
 function kundeLabel(k) { return KD_LABELS[k] || k; }
 
-// Artikel-Row (kein Link)
 function rowHtml(name, wert, maxWert, total) {
   var pct   = maxWert > 0 ? Math.round(wert / maxWert * 100) : 0;
   var share = total  > 0 ? (wert / total * 100).toFixed(1) : "0.0";
   return "<div class=\"row-item\">" +
     "<div class=\"row-top\">" +
       "<span class=\"row-name\">" + esc(name) + "</span>" +
-      "<span class=\"row-right\">" +
-        "<span class=\"row-val\">"   + fmtEur(wert) + "</span>" +
-        "<span class=\"row-share\">" + share + " %" + "</span>" +
-      "</span>" +
-    "</div>" +
-    "<div class=\"row-bar\"><div class=\"row-bar-fill\" style=\"width:" + pct + "%\"></div></div>" +
-  "</div>";
-}
-
-// Kunden-Row MIT Link zu kunde.html
-function kundeRowHtml(key, displayName, wert, maxWert, total) {
-  var pct   = maxWert > 0 ? Math.round(wert / maxWert * 100) : 0;
-  var share = total  > 0 ? (wert / total * 100).toFixed(1) : "0.0";
-  var href  = "kunde.html?k=" + encodeURIComponent(key);
-  return "<div class=\"row-item\">" +
-    "<div class=\"row-top\">" +
-      "<a class=\"row-name row-link\" href=\"" + esc(href) + "\">" + esc(displayName) + " &#8250;</a>" +
       "<span class=\"row-right\">" +
         "<span class=\"row-val\">"   + fmtEur(wert) + "</span>" +
         "<span class=\"row-share\">" + share + " %" + "</span>" +
@@ -315,7 +290,7 @@ function render(d) {
 
   var gesamt = +d.gesamtbestand || 0;
 
-  // Key Accounts \u2014 mit Links
+  // Key Accounts
   var kunden = Array.isArray(d.alle_kunden) ? d.alle_kunden
              : (Array.isArray(d.top5_kunden) ? d.top5_kunden : []);
   var KA_FIXED = 3;
@@ -323,11 +298,10 @@ function render(d) {
   var kaTopH = ""; var kaMoreH = "";
   for (var i = 0; i < kunden.length; i++) {
     var kRow  = kunden[i];
-    var kKey  = kRow.Kunde || kRow.kunde || "";
-    var kName = kundeLabel(kKey);
+    var kName = kundeLabel(kRow.Kunde || kRow.kunde || "");
     var kWert = +kRow.Wert || +kRow.wert || 0;
-    var rh = kundeRowHtml(kKey, kName, kWert, maxKa, gesamt);
-    if (i < KA_FIXED) { kaTopH += rh; } else { kaMoreH += rh; }
+    if (i < KA_FIXED) { kaTopH += rowHtml(kName, kWert, maxKa, gesamt); }
+    else              { kaMoreH += rowHtml(kName, kWert, maxKa, gesamt); }
   }
   if (!kaTopH && kunden.length === 0) {
     kaTopH = "<div style=\"padding:14px 18px;color:#6b7280;font-size:13px\">Noch kein Datenstand.</div>";
@@ -386,7 +360,9 @@ function render(d) {
   if (d.timestamp) {
     try { tsBar.textContent = "Datenstand: " + new Date(d.timestamp).toLocaleString("de-DE"); }
     catch (e) { tsBar.textContent = "Datenstand: " + d.timestamp; }
-  } else { tsBar.textContent = ""; }
+  } else {
+    tsBar.textContent = "";
+  }
 }
 
 function showNotice(msg) {
@@ -415,20 +391,22 @@ fetch("_data/auftragsbestand.json?t=" + Date.now())
   .then(function (data) {
     if (data._kein_datenstand) {
       showStructure();
-      showNotice("<b>Noch kein Datenstand</b> \u2014 bitte run_all.ps1 ausf\u00fchren.");
-      render(EMPTY); return;
+      showNotice("<b>Noch kein Datenstand</b> \u2014 bitte run_all.ps1 ausf\u00fchren um Daten zu generieren.");
+      render(EMPTY);
+      return;
     }
     if (data._error) {
       showStructure();
-      showNotice("<b>Ladefehler:</b> " + esc(data._error));
-      render(EMPTY); return;
+      showNotice("<b>Ladefehler:</b> " + esc(data._error) + " \u2014 bitte run_all.ps1 und GitHub-Push pr\u00fcfen.");
+      render(EMPTY);
+      return;
     }
     showStructure();
     render(data);
   })
   .catch(function (err) {
     showStructure();
-    showNotice("<b>Netzwerkfehler:</b> " + esc(String(err)));
+    showNotice("<b>Netzwerkfehler:</b> " + esc(String(err)) + " \u2014 Bitte Internetverbindung pr\u00fcfen.");
     render(EMPTY);
     console.error("Dashboard-Fehler:", err);
   });

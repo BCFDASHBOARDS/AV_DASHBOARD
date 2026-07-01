@@ -58,13 +58,18 @@ function Get-Gruppe([string]$artnr) {
 function Test-IsAnkernagel([string]$artnr) {
     if ([string]::IsNullOrWhiteSpace($artnr)) { return $false }
     $p5 = if ($artnr.Length -ge 5) { $artnr.Substring(0,5) } else { $artnr }
-    return $p5 -in @("40-40","40-60","42-40","50-40","62-40","62-60")
+    $p6 = if ($artnr.Length -ge 6) { $artnr.Substring(0,6) } else { $artnr }
+    if ($p5 -in @("40-40","40-60","42-40","50-40","62-40","62-60")) { return $true }
+    if ($p6 -eq "47-400") { return $true }  # Ankernagel Papertape
+    return $false
 }
 
 function Get-KonsolidierterKunde([string]$kunde) {
     if ($kunde -match "(?i)w[uü]rth") { return "Wuerth" }
     if ($kunde -match "(?i)ITW")      { return "ITW" }
     if ($kunde -match "(?i)kyocera")  { return "Kyocera" }
+    if ($kunde -match "(?i)hilti")    { return "Hilti" }
+    if ($kunde -match "(?i)TTI")      { return "Milwaukee" }
     return $kunde
 }
 
@@ -111,10 +116,11 @@ $gruppen = @{
     "Umpack_Dachpapp"   = 0.0
     "Sonstiges"         = 0.0
 }
-$kundenMap  = @{}
-$gesamt     = 0.0
-$maxAuftrag = 0
-$davonAnker = 0.0
+$kundenMap    = @{}
+$kundenDetail = @{}   # Artikel je Kunde: $kundenDetail[$kName][$artnr] = @{Wert=...; Text=...}
+$gesamt       = 0.0
+$maxAuftrag   = 0
+$davonAnker   = 0.0
 
 foreach ($xlRow in $xlRows) {
     $wert    = 0.0
@@ -122,6 +128,7 @@ foreach ($xlRow in $xlRows) {
     try { $wert    = [double]$xlRow.'Wert'   } catch {}
     try { $auftrNr = [int]$xlRow.'Auftrag'   } catch {}
     $artnr  = [string]$xlRow.'Artikelnummer'
+    $ktext  = [string]$xlRow.'Kurztext'
     $kRaw   = [string]$xlRow.'Kunde'
     $kName  = Get-KonsolidierterKunde $kRaw
 
@@ -135,6 +142,30 @@ foreach ($xlRow in $xlRows) {
 
     if ($kundenMap.ContainsKey($kName)) { $kundenMap[$kName] += $wert }
     else { $kundenMap[$kName] = $wert }
+
+    # Kunden-Detail: Artikel aggregieren
+    if (-not $kundenDetail.ContainsKey($kName)) { $kundenDetail[$kName] = @{} }
+    if ($kundenDetail[$kName].ContainsKey($artnr)) {
+        $kundenDetail[$kName][$artnr].Wert += $wert
+    } else {
+        $kundenDetail[$kName][$artnr] = @{ Wert = $wert; Text = $ktext }
+    }
+}
+
+# Kunden-Detail: Hashtable -> sortiertes Array je Kunde
+$kundenDetailOut = @{}
+foreach ($kd in $kundenDetail.GetEnumerator()) {
+    $kundenDetailOut[$kd.Key] = @(
+        $kd.Value.GetEnumerator() |
+        Sort-Object { $_.Value.Wert } -Descending |
+        ForEach-Object {
+            [PSCustomObject]@{
+                artnr = $_.Key
+                text  = $_.Value.Text
+                wert  = [Math]::Round($_.Value.Wert, 2)
+            }
+        }
+    )
 }
 
 # Alle Kunden (vollstaendige Liste, absteigend sortiert)
@@ -286,6 +317,7 @@ $jsonObj = [PSCustomObject]@{
     letzte_woche       = [Math]::Round($letzteWocheEingang, 2)
     monatseingang      = [Math]::Round($monatseingang, 2)
     alle_kunden        = @($alleKunden)
+    kunden_detail      = $kundenDetailOut
     plausi             = [PSCustomObject]@{
         kunden_summe  = [Math]::Round($kundenGesamt, 2)
         gruppen_summe = [Math]::Round($gruppenGesamt, 2)
@@ -295,27 +327,4 @@ $jsonObj = [PSCustomObject]@{
         diff_gruppen  = [Math]::Round($checkDiff, 4)
     }
     artikelgruppen     = [PSCustomObject]@{
-        Maschinenstifte   = [Math]::Round($gruppen["Maschinenstifte"], 2)
-        Kernschrauben     = [Math]::Round($gruppen["Kernschrauben"], 2)
-        Lose_Edelstahl    = [Math]::Round($gruppen["Lose_Edelstahl"], 2)
-        Industrieklammern = [Math]::Round($gruppen["Industrieklammern"], 2)
-        Drahtcoil         = [Math]::Round($gruppen["Drahtcoil"], 2)
-        Streifennaegel_KS = [Math]::Round($gruppen["Streifennaegel_KS"], 2)
-        Papertape         = [Math]::Round($gruppen["Papertape"], 2)
-        CDF_UTC           = [Math]::Round($gruppen["CDF_UTC"], 2)
-        Ankernaegel_Lose  = [Math]::Round($gruppen["Ankernaegel_Lose"], 2)
-        Umpack_Dachpapp   = [Math]::Round($gruppen["Umpack_Dachpapp"], 2)
-        Sonstiges         = [Math]::Round($gruppen["Sonstiges"], 2)
-    }
-    davon_ankernaegel  = [Math]::Round($davonAnker, 2)
-    check_ok           = $checkOk
-    check_diff         = [Math]::Round($checkDiff, 4)
-}
-# Hinweis: top5_kunden wurde ersetzt durch alle_kunden (vollstaendige Liste) + plausi-Objekt
-
-$jsonStr = $jsonObj | ConvertTo-Json -Depth 5 -Compress
-[System.IO.File]::WriteAllText($JSON_OUT, $jsonStr, [System.Text.Encoding]::UTF8)
-Write-Host "[OK] JSON geschrieben: $JSON_OUT" -ForegroundColor Green
-
-Write-Host "=== 05_auftragsbestand.ps1 abgeschlossen ===" -ForegroundColor Cyan
-exit 0
+        Maschinenstifte   = [Math]::Round($gruppen["Maschinenstif
