@@ -1,7 +1,9 @@
 # ============================================================
 # 03_sharepoint_download.ps1
-# Laedt SharePoint-Dateien via MSAL.PS (Refresh-Token auf Disk)
-# Erster Lauf: Device Code Login. Danach: lautlos.
+# Laedt SharePoint-Dateien via Microsoft Graph REST API.
+# Kein MSAL.PS noetig — Refresh-Token wird DPAPI-verschluesselt
+# auf Disk gespeichert. Einmalig per Device Code einloggen,
+# danach ca. 90 Tage lautlos (rolling refresh).
 # ============================================================
 
 $SCRIPTS = $PSScriptRoot
@@ -13,71 +15,54 @@ $SP_FILES = @{
     "Planung_Pressen_NEU.xlsx"       = "https://baussmannfi-my.sharepoint.com/personal/j_rubner_baussmann_de/Documents/AV_NEU/Produktionsplanung%20und%20BDE/Pressen/Planung_Pressen_NEU.xlsx"
 }
 
-$clientId = "14d82eec-204b-4c2f-b7e8-296a70dab67e"
-$tenantId = "baussmannfi.onmicrosoft.com"
-$scopes   = @("https://graph.microsoft.com/Files.Read.All","https://graph.microsoft.com/Sites.Read.All")
+$clientId  = "14d82eec-204b-4c2f-b7e8-296a70dab67e"
+$tenantId  = "baussmannfi.onmicrosoft.com"
+$scopeStr  = "https://graph.microsoft.com/Files.Read.All https://graph.microsoft.com/Sites.Read.All offline_access"
+$TOKEN_URL = "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token"
+$DC_URL    = "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/devicecode"
+$CACHE     = Join-Path $env:LOCALAPPDATA "BCF_Dashboard\rt.bin"
 
-# --- MSAL.PS installieren falls noetig ----------------------
-if (-not (Get-Module -ListAvailable -Name MSAL.PS)) {
-    Write-Host "Installiere MSAL.PS ..." -ForegroundColor Yellow
-    Install-Module MSAL.PS -Scope CurrentUser -Force -AllowClobber -ErrorAction Stop
+# DPAPI verfuegbar machen
+Add-Type -AssemblyName System.Security
+
+function Save-RT([string]$rt) {
+    $dir = Split-Path -Parent $CACHE
+    if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir | Out-Null }
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($rt)
+    $enc   = [System.Security.Cryptography.ProtectedData]::Protect(
+                 $bytes, $null,
+                 [System.Security.Cryptography.DataProtectionScope]::CurrentUser)
+    [System.IO.File]::WriteAllBytes($CACHE, $enc)
 }
-Import-Module MSAL.PS -ErrorAction Stop
-Write-Host "[OK] MSAL.PS geladen." -ForegroundColor Green
 
-# --- Token holen (silent aus Cache, sonst Device Code) ------
-Write-Host "Hole Graph-Token ..."
-$tok = $null
-
-try {
-    $tok = Get-MsalToken -ClientId $clientId -TenantId $tenantId -Scopes $scopes -Silent -ErrorAction Stop
-    Write-Host "[OK] Token aus Cache." -ForegroundColor Green
-} catch {
-    Write-Host "Erster Login erforderlich (einmalig):" -ForegroundColor Yellow
+function Load-RT {
+    if (-not (Test-Path $CACHE)) { return $null }
     try {
-        $tok = Get-MsalToken -ClientId $clientId -TenantId $tenantId -Scopes $scopes -DeviceCode -ErrorAction Stop
-        Write-Host "[OK] Login erfolgreich." -ForegroundColor Green
+        $enc   = [System.IO.File]::ReadAllBytes($CACHE)
+        $bytes = [System.Security.Cryptography.ProtectedData]::Unprotect(
+                     $enc, $null,
+                     [System.Security.Cryptography.DataProtectionScope]::CurrentUser)
+        return [System.Text.Encoding]::UTF8.GetString($bytes)
     } catch {
-        Write-Host "[ERR] Login fehlgeschlagen: $_" -ForegroundColor Red
-        exit 1
+        Write-Host "[WARN] Token-Cache unlesbar, neu einloggen: $_" -ForegroundColor Yellow
+        return $null
     }
 }
 
-if (-not $tok -or -not $tok.AccessToken) {
-    Write-Host "[ERR] Kein Access Token." -ForegroundColor Red
-    exit 1
-}
+# ── Token holen ──────────────────────────────────────────────
+$accessToken = $null
 
-$headers = @{ Authorization = "Bearer $($tok.AccessToken)" }
-
-# --- Dateien laden ------------------------------------------
-$errors = 0
-
-foreach ($entry in $SP_FILES.GetEnumerator()) {
-    $fileName = $entry.Key
-    $webUrl   = $entry.Value
-    $dstFile  = [string](Join-Path $SOURCE $fileName)
-
-    Write-Host "Lade: $fileName ..."
-
+# Versuch 1: Refresh Token aus Cache
+$rt = Load-RT
+if ($rt) {
+    Write-Host "Hole Graph-Token per Refresh ..." -ForegroundColor DarkGray
     try {
-        $bytes    = [System.Text.Encoding]::UTF8.GetBytes($webUrl)
-        $b64      = [Convert]::ToBase64String($bytes).TrimEnd('=').Replace('+','-').Replace('/','_')
-        $shareId  = "u!$b64"
-        $graphUri = "https://graph.microsoft.com/v1.0/shares/$shareId/driveItem/content"
-
-        Invoke-WebRequest -Uri $graphUri -Headers $headers -OutFile $dstFile -ErrorAction Stop
-        Write-Host "[OK]  $fileName" -ForegroundColor Green
+        $resp = Invoke-RestMethod -Method Post -Uri $TOKEN_URL `
+            -ContentType "application/x-www-form-urlencoded" `
+            -Body "client_id=$clientId&scope=$([uri]::EscapeDataString($scopeStr))&refresh_token=$([uri]::EscapeDataString($rt))&grant_type=refresh_token" `
+            -ErrorAction Stop
+        $accessToken = $resp.access_token
+        if ($resp.refresh_token) { Save-RT $resp.refresh_token }   # rolling refresh
+        Write-Host "[OK] Token erneuert (kein Login noetig)." -ForegroundColor Green
     } catch {
-        Write-Host "[ERR] $fileName : $_" -ForegroundColor Red
-        $errors++
-    }
-}
-
-if ($errors -gt 0) {
-    Write-Warning "03_sharepoint_download: $errors Datei(en) fehlgeschlagen."
-    exit 1
-} else {
-    Write-Host "03_sharepoint_download: Alle Dateien geladen." -ForegroundColor Cyan
-    exit 0
-}
+        Write
