@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auftragsbestand — BCF Dashboard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Saira+Condensed:wght@400;600;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0f1419;color:#c9d1d9;font-family:'IBM Plex Sans',sans-serif;font-size:13px;padding:16px}
+  h1{font-family:'Saira Condensed',sans-serif;font-size:18px;font-weight:700;color:#58a6ff;letter-spacing:.5px;margin-bottom:4px}
+  .kpi-row{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+  .kpi{background:#161b22;border:1px solid #21262d;border-radius:6px;padding:10px 16px;flex:1;min-width:140px}
+  .kpi-label{font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:.6px}
+  .kpi-val{font-family:'Saira Condensed',sans-serif;font-size:22px;font-weight:700;color:#e6edf3;margin-top:2px}
+  .kpi-sub{font-size:10px;color:#8b949e;margin-top:1px}
+  .kpi.accent .kpi-val{color:#d29922}
+  .kpi.cyan .kpi-val{color:#39d353}
+  table{width:100%;border-collapse:collapse}
+  thead th{font-family:'Saira Condensed',sans-serif;font-size:11px;font-weight:600;color:#8b949e;text-transform:uppercase;letter-spacing:.5px;padding:6px 10px;border-bottom:1px solid #21262d;text-align:left}
+  thead th.r{text-align:right}
+  tbody tr.gruppe-row{cursor:pointer;transition:background .15s}
+  tbody tr.gruppe-row:hover{background:#1c2128}
+  tbody tr.gruppe-row td{padding:8px 10px;border-bottom:1px solid #161b22}
+  .expand-icon{display:inline-block;width:14px;height:14px;border:1px solid #30363d;border-radius:3px;text-align:center;line-height:12px;font-size:10px;margin-right:6px;color:#58a6ff;flex-shrink:0}
+  .gruppe-name{font-weight:500;color:#e6edf3;display:flex;align-items:center}
+  .bar-wrap{width:120px;height:6px;background:#21262d;border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle}
+  .bar-fill{height:100%;background:#1f6feb;border-radius:3px;transition:width .3s}
+  .val-cell{text-align:right;font-family:'Saira Condensed',sans-serif;font-size:14px;font-weight:600;color:#e6edf3}
+  .pct-cell{text-align:right;font-size:11px;color:#8b949e;width:50px}
+  .detail-row{display:none;background:#0d1117}
+  .detail-row.open{display:table-row}
+  .detail-inner{padding:0 10px 12px 32px;display:flex;gap:24px}
+  .detail-col{flex:1}
+  .detail-col h4{font-family:'Saira Condensed',sans-serif;font-size:11px;font-weight:600;color:#58a6ff;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;border-bottom:1px solid #21262d;padding-bottom:4px}
+  .detail-item{display:flex;justify-content:space-between;align-items:flex-start;padding:4px 0;border-bottom:1px solid #161b22;gap:8px}
+  .detail-item:last-child{border-bottom:none}
+  .item-label{color:#c9d1d9;font-size:11px;flex:1}
+  .item-sub{color:#8b949e;font-size:10px}
+  .item-val{font-family:'Saira Condensed',sans-serif;font-size:12px;font-weight:600;color:#d29922;white-space:nowrap}
+  .anker-badge{display:inline-block;background:#1a3a1a;border:1px solid #39d353;border-radius:3px;padding:1px 6px;font-size:10px;color:#39d353;margin-left:8px}
+  .timestamp{font-size:10px;color:#8b949e;margin-top:12px;text-align:right}
+</style>
+</head>
+<body>
+<h1>Auftragsbestand — Produktgruppen</h1>
+<p style="color:#8b949e;font-size:11px;margin-bottom:14px">Stand: 01.07.2026 · Echtdaten</p>
+
+<div class="kpi-row">
+  <div class="kpi accent">
+    <div class="kpi-label">Gesamtbestand</div>
+    <div class="kpi-val">4.995.670 €</div>
+    <div class="kpi-sub">1.234 Positionen · Max.AuftrNr 2.157.000</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Tageseingang</div>
+    <div class="kpi-val">— €</div>
+    <div class="kpi-sub">Log startet ab morgen</div>
+  </div>
+  <div class="kpi cyan">
+    <div class="kpi-label">Davon Ankernägel</div>
+    <div class="kpi-val">462.941 €</div>
+    <div class="kpi-sub">9,3 % des Gesamtbestands</div>
+  </div>
+</div>
+
+<table>
+<thead>
+  <tr>
+    <th>Gruppe</th>
+    <th style="width:130px">Anteil</th>
+    <th class="r">Wert (€)</th>
+    <th class="r" style="width:50px">%</th>
+  </tr>
+</thead>
+<tbody id="tbody"></tbody>
+</table>
+<div class="timestamp">BCF Dashboard · bcfdashboards.github.io/AV_DASHBOARD</div>
+
+<script>
+const data = [
+  {name:"CDF und UTC",summe:1398727.81,anteil:28.0,
+   top_artikel:[
+     {nr:"50-310045-610",text:"923891 3,1X45 Ring ALU Tile Nail 1.0M",wert:119070},
+     {nr:"50-400040-101",text:"BC 40/40 Ring anchor 12µm 1.6M",wert:118368},
+     {nr:"50-310038-610",text:"923890 3,1X38 Ring ALU Tile Nail 1.0M",wert:111510}
+   ],
+   top_kunden:[
+     {name:"KYOCERA UNIMERCO FASTENING A/S",wert:302048.12},
+     {name:"ITW Construction Products",wert:246490.65},
+     {name:"ITW Construction P APS DK",wert:238140.20}
+   ]},
+  {name:"Papertape",summe:962441.97,anteil:19.3,
+   top_artikel:[
+     {nr:"45-310090-005",text:"DH34° 3,1x90 mm Stahl Rg G12 2.2M",wert:70389.35},
+     {nr:"45-280075-002",text:"MWK 34° 2,8x75 mm Ring 2.2M",wert:63187.50},
+     {nr:"45-280065-005",text:"DH34° 2,8x65 mm Stahl Rg G12 2.2M",wert:60305}
+   ],
+   top_kunden:[
+     {name:"Würth",wert:357660.11},
+     {name:"TTI-EMEA",wert:268167.90},
+     {name:"ITW / Venlo",wert:175281.40}
+   ]},
+  {name:"Streifennägel Kunststoff",summe:604749.57,anteil:12.1,
+   top_artikel:[
+     {nr:"42-400062-006",text:"RB 4,0x60 Ring G12 34° 2.0M ETA",wert:48503},
+     {nr:"40-380120-003",text:"3,8/4,2x120 mm Schraub 1.4M",wert:41958},
+     {nr:"40-280026-500",text:"2,8/3,1x26 Ring V2A Haften 0.9M",wert:33957}
+   ],
+   top_kunden:[
+     {name:"Rotho Blaas srl (GmbH)",wert:83785.40},
+     {name:"ITW / Venlo",wert:81645.39},
+     {name:"Würth",wert:61422.62}
+   ]},
+  {name:"Kernschrauben",summe:564842.38,anteil:11.3,
+   top_artikel:[
+     {nr:"03-350070-218",text:"EWB Kernschraube 4,5X70 mm PZ2TK 3.0M",wert:120225.60},
+     {nr:"03-380100-218",text:"EWB Kernschraube 5,5X100 mm PZ2TK 1.5M",wert:105494.40},
+     {nr:"03-380050-217",text:"FW Kernschraube 5,5X50 mm PZ3D 3.3M",wert:90723.60}
+   ],
+   top_kunden:[
+     {name:"Eisenwerk Brühl",wert:225720},
+     {name:"Fritz Winter Eisengießerei",wert:183891.48},
+     {name:"Daimler,Mannheim",wert:90951.60}
+   ]},
+  {name:"Drahtcoil",summe:532381.45,anteil:10.7,
+   top_artikel:[
+     {nr:"30-250065-002",text:"2,5/2,8x64 mm Ring 7.2M",wert:43064.50},
+     {nr:"30-280065-302",text:"FAC 2,8/3,2x65 NS SD TX20 G12 5.6M",wert:38704.05},
+     {nr:"30-250065-012",text:"2,5/2,8x64 mm Ring JC900 7.2M",wert:19800}
+   ],
+   top_kunden:[
+     {name:"Df2 Befestigungstechnik AG",wert:80032.60},
+     {name:"ITW / Venlo",wert:79263.82},
+     {name:"First Fix",wert:77438.50}
+   ]},
+  {name:"Industrieklammern",summe:298849.01,anteil:6.0,
+   top_artikel:[
+     {nr:"20-069010-500",text:"111 042 01",wert:32736},
+     {nr:"20-180063-740",text:"Q25BXBB-ETA 5.0M",wert:20196},
+     {nr:"20-180050-740",text:"Q21BXBB-ETA 5.0M",wert:19404}
+   ],
+   top_kunden:[
+     {name:"KYOCERA Senco Europe",wert:157686.27},
+     {name:"Schenker Storen AG",wert:32736},
+     {name:"Haberkorn",wert:32726.75}
+   ]},
+  {name:"Umpack & Dachpappstifte",summe:177696.55,anteil:3.6,
+   top_artikel:[
+     {nr:"36-300025-502",text:"MWK 3,0x25 Roofingnail Ring V2A 2.16M",wert:17755.46},
+     {nr:"27-160050-551",text:"ESSVE Brads F16/50 1.4401 2.5M",wert:15796.80},
+     {nr:"27-180050-534",text:"MWK 15GA Nails 50mm V2A 34° 2.5M",wert:7905.60}
+   ],
+   top_kunden:[
+     {name:"TTI-EMEA",wert:129119.71},
+     {name:"ESSVE AB SE",wert:31420.80},
+     {name:"Tricor Packaging & Logistics AG",wert:7875}
+   ]},
+  {name:"Maschinenstifte",summe:196847.19,anteil:3.9,
+   top_artikel:[
+     {nr:"01-340090-112",text:"3,4/3,6x90 Ring K-Ø 8,4 PAL-KART EPAL",wert:44377.38},
+     {nr:"01-340065-127",text:"3,4x65 mm Ring BULK G12Y H-8,0 25Kg",wert:24960},
+     {nr:"01-340070-112",text:"3,4/3,6x70 Ring K-Ø 8,4 PAL-KART EPAL",wert:19818.38}
+   ],
+   top_kunden:[
+     {name:"Rademacher",wert:52093.40},
+     {name:"First Fix",wert:44160},
+     {name:"Tricor Packaging & Logistics AG",wert:30564.23}
+   ]},
+  {name:"Sonstiges",summe:129977.06,anteil:2.6,
+   top_artikel:[
+     {nr:"55-260025-313",text:"MAKITA-PIN 2,6x25 ball. Spitze vg mnk",wert:19440},
+     {nr:"51-420051-850",text:"GN 4,2x51 mm PH2 GALV5 4.5M",wert:16110.72},
+     {nr:"76-OK165FC",text:"553416 FC165 Single Fuel Cell",wert:14292}
+   ],
+   top_kunden:[
+     {name:"OK Befestigung",wert:55152},
+     {name:"ITW Construction P APS DK",wert:23006.31},
+     {name:"ESSVE AB SE",wert:14937}
+   ]},
+  {name:"Ankernägel Lose",summe:70926.75,anteil:1.4,
+   top_artikel:[
+     {nr:"62-400060-206",text:"RB 4,0X60 G12 Bulk 0.25M ETA-2022/0002",wert:23660},
+     {nr:"62-400060-221",text:"4,0X60 G12 lose 0.25M/3.0M ETA",wert:17700},
+     {nr:"62-400040-221",text:"4,0X40 G12 lose 0.25M/3.0M ETA",wert:13500}
+   ],
+   top_kunden:[
+     {name:"Rotho Blaas srl (GmbH)",wert:36222.75},
+     {name:"Würth",wert:31200},
+     {name:"SOLTECH IT",wert:1776}
+   ]},
+  {name:"Lose Teile Edelstahl",summe:58230,anteil:1.2,
+   top_artikel:[
+     {nr:"09-250045-551",text:"XL 2,5x45 mm Ring V4A Liko R60",wert:31800},
+     {nr:"09-250050-551",text:"XL 2,5x50 mm Ring V4A Liko R60",wert:15900},
+     {nr:"09-280032-550",text:"XL 2,8x32 mm Ring V4A Flachkopf Ø6,50",wert:4770}
+   ],
+   top_kunden:[
+     {name:"XL-Panel BV",wert:58230}
+   ]}
+];
+
+const fmt = v => v.toLocaleString('de-DE',{minimumFractionDigits:0,maximumFractionDigits:0}) + ' €';
+const tbody = document.getElementById('tbody');
+const maxVal = data[0].summe;
+
+data.forEach((g) => {
+  const tr = document.createElement('tr');
+  tr.className = 'gruppe-row';
+  const barW = Math.round(g.summe/maxVal*100);
+  const ankerBadge = ["CDF und UTC","Streifennägel Kunststoff","Ankernägel Lose"].includes(g.name)
+    ? '<span class="anker-badge">Ankernägel</span>' : '';
+  tr.innerHTML = `
+    <td><span class="gruppe-name">
+      <span class="expand-icon">+</span>${g.name}${ankerBadge}
+    </span></td>
+    <td><div class="bar-wrap"><div class="bar-fill" style="width:${barW}%"></div></div></td>
+    <td class="val-cell">${fmt(g.summe)}</td>
+    <td class="pct-cell">${g.anteil}%</td>`;
+
+  const td2 = document.createElement('tr');
+  td2.className = 'detail-row';
+  const cell = document.createElement('td');
+  cell.colSpan = 4;
+  const inner = document.createElement('div');
+  inner.className = 'detail-inner';
+
+  const artCol = document.createElement('div');
+  artCol.className = 'detail-col';
+  artCol.innerHTML = '<h4>Top Artikel</h4>' + g.top_artikel.map(a =>
+    `<div class="detail-item">
+      <div><div class="item-label">${a.nr}</div><div class="item-sub">${a.text}</div></div>
+      <div class="item-val">${fmt(a.wert)}</div>
+    </div>`).join('');
+
+  const kdCol = document.createElement('div');
+  kdCol.className = 'detail-col';
+  kdCol.innerHTML = '<h4>Top Kunden</h4>' + g.top_kunden.map(k =>
+    `<div class="detail-item">
+      <div class="item-label">${k.name}</div>
+      <div class="item-val">${fmt(k.wert)}</div>
+    </div>`).join('');
+
+  inner.appendChild(artCol);
+  inner.appendChild(kdCol);
+  cell.appendChild(inner);
+  td2.appendChild(cell);
+
+  tr.addEventListener('click', () => {
+    const open = td2.classList.toggle('open');
+    tr.querySelector('.expand-icon').textContent = open ? '−' : '+';
+  });
+
+  tbody.appendChild(tr);
+  tbody.appendChild(td2);
+});
+</script>
+</body>
+</html>
