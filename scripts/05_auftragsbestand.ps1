@@ -65,11 +65,13 @@ function Test-IsAnkernagel([string]$artnr) {
 }
 
 function Get-KonsolidierterKunde([string]$kunde) {
-    if ($kunde -match "(?i)w[uü]rth") { return "Wuerth" }
-    if ($kunde -match "(?i)ITW")      { return "ITW" }
-    if ($kunde -match "(?i)kyocera")  { return "Kyocera" }
-    if ($kunde -match "(?i)hilti")    { return "Hilti" }
-    if ($kunde -match "(?i)TTI")      { return "Milwaukee" }
+    if ([string]::IsNullOrWhiteSpace($kunde)) { return $kunde }
+    $kl = $kunde.ToLower()
+    if ($kl -match "w.rth|wuerth")   { return "Wuerth" }
+    if ($kl -match "\bitw\b")         { return "ITW" }
+    if ($kl -match "kyocera")         { return "Kyocera" }
+    if ($kl -match "hilti")           { return "Hilti" }
+    if ($kl -match "tti|milwaukee")   { return "Milwaukee" }
     return $kunde
 }
 
@@ -334,5 +336,3 @@ $logZeile = [PSCustomObject]@{
     Ankernaegel_Lose_EUR  = [Math]::Round($gruppen["Ankernaegel_Lose"], 2)
     Umpack_Dachpapp_EUR   = [Math]::Round($gruppen["Umpack_Dachpapp"], 2)
     Sonstiges_EUR         = [Math]::Round($gruppen["Sonstiges"], 2)
-    Davon_Ankernaegel_EUR = [Math]::Round($davonAnker, 2)
-    Gruppen_Summe_EUR     = [M
