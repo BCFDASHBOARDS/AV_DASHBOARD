@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Auftragsbestand — BCF Dashboard</title>
 <style>
-/* ============================================================
-   TOKENS
-   ============================================================ */
+/* ============================================================ TOKENS */
 :root {
   --bg:        #f5f6f8;
   --surface:   #ffffff;
@@ -29,24 +27,51 @@
   --shadow:    0 1px 4px rgba(0,0,0,.08);
   --r:         8px;
 }
-
-/* ============================================================
-   BASE
-   ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 14px; }
 body {
   background: var(--bg);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-  padding: 20px 24px 40px;
+  padding: 0 0 40px;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
-.page-header { margin-bottom: 20px; }
+/* ============================================================ TABS */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-bar a {
+  display: inline-block;
+  padding: 14px 20px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sec);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color .15s, border-color .15s;
+}
+.tab-bar a:hover { color: var(--text); }
+.tab-bar a.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+/* ============================================================ PAGE CONTENT */
+.page-content { padding: 20px 24px 0; }
+
+/* ============================================================ HEADER */
+.page-header { margin-bottom: 16px; }
 .page-header h1 {
   font-size: 20px;
   font-weight: 700;
@@ -59,13 +84,11 @@ body {
   margin-top: 3px;
 }
 
-/* ============================================================
-   KPI ROW
-   ============================================================ */
+/* ============================================================ KPI ROW */
 .kpi-row {
   display: flex;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   flex-wrap: wrap;
 }
 .kpi {
@@ -101,9 +124,104 @@ body {
 .kpi.green-k { border-top: 3px solid #16a34a; }
 .kpi.green-k .kpi-val { color: var(--green); }
 
-/* ============================================================
-   TABLE WRAPPER
-   ============================================================ */
+/* ============================================================ CUSTOMER CARD */
+.customer-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.customer-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid var(--border-sub);
+  background: #f8f9fb;
+  transition: background .12s;
+}
+.customer-card-header:hover { background: var(--accent-lt); }
+.customer-card-header h3 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-sec);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.customer-card-header .toggle-btn {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--accent);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  transition: background .12s, color .12s;
+  flex-shrink: 0;
+}
+.customer-card.open .toggle-btn {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* customer rows */
+.customer-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 16px;
+  border-bottom: 1px solid var(--border-sub);
+}
+.customer-row:last-child { border-bottom: none; }
+.cust-rank {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-sec);
+  width: 18px;
+  flex-shrink: 0;
+  text-align: center;
+}
+.cust-rank.top { color: var(--accent); }
+.cust-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cust-bar-wrap {
+  width: 100px;
+  height: 6px;
+  background: var(--bar-bg);
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.cust-bar-fill { height: 100%; background: var(--bar); border-radius: 3px; }
+.cust-val {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  text-align: right;
+  min-width: 90px;
+}
+
+/* hidden extra rows */
+.customer-more { display: none; }
+.customer-card.open .customer-more { display: block; }
+
+/* ============================================================ TABLE CARD */
 .table-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -111,10 +229,6 @@ body {
   overflow: hidden;
   box-shadow: var(--shadow);
 }
-
-/* ============================================================
-   TABLE
-   ============================================================ */
 table { width: 100%; border-collapse: collapse; }
 thead tr { background: #f8f9fb; border-bottom: 1px solid var(--border); }
 thead th {
@@ -128,8 +242,6 @@ thead th {
   white-space: nowrap;
 }
 thead th.r { text-align: right; }
-
-/* gruppe row */
 tbody tr.gruppe-row {
   cursor: pointer;
   border-bottom: 1px solid var(--border-sub);
@@ -137,8 +249,6 @@ tbody tr.gruppe-row {
 }
 tbody tr.gruppe-row:hover { background: var(--accent-lt); }
 tbody tr.gruppe-row td { padding: 10px 14px; }
-
-/* expand icon */
 .expand-icon {
   display: inline-flex;
   align-items: center;
@@ -155,48 +265,12 @@ tbody tr.gruppe-row td { padding: 10px 14px; }
   transition: background .12s, color .12s;
   font-weight: 700;
 }
-.gruppe-row.open .expand-icon {
-  background: var(--accent);
-  color: #fff;
-}
-
-/* gruppe name cell */
-.gruppe-name {
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-  font-size: 13px;
-  color: var(--text);
-}
-
-/* bar */
-.bar-wrap {
-  width: 110px;
-  height: 6px;
-  background: var(--bar-bg);
-  border-radius: 3px;
-  overflow: hidden;
-  display: inline-block;
-  vertical-align: middle;
-}
+.gruppe-row.open .expand-icon { background: var(--accent); color: #fff; }
+.gruppe-name { display: flex; align-items: center; font-weight: 600; font-size: 13px; color: var(--text); }
+.bar-wrap { width: 110px; height: 6px; background: var(--bar-bg); border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; }
 .bar-fill { height: 100%; background: var(--bar); border-radius: 3px; }
-
-/* value cells */
-.val-cell {
-  text-align: right;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-}
-.pct-cell {
-  text-align: right;
-  font-size: 11px;
-  color: var(--text-sec);
-  width: 46px;
-}
-
-/* badge */
+.val-cell { text-align: right; font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+.pct-cell { text-align: right; font-size: 11px; color: var(--text-sec); width: 46px; }
 .anker-badge {
   display: inline-block;
   background: var(--badge-bg);
@@ -209,22 +283,10 @@ tbody tr.gruppe-row td { padding: 10px 14px; }
   margin-left: 8px;
   white-space: nowrap;
 }
-
-/* ============================================================
-   DETAIL ROW
-   ============================================================ */
 tbody tr.detail-row { display: none; }
 tbody tr.detail-row.open { display: table-row; }
-.detail-row td {
-  background: #fafbfc;
-  border-bottom: 1px solid var(--border);
-  padding: 0 14px 14px 42px;
-}
-.detail-inner {
-  display: flex;
-  gap: 20px;
-  padding-top: 12px;
-}
+.detail-row td { background: #fafbfc; border-bottom: 1px solid var(--border); padding: 0 14px 14px 42px; }
+.detail-inner { display: flex; gap: 20px; padding-top: 12px; }
 .detail-col { flex: 1; min-width: 0; }
 .detail-col h4 {
   font-size: 10px;
@@ -236,312 +298,105 @@ tbody tr.detail-row.open { display: table-row; }
   padding-bottom: 5px;
   border-bottom: 1px solid var(--border);
 }
-
-/* article item: text first, number below */
-.detail-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 5px 0;
-  border-bottom: 1px solid var(--border-sub);
-  gap: 12px;
-}
+.detail-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 5px 0; border-bottom: 1px solid var(--border-sub); gap: 12px; }
 .detail-item:last-child { border-bottom: none; }
 .item-text  { font-size: 12px; font-weight: 500; color: var(--text); }
 .item-nr    { font-size: 10px; color: var(--text-sec); margin-top: 1px; font-family: 'SF Mono', 'Consolas', monospace; }
 .item-val   { font-size: 12px; font-weight: 700; color: var(--gold); white-space: nowrap; flex-shrink: 0; }
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
-.footer {
-  font-size: 11px;
-  color: var(--text-sec);
-  margin-top: 14px;
-  text-align: right;
-}
+/* ============================================================ FOOTER */
+.footer { font-size: 11px; color: var(--text-sec); margin-top: 14px; text-align: right; padding: 0 24px; }
 
-/* ============================================================
-   RESPONSIVE — iPad (768–1100px)
-   ============================================================ */
+/* ============================================================ RESPONSIVE — iPad */
 @media (max-width: 1100px) and (min-width: 600px) {
-  body { padding: 16px 16px 32px; }
+  .page-content { padding: 16px 16px 0; }
+  .tab-bar { padding: 0 16px; }
   .kpi-val { font-size: 19px; }
   .bar-wrap { width: 80px; }
+  .cust-bar-wrap { width: 70px; }
   .detail-inner { gap: 14px; }
   .item-text { font-size: 11px; }
 }
 
-/* ============================================================
-   RESPONSIVE — Mobile (< 600px)
-   ============================================================ */
+/* ============================================================ RESPONSIVE — Mobile */
 @media (max-width: 599px) {
   html { font-size: 15px; }
-  body { padding: 12px 12px 32px; }
-
+  .page-content { padding: 12px 12px 0; }
+  .tab-bar { padding: 0 12px; }
+  .tab-bar a { padding: 12px 14px 10px; font-size: 13px; }
   .page-header h1 { font-size: 17px; }
-
-  /* KPI: 2 per row */
   .kpi-row { gap: 8px; }
   .kpi { min-width: calc(50% - 4px); padding: 10px 12px; }
   .kpi-val { font-size: 17px; }
-
-  /* Hide bar column on mobile */
   thead th.bar-col, td.bar-col { display: none; }
-
-  /* Bigger tap target */
+  .cust-bar-wrap { display: none; }
   tbody tr.gruppe-row td { padding: 12px 10px; }
-
   .gruppe-name { font-size: 13px; }
   .expand-icon { width: 22px; height: 22px; font-size: 14px; }
-
-  /* Detail: stack columns */
   .detail-row td { padding: 0 10px 14px 10px; }
   .detail-inner { flex-direction: column; gap: 14px; }
   .detail-col { min-width: 100%; }
-
   .item-text { font-size: 12px; }
   .item-val  { font-size: 13px; }
-
   .val-cell { font-size: 12px; }
   .pct-cell { display: none; }
+  .footer { padding: 0 12px; }
 }
 </style>
 </head>
 <body>
 
-<div class="page-header">
-  <h1>Auftragsbestand — Produktgruppen</h1>
-  <div class="sub">Stand: 01.07.2026 &middot; Echtdaten &middot; BCF Dashboard</div>
-</div>
+<!-- TAB NAVIGATION -->
+<nav class="tab-bar">
+  <a href="auftragsbestand.html" class="active">Auftragsbestand</a>
+  <a href="presserei.html">Presserei</a>
+</nav>
 
-<div class="kpi-row">
-  <div class="kpi accent">
-    <div class="kpi-label">Gesamtbestand</div>
-    <div class="kpi-val">4.995.670 &euro;</div>
-    <div class="kpi-sub">1.234 Positionen &middot; Max.AuftrNr 2.157.000</div>
+<div class="page-content">
+
+  <div class="page-header">
+    <h1>Auftragsbestand</h1>
+    <div class="sub">Stand: 01.07.2026 &middot; Echtdaten &middot; BCF Dashboard</div>
   </div>
-  <div class="kpi">
-    <div class="kpi-label">Tageseingang</div>
-    <div class="kpi-val">&#8212; &euro;</div>
-    <div class="kpi-sub">Log startet ab morgen</div>
+
+  <!-- KPI ROW 1 -->
+  <div class="kpi-row">
+    <div class="kpi accent">
+      <div class="kpi-label">Gesamtbestand</div>
+      <div class="kpi-val">4.995.670 &euro;</div>
+      <div class="kpi-sub">1.234 Positionen &middot; Max.AuftrNr 2.157.000</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Tageseingang</div>
+      <div class="kpi-val">&#8212; &euro;</div>
+      <div class="kpi-sub">Log startet ab morgen</div>
+    </div>
   </div>
-  <div class="kpi green-k">
-    <div class="kpi-label">Davon Ankern&auml;gel</div>
-    <div class="kpi-val">462.941 &euro;</div>
-    <div class="kpi-sub">9,3 % des Gesamtbestands</div>
+
+  <!-- KEY ACCOUNTS WIDGET -->
+  <div class="customer-card" id="custCard">
+    <div class="customer-card-header" onclick="toggleCust()">
+      <h3>Key Accounts (konsolidiert)</h3>
+      <div class="toggle-btn" id="custToggleBtn">+</div>
+    </div>
+    <div id="custTopRows"></div>
+    <div class="customer-more" id="custMoreRows"></div>
   </div>
-</div>
 
-<div class="table-card">
-<table>
-<thead>
-  <tr>
-    <th>Gruppe</th>
-    <th class="bar-col" style="width:120px">Anteil</th>
-    <th class="r">Wert (&euro;)</th>
-    <th class="r pct-cell" style="width:46px">%</th>
-  </tr>
-</thead>
-<tbody id="tbody"></tbody>
-</table>
-</div>
+  <!-- KPI ROW 2 -->
+  <div class="kpi-row">
+    <div class="kpi green-k">
+      <div class="kpi-label">Davon Ankern&auml;gel</div>
+      <div class="kpi-val">462.941 &euro;</div>
+      <div class="kpi-sub">9,3 % des Gesamtbestands</div>
+    </div>
+  </div>
 
-<div class="footer">bcfdashboards.github.io/AV_DASHBOARD &mdash; t&auml;glich aktualisiert</div>
-
-<script>
-const data = [
-  {name:"CDF und UTC",summe:1398727.81,anteil:28.0,
-   top_artikel:[
-     {nr:"50-310045-610",text:"923891 3,1X45 Ring ALU Tile Nail 1.0M",wert:119070},
-     {nr:"50-400040-101",text:"BC 40/40 Ring anchor 12µm 1.6M",wert:118368},
-     {nr:"50-310038-610",text:"923890 3,1X38 Ring ALU Tile Nail 1.0M",wert:111510}
-   ],
-   top_kunden:[
-     {name:"KYOCERA UNIMERCO FASTENING A/S",wert:302048.12},
-     {name:"ITW Construction Products",wert:246490.65},
-     {name:"ITW Construction P APS DK",wert:238140.20}
-   ]},
-  {name:"Papertape",summe:962441.97,anteil:19.3,
-   top_artikel:[
-     {nr:"45-310090-005",text:"DH34° 3,1x90 mm Stahl Rg G12 2.2M",wert:70389.35},
-     {nr:"45-280075-002",text:"MWK 34° 2,8x75 mm Ring 2.2M",wert:63187.50},
-     {nr:"45-280065-005",text:"DH34° 2,8x65 mm Stahl Rg G12 2.2M",wert:60305}
-   ],
-   top_kunden:[
-     {name:"Würth",wert:357660.11},
-     {name:"TTI-EMEA",wert:268167.90},
-     {name:"ITW / Venlo",wert:175281.40}
-   ]},
-  {name:"Streifennägel Kunststoff",summe:604749.57,anteil:12.1,
-   top_artikel:[
-     {nr:"42-400062-006",text:"RB 4,0x60 Ring G12 34° 2.0M ETA",wert:48503},
-     {nr:"40-380120-003",text:"3,8/4,2x120 mm Schraub 1.4M",wert:41958},
-     {nr:"40-280026-500",text:"2,8/3,1x26 Ring V2A Haften 0.9M",wert:33957}
-   ],
-   top_kunden:[
-     {name:"Rotho Blaas srl (GmbH)",wert:83785.40},
-     {name:"ITW / Venlo",wert:81645.39},
-     {name:"Würth",wert:61422.62}
-   ]},
-  {name:"Kernschrauben",summe:564842.38,anteil:11.3,
-   top_artikel:[
-     {nr:"03-350070-218",text:"EWB Kernschraube 4,5X70 mm PZ2TK 3.0M",wert:120225.60},
-     {nr:"03-380100-218",text:"EWB Kernschraube 5,5X100 mm PZ2TK 1.5M",wert:105494.40},
-     {nr:"03-380050-217",text:"FW Kernschraube 5,5X50 mm PZ3D 3.3M",wert:90723.60}
-   ],
-   top_kunden:[
-     {name:"Eisenwerk Brühl",wert:225720},
-     {name:"Fritz Winter Eisengießerei",wert:183891.48},
-     {name:"Daimler, Mannheim",wert:90951.60}
-   ]},
-  {name:"Drahtcoil",summe:532381.45,anteil:10.7,
-   top_artikel:[
-     {nr:"30-250065-002",text:"2,5/2,8x64 mm Ring 7.2M",wert:43064.50},
-     {nr:"30-280065-302",text:"FAC 2,8/3,2x65 NS SD TX20 G12 5.6M",wert:38704.05},
-     {nr:"30-250065-012",text:"2,5/2,8x64 mm Ring JC900 7.2M",wert:19800}
-   ],
-   top_kunden:[
-     {name:"Df2 Befestigungstechnik AG",wert:80032.60},
-     {name:"ITW / Venlo",wert:79263.82},
-     {name:"First Fix",wert:77438.50}
-   ]},
-  {name:"Industrieklammern",summe:298849.01,anteil:6.0,
-   top_artikel:[
-     {nr:"20-069010-500",text:"111 042 01",wert:32736},
-     {nr:"20-180063-740",text:"Q25BXBB-ETA 5.0M",wert:20196},
-     {nr:"20-180050-740",text:"Q21BXBB-ETA 5.0M",wert:19404}
-   ],
-   top_kunden:[
-     {name:"KYOCERA Senco Europe",wert:157686.27},
-     {name:"Schenker Storen AG",wert:32736},
-     {name:"Haberkorn",wert:32726.75}
-   ]},
-  {name:"Umpack & Dachpappstifte",summe:177696.55,anteil:3.6,
-   top_artikel:[
-     {nr:"36-300025-502",text:"MWK 3,0x25 Roofingnail Ring V2A 2.16M",wert:17755.46},
-     {nr:"27-160050-551",text:"ESSVE Brads F16/50 1.4401 2.5M",wert:15796.80},
-     {nr:"27-180050-534",text:"MWK 15GA Nails 50mm V2A 34° 2.5M",wert:7905.60}
-   ],
-   top_kunden:[
-     {name:"TTI-EMEA",wert:129119.71},
-     {name:"ESSVE AB SE",wert:31420.80},
-     {name:"Tricor Packaging & Logistics AG",wert:7875}
-   ]},
-  {name:"Maschinenstifte",summe:196847.19,anteil:3.9,
-   top_artikel:[
-     {nr:"01-340090-112",text:"3,4/3,6x90 Ring K-Ø 8,4 PAL-KART EPAL",wert:44377.38},
-     {nr:"01-340065-127",text:"3,4x65 mm Ring BULK G12Y H-8,0 25Kg",wert:24960},
-     {nr:"01-340070-112",text:"3,4/3,6x70 Ring K-Ø 8,4 PAL-KART EPAL",wert:19818.38}
-   ],
-   top_kunden:[
-     {name:"Rademacher",wert:52093.40},
-     {name:"First Fix",wert:44160},
-     {name:"Tricor Packaging & Logistics AG",wert:30564.23}
-   ]},
-  {name:"Sonstiges",summe:129977.06,anteil:2.6,
-   top_artikel:[
-     {nr:"55-260025-313",text:"MAKITA-PIN 2,6x25 ball. Spitze vg mnk",wert:19440},
-     {nr:"51-420051-850",text:"GN 4,2x51 mm PH2 GALV5 4.5M",wert:16110.72},
-     {nr:"76-OK165FC",text:"553416 FC165 Single Fuel Cell",wert:14292}
-   ],
-   top_kunden:[
-     {name:"OK Befestigung",wert:55152},
-     {name:"ITW Construction P APS DK",wert:23006.31},
-     {name:"ESSVE AB SE",wert:14937}
-   ]},
-  {name:"Ankernägel Lose",summe:70926.75,anteil:1.4,
-   top_artikel:[
-     {nr:"62-400060-206",text:"RB 4,0X60 G12 Bulk 0.25M ETA-2022/0002",wert:23660},
-     {nr:"62-400060-221",text:"4,0X60 G12 lose 0.25M/3.0M ETA",wert:17700},
-     {nr:"62-400040-221",text:"4,0X40 G12 lose 0.25M/3.0M ETA",wert:13500}
-   ],
-   top_kunden:[
-     {name:"Rotho Blaas srl (GmbH)",wert:36222.75},
-     {name:"Würth",wert:31200},
-     {name:"SOLTECH IT",wert:1776}
-   ]},
-  {name:"Lose Teile Edelstahl",summe:58230,anteil:1.2,
-   top_artikel:[
-     {nr:"09-250045-551",text:"XL 2,5x45 mm Ring V4A Liko R60",wert:31800},
-     {nr:"09-250050-551",text:"XL 2,5x50 mm Ring V4A Liko R60",wert:15900},
-     {nr:"09-280032-550",text:"XL 2,8x32 mm Ring V4A Flachkopf Ø6,50",wert:4770}
-   ],
-   top_kunden:[
-     {name:"XL-Panel BV",wert:58230}
-   ]}
-];
-
-const ankerGruppen = new Set(["CDF und UTC","Streifennägel Kunststoff","Ankernägel Lose"]);
-const fmt = v => v.toLocaleString('de-DE',{minimumFractionDigits:0,maximumFractionDigits:0}) + ' €';
-const tbody = document.getElementById('tbody');
-const maxVal = data[0].summe;
-
-data.forEach(g => {
-  // --- Gruppe row ---
-  const tr = document.createElement('tr');
-  tr.className = 'gruppe-row';
-  const barW = Math.round(g.summe / maxVal * 100);
-  const badge = ankerGruppen.has(g.name)
-    ? '<span class="anker-badge">Ankernägel</span>' : '';
-
-  tr.innerHTML =
-    '<td><span class="gruppe-name">' +
-      '<span class="expand-icon">+</span>' + g.name + badge +
-    '</span></td>' +
-    '<td class="bar-col"><div class="bar-wrap"><div class="bar-fill" style="width:' + barW + '%"></div></div></td>' +
-    '<td class="val-cell">' + fmt(g.summe) + '</td>' +
-    '<td class="pct-cell r">' + g.anteil + '%</td>';
-
-  // --- Detail row ---
-  const dr = document.createElement('tr');
-  dr.className = 'detail-row';
-  const td = document.createElement('td');
-  td.colSpan = 4;
-
-  const inner = document.createElement('div');
-  inner.className = 'detail-inner';
-
-  // Artikel column — TEXT first, Nr below
-  const artCol = document.createElement('div');
-  artCol.className = 'detail-col';
-  artCol.innerHTML = '<h4>Top Artikel</h4>' +
-    g.top_artikel.map(a =>
-      '<div class="detail-item">' +
-        '<div>' +
-          '<div class="item-text">' + a.text + '</div>' +
-          '<div class="item-nr">' + a.nr + '</div>' +
-        '</div>' +
-        '<div class="item-val">' + fmt(a.wert) + '</div>' +
-      '</div>'
-    ).join('');
-
-  // Kunden column
-  const kdCol = document.createElement('div');
-  kdCol.className = 'detail-col';
-  kdCol.innerHTML = '<h4>Top Kunden</h4>' +
-    g.top_kunden.map(k =>
-      '<div class="detail-item">' +
-        '<div class="item-text">' + k.name + '</div>' +
-        '<div class="item-val">' + fmt(k.wert) + '</div>' +
-      '</div>'
-    ).join('');
-
-  inner.appendChild(artCol);
-  inner.appendChild(kdCol);
-  td.appendChild(inner);
-  dr.appendChild(td);
-
-  // Toggle
-  tr.addEventListener('click', () => {
-    const isOpen = dr.classList.toggle('open');
-    tr.classList.toggle('open', isOpen);
-    tr.querySelector('.expand-icon').textContent = isOpen ? '−' : '+';
-  });
-
-  tbody.appendChild(tr);
-  tbody.appendChild(dr);
-});
-</script>
-</body>
-</html>
+  <!-- ARTIKELGRUPPEN TABLE -->
+  <div class="table-card">
+  <table>
+  <thead>
+    <tr>
+      <th>Gruppe</th>
+      <th class="bar-col" style="width:120px">Anteil</th>
+      <th class="r">Wert (&
