@@ -110,4 +110,65 @@ try {
             & $s5 2>&1 | Out-String -Stream | ForEach-Object { Log "  $_" }
             if ($LASTEXITCODE -ne 0) { throw "Exit-Code $LASTEXITCODE" }
             Log "[OK] Auftragsbestand Extraktion" "Green"
-        } catc
+        } catch {
+            Log "[ERR] Auftragsbestand Extraktion: $_" "Red"
+            $failed += "Auftragsbestand Extraktion"
+        }
+    } else { Log "[SKIP] 05_auftragsbestand.ps1 nicht gefunden" "DarkGray" }
+
+    # -- GitHub Push via Plumbing ----------------------------------
+    # Plumbing-Methode: umgeht lokale Branch-Divergenz, kein git add/commit
+    # Pushed immer auf Basis des aktuellen Remote-HEAD
+    Log "--- GitHub Push ---" "Yellow"
+    $dashDir = Join-Path $BASE "docs"
+    $tmpIdx  = [System.IO.Path]::GetTempFileName()
+    try {
+        # JSON-Daten nach docs/_data kopieren
+        $dataSrc = Join-Path $BASE "_data"
+        $dataDst = Join-Path $dashDir "_data"
+        if (-not (Test-Path $dataDst)) { New-Item -ItemType Directory -Path $dataDst | Out-Null }
+        Copy-Item -Path "$dataSrc\*" -Destination $dataDst -Recurse -Force
+        Log "  _data nach docs/_data kopiert" "DarkGray"
+
+        $env:GIT_INDEX_FILE = $tmpIdx
+        Push-Location $BASE
+
+        # Remote HEAD ermitteln
+        $lsOut     = (git ls-remote origin HEAD 2>&1)
+        $remoteHead = ($lsOut | ForEach-Object {
+            if ($_ -match '^([0-9a-f]{40})\s+HEAD') { $Matches[1] }
+        } | Select-Object -First 1)
+        if (-not $remoteHead) { throw "Remote HEAD nicht ermittelbar: $lsOut" }
+        Log "  Remote HEAD: $remoteHead" "DarkGray"
+
+        # Remote-Tree in Temp-Index laden
+        git read-tree $remoteHead 2>&1 | Out-Null
+
+        # JSON-Datei hashen und zum Index hinzufuegen
+        $jsonRel = "docs/_data/auftragsbestand.json"
+        $jsonAbs = Join-Path $BASE ($jsonRel -replace "/", "\")
+        if (-not (Test-Path $jsonAbs)) { throw "JSON nicht gefunden: $jsonAbs" }
+        $blob = (git hash-object -w $jsonAbs 2>$null)
+        if ($blob -notmatch '^[0-9a-f]{40}$') { throw "hash-object fehlgeschlagen fuer $jsonRel (blob='$blob')" }
+        git update-index --add --cacheinfo "100644,$blob,$jsonRel" 2>&1 | Out-Null
+        Log "  JSON gehasht: $($blob.Substring(0,8))" "DarkGray"
+
+        # Neuen Tree und Commit erstellen
+        $newTree   = (git write-tree 2>$null)
+        if ($newTree -notmatch '^[0-9a-f]{40}$') { throw "write-tree fehlgeschlagen" }
+        $commitMsg = "Auto-Update $DATE $TIME"
+        $newCommit = (git commit-tree $newTree -p $remoteHead -m $commitMsg 2>$null)
+        if ($newCommit -notmatch '^[0-9a-f]{40}$') { throw "commit-tree fehlgeschlagen" }
+        Log "  Neuer Commit: $($newCommit.Substring(0,8))" "DarkGray"
+
+        # Push
+        $pushOut = (git push origin "${newCommit}:refs/heads/main" 2>&1)
+        Log "  Push: $($pushOut -join '; ')" "DarkGray"
+
+        Pop-Location
+        Log "[OK] GitHub Push erfolgreich" "Green"
+    } catch {
+        Log "[ERR] GitHub Push: $_" "Red"
+        $failed += "GitHub Push"
+        Pop-Location -ErrorAction SilentlyContinue
+    } finally {
