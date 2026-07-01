@@ -3,363 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auftragsbestand — BCF Dashboard</title>
+<title>Auftragsbestand &#8212; BCF Dashboard</title>
 <style>
-/* ============================================================ TOKENS */
 :root {
-  --bg:        #f5f6f8;
-  --surface:   #ffffff;
-  --border:    #e1e4e8;
-  --border-sub:#eaecef;
-  --text:      #1a1e27;
-  --text-sec:  #6b7280;
-  --text-kpi:  #111827;
-  --accent:    #1c5fa6;
-  --accent-lt: #e8f0fc;
-  --gold:      #b45309;
-  --green:     #166534;
-  --green-bg:  #dcfce7;
-  --bar:       #1c5fa6;
-  --bar-bg:    #dde6f5;
-  --badge-bg:  #dcfce7;
-  --badge-bd:  #166534;
-  --badge-tx:  #14532d;
-  --shadow:    0 1px 4px rgba(0,0,0,.08);
-  --r:         8px;
+  --bg:#f5f6f8;--surface:#ffffff;--border:#e1e4e8;--border-sub:#eaecef;
+  --text:#1a1e27;--text-sec:#6b7280;--text-kpi:#111827;
+  --accent:#1c5fa6;--accent-lt:#e8f0fc;--gold:#b45309;
+  --green:#166534;--bar:#1c5fa6;--bar-bg:#dde6f5;
+  --badge-bg:#dcfce7;--badge-bd:#166534;--badge-tx:#14532d;
+  --shadow:0 1px 4px rgba(0,0,0,.08);--r:8px;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 14px; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-  padding: 0 0 40px;
-  -webkit-font-smoothing: antialiased;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;padding:0 0 40px;-webkit-font-smoothing:antialiased}
+.tab-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-bar a{display:inline-block;padding:14px 20px 12px;font-size:13px;font-weight:500;color:var(--text-sec);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s}
+.tab-bar a:hover{color:var(--text)}
+.tab-bar a.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.page-content{padding:20px 24px 0}
+.page-header{margin-bottom:16px}
+.page-header h1{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.3px}
+.page-header .sub{font-size:12px;color:var(--text-sec);margin-top:3px}
+.kpi-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;flex:1;min-width:150px;box-shadow:var(--shadow)}
+.kpi-label{font-size:11px;color:var(--text-sec);text-transform:uppercase;letter-spacing:.5px;font-weight:500}
+.kpi-val{font-size:22px;font-weight:700;color:var(--text-kpi);margin-top:4px;letter-spacing:-.5px}
+.kpi-sub{font-size:11px;color:var(--text-sec);margin-top:3px}
+.kpi.accent{border-top:3px solid var(--accent)}.kpi.accent .kpi-val{color:var(--accent)}
+.kpi.green-k{border-top:3px solid #16a34a}.kpi.green-k .kpi-val{color:var(--green)}
+.customer-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden}
+.cust-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;cursor:pointer;user-select:none;border-bottom:1px solid var(--border-sub);background:#f8f9fb;transition:background .12s}
+.cust-hdr:hover{background:var(--accent-lt)}
+.cust-hdr h3{font-size:12px;font-weight:700;color:var(--text-sec);text-transform:uppercase;letter-spacing:.5px}
+.cust-hdr .tbtn{width:20px;height:20px;border:1.5px solid var(--accent);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--accent);flex-shrink:0;transition:background .12s,color .12s}
+.customer-card.open .tbtn{background:var(--accent);color:#fff}
+.cust-row{display:flex;align-items:center;gap:12px;padding:9px 16px;border-bottom:1px solid var(--border-sub)}
+.cust-row:last-child{border-bottom:none}
+.cust-rank{font-size:11px;font-weight:700;color:var(--text-sec);width:18px;flex-shrink:0;text-align:center}
+.cust-rank.top{color:var(--accent)}
+.cust-name{flex:1;font-size:13px;font-weight:500;color:var(--text);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cust-bw{width:100px;height:6px;background:var(--bar-bg);border-radius:3px;overflow:hidden;flex-shrink:0}
+.cust-bf{height:100%;background:var(--bar);border-radius:3px}
+.cust-val{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;text-align:right;min-width:90px}
+.cust-more{display:none}
+.customer-card.open .cust-more{display:block}
+.table-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse}
+thead tr{background:#f8f9fb;border-bottom:1px solid var(--border)}
+thead th{font-size:11px;font-weight:600;color:var(--text-sec);text-transform:uppercase;letter-spacing:.4px;padding:10px 14px;text-align:left;white-space:nowrap}
+thead th.r{text-align:right}
+tbody tr.gr{cursor:pointer;border-bottom:1px solid var(--border-sub);transition:background .12s}
+tbody tr.gr:hover{background:var(--accent-lt)}
+tbody tr.gr td{padding:10px 14px}
+.ei{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border:1.5px solid var(--accent);border-radius:4px;font-size:12px;color:var(--accent);margin-right:8px;flex-shrink:0;transition:background .12s,color .12s;font-weight:700}
+.gr.open .ei{background:var(--accent);color:#fff}
+.gn{display:flex;align-items:center;font-weight:600;font-size:13px;color:var(--text)}
+.bw{width:110px;height:6px;background:var(--bar-bg);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle}
+.bf{height:100%;background:var(--bar);border-radius:3px}
+.vc{text-align:right;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap}
+.pc{text-align:right;font-size:11px;color:var(--text-sec);width:46px}
+.ab{display:inline-block;background:var(--badge-bg);border:1px solid var(--badge-bd);border-radius:4px;padding:1px 7px;font-size:10px;font-weight:600;color:var(--badge-tx);margin-left:8px;white-space:nowrap}
+tbody tr.dr{display:none}
+tbody tr.dr.open{display:table-row}
+.dr td{background:#fafbfc;border-bottom:1px solid var(--border);padding:0 14px 14px 42px}
+.di{display:flex;gap:20px;padding-top:12px}
+.dc{flex:1;min-width:0}
+.dc h4{font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.ditem{display:flex;justify-content:space-between;align-items:flex-start;padding:5px 0;border-bottom:1px solid var(--border-sub);gap:12px}
+.ditem:last-child{border-bottom:none}
+.it{font-size:12px;font-weight:500;color:var(--text)}
+.in{font-size:10px;color:var(--text-sec);margin-top:1px;font-family:'SF Mono','Consolas',monospace}
+.iv{font-size:12px;font-weight:700;color:var(--gold);white-space:nowrap;flex-shrink:0}
+.footer{font-size:11px;color:var(--text-sec);margin-top:14px;text-align:right;padding:0 24px}
+@media (max-width:1100px) and (min-width:600px){
+  .page-content{padding:16px 16px 0}.tab-bar{padding:0 16px}
+  .kpi-val{font-size:19px}.bw{width:80px}.cust-bw{width:70px}.di{gap:14px}.it{font-size:11px}
 }
-
-/* ============================================================ TABS */
-.tab-bar {
-  display: flex;
-  gap: 0;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0 24px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-.tab-bar::-webkit-scrollbar { display: none; }
-.tab-bar a {
-  display: inline-block;
-  padding: 14px 20px 12px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-sec);
-  text-decoration: none;
-  border-bottom: 2px solid transparent;
-  white-space: nowrap;
-  transition: color .15s, border-color .15s;
-}
-.tab-bar a:hover { color: var(--text); }
-.tab-bar a.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-  font-weight: 600;
-}
-
-/* ============================================================ PAGE CONTENT */
-.page-content { padding: 20px 24px 0; }
-
-/* ============================================================ HEADER */
-.page-header { margin-bottom: 16px; }
-.page-header h1 {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -.3px;
-}
-.page-header .sub {
-  font-size: 12px;
-  color: var(--text-sec);
-  margin-top: 3px;
-}
-
-/* ============================================================ KPI ROW */
-.kpi-row {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-.kpi {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 14px 18px;
-  flex: 1;
-  min-width: 150px;
-  box-shadow: var(--shadow);
-}
-.kpi-label {
-  font-size: 11px;
-  color: var(--text-sec);
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  font-weight: 500;
-}
-.kpi-val {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text-kpi);
-  margin-top: 4px;
-  letter-spacing: -.5px;
-}
-.kpi-sub {
-  font-size: 11px;
-  color: var(--text-sec);
-  margin-top: 3px;
-}
-.kpi.accent  { border-top: 3px solid var(--accent); }
-.kpi.accent .kpi-val  { color: var(--accent); }
-.kpi.green-k { border-top: 3px solid #16a34a; }
-.kpi.green-k .kpi-val { color: var(--green); }
-
-/* ============================================================ CUSTOMER CARD */
-.customer-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  box-shadow: var(--shadow);
-  margin-bottom: 12px;
-  overflow: hidden;
-}
-.customer-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 11px 16px;
-  cursor: pointer;
-  user-select: none;
-  border-bottom: 1px solid var(--border-sub);
-  background: #f8f9fb;
-  transition: background .12s;
-}
-.customer-card-header:hover { background: var(--accent-lt); }
-.customer-card-header h3 {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-sec);
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-.customer-card-header .toggle-btn {
-  width: 20px;
-  height: 20px;
-  border: 1.5px solid var(--accent);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--accent);
-  transition: background .12s, color .12s;
-  flex-shrink: 0;
-}
-.customer-card.open .toggle-btn {
-  background: var(--accent);
-  color: #fff;
-}
-
-/* customer rows */
-.customer-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 9px 16px;
-  border-bottom: 1px solid var(--border-sub);
-}
-.customer-row:last-child { border-bottom: none; }
-.cust-rank {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-sec);
-  width: 18px;
-  flex-shrink: 0;
-  text-align: center;
-}
-.cust-rank.top { color: var(--accent); }
-.cust-name {
-  flex: 1;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text);
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.cust-bar-wrap {
-  width: 100px;
-  height: 6px;
-  background: var(--bar-bg);
-  border-radius: 3px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.cust-bar-fill { height: 100%; background: var(--bar); border-radius: 3px; }
-.cust-val {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-  text-align: right;
-  min-width: 90px;
-}
-
-/* hidden extra rows */
-.customer-more { display: none; }
-.customer-card.open .customer-more { display: block; }
-
-/* ============================================================ TABLE CARD */
-.table-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-}
-table { width: 100%; border-collapse: collapse; }
-thead tr { background: #f8f9fb; border-bottom: 1px solid var(--border); }
-thead th {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-sec);
-  text-transform: uppercase;
-  letter-spacing: .4px;
-  padding: 10px 14px;
-  text-align: left;
-  white-space: nowrap;
-}
-thead th.r { text-align: right; }
-tbody tr.gruppe-row {
-  cursor: pointer;
-  border-bottom: 1px solid var(--border-sub);
-  transition: background .12s;
-}
-tbody tr.gruppe-row:hover { background: var(--accent-lt); }
-tbody tr.gruppe-row td { padding: 10px 14px; }
-.expand-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  border: 1.5px solid var(--accent);
-  border-radius: 4px;
-  font-size: 12px;
-  line-height: 1;
-  color: var(--accent);
-  margin-right: 8px;
-  flex-shrink: 0;
-  transition: background .12s, color .12s;
-  font-weight: 700;
-}
-.gruppe-row.open .expand-icon { background: var(--accent); color: #fff; }
-.gruppe-name { display: flex; align-items: center; font-weight: 600; font-size: 13px; color: var(--text); }
-.bar-wrap { width: 110px; height: 6px; background: var(--bar-bg); border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; }
-.bar-fill { height: 100%; background: var(--bar); border-radius: 3px; }
-.val-cell { text-align: right; font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
-.pct-cell { text-align: right; font-size: 11px; color: var(--text-sec); width: 46px; }
-.anker-badge {
-  display: inline-block;
-  background: var(--badge-bg);
-  border: 1px solid var(--badge-bd);
-  border-radius: 4px;
-  padding: 1px 7px;
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--badge-tx);
-  margin-left: 8px;
-  white-space: nowrap;
-}
-tbody tr.detail-row { display: none; }
-tbody tr.detail-row.open { display: table-row; }
-.detail-row td { background: #fafbfc; border-bottom: 1px solid var(--border); padding: 0 14px 14px 42px; }
-.detail-inner { display: flex; gap: 20px; padding-top: 12px; }
-.detail-col { flex: 1; min-width: 0; }
-.detail-col h4 {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  margin-bottom: 8px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid var(--border);
-}
-.detail-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 5px 0; border-bottom: 1px solid var(--border-sub); gap: 12px; }
-.detail-item:last-child { border-bottom: none; }
-.item-text  { font-size: 12px; font-weight: 500; color: var(--text); }
-.item-nr    { font-size: 10px; color: var(--text-sec); margin-top: 1px; font-family: 'SF Mono', 'Consolas', monospace; }
-.item-val   { font-size: 12px; font-weight: 700; color: var(--gold); white-space: nowrap; flex-shrink: 0; }
-
-/* ============================================================ FOOTER */
-.footer { font-size: 11px; color: var(--text-sec); margin-top: 14px; text-align: right; padding: 0 24px; }
-
-/* ============================================================ RESPONSIVE — iPad */
-@media (max-width: 1100px) and (min-width: 600px) {
-  .page-content { padding: 16px 16px 0; }
-  .tab-bar { padding: 0 16px; }
-  .kpi-val { font-size: 19px; }
-  .bar-wrap { width: 80px; }
-  .cust-bar-wrap { width: 70px; }
-  .detail-inner { gap: 14px; }
-  .item-text { font-size: 11px; }
-}
-
-/* ============================================================ RESPONSIVE — Mobile */
-@media (max-width: 599px) {
-  html { font-size: 15px; }
-  .page-content { padding: 12px 12px 0; }
-  .tab-bar { padding: 0 12px; }
-  .tab-bar a { padding: 12px 14px 10px; font-size: 13px; }
-  .page-header h1 { font-size: 17px; }
-  .kpi-row { gap: 8px; }
-  .kpi { min-width: calc(50% - 4px); padding: 10px 12px; }
-  .kpi-val { font-size: 17px; }
-  thead th.bar-col, td.bar-col { display: none; }
-  .cust-bar-wrap { display: none; }
-  tbody tr.gruppe-row td { padding: 12px 10px; }
-  .gruppe-name { font-size: 13px; }
-  .expand-icon { width: 22px; height: 22px; font-size: 14px; }
-  .detail-row td { padding: 0 10px 14px 10px; }
-  .detail-inner { flex-direction: column; gap: 14px; }
-  .detail-col { min-width: 100%; }
-  .item-text { font-size: 12px; }
-  .item-val  { font-size: 13px; }
-  .val-cell { font-size: 12px; }
-  .pct-cell { display: none; }
-  .footer { padding: 0 12px; }
+@media (max-width:599px){
+  html{font-size:15px}.page-content{padding:12px 12px 0}.tab-bar{padding:0 12px}
+  .tab-bar a{padding:12px 14px 10px;font-size:13px}.page-header h1{font-size:17px}
+  .kpi-row{gap:8px}.kpi{min-width:calc(50% - 4px);padding:10px 12px}.kpi-val{font-size:17px}
+  thead th.bc,td.bc{display:none}.cust-bw{display:none}
+  tbody tr.gr td{padding:12px 10px}.gn{font-size:13px}.ei{width:22px;height:22px;font-size:14px}
+  .dr td{padding:0 10px 14px 10px}.di{flex-direction:column;gap:14px}.dc{min-width:100%}
+  .it{font-size:12px}.iv{font-size:13px}.vc{font-size:12px}.pc{display:none}.footer{padding:0 12px}
 }
 </style>
 </head>
 <body>
-
-<!-- TAB NAVIGATION -->
 <nav class="tab-bar">
   <a href="auftragsbestand.html" class="active">Auftragsbestand</a>
   <a href="presserei.html">Presserei</a>
 </nav>
-
 <div class="page-content">
-
   <div class="page-header">
     <h1>Auftragsbestand</h1>
     <div class="sub">Stand: 01.07.2026 &middot; Echtdaten &middot; BCF Dashboard</div>
   </div>
-
-  <!-- KPI ROW 1 -->
   <div class="kpi-row">
     <div class="kpi accent">
       <div class="kpi-label">Gesamtbestand</div>
@@ -372,18 +113,14 @@ tbody tr.detail-row.open { display: table-row; }
       <div class="kpi-sub">Log startet ab morgen</div>
     </div>
   </div>
-
-  <!-- KEY ACCOUNTS WIDGET -->
-  <div class="customer-card" id="custCard">
-    <div class="customer-card-header" onclick="toggleCust()">
+  <div class="customer-card" id="cc">
+    <div class="cust-hdr" onclick="tC()">
       <h3>Key Accounts (konsolidiert)</h3>
-      <div class="toggle-btn" id="custToggleBtn">+</div>
+      <div class="tbtn" id="ctb">+</div>
     </div>
-    <div id="custTopRows"></div>
-    <div class="customer-more" id="custMoreRows"></div>
+    <div id="ctr"></div>
+    <div class="cust-more" id="cmr"></div>
   </div>
-
-  <!-- KPI ROW 2 -->
   <div class="kpi-row">
     <div class="kpi green-k">
       <div class="kpi-label">Davon Ankern&auml;gel</div>
@@ -391,12 +128,258 @@ tbody tr.detail-row.open { display: table-row; }
       <div class="kpi-sub">9,3 % des Gesamtbestands</div>
     </div>
   </div>
-
-  <!-- ARTIKELGRUPPEN TABLE -->
   <div class="table-card">
   <table>
-  <thead>
-    <tr>
-      <th>Gruppe</th>
-      <th class="bar-col" style="width:120px">Anteil</th>
-      <th class="r">Wert (&
+  <thead><tr>
+    <th>Gruppe</th>
+    <th class="bc" style="width:120px">Anteil</th>
+    <th class="r">Wert (&euro;)</th>
+    <th class="r pc" style="width:46px">%</th>
+  </tr></thead>
+  <tbody id="tb"></tbody>
+  </table>
+  </div>
+  <div class="footer">bcfdashboards.github.io/AV_DASHBOARD &mdash; t&auml;glich aktualisiert</div>
+</div>
+<script>
+// ALL non-ASCII in JS strings are Unicode-escaped to avoid CRLF/encoding issues
+var DATA = [
+  {n:"CDF und UTC",s:1398727.81,a:28.0,
+   art:[
+     {nr:"50-310045-610",tx:"923891 3,1X45 Ring ALU Tile Nail 1.0M",w:119070},
+     {nr:"50-400040-101",tx:"BC 40/40 Ring anchor 12\u00b5m 1.6M",w:118368},
+     {nr:"50-310038-610",tx:"923890 3,1X38 Ring ALU Tile Nail 1.0M",w:111510}
+   ],
+   knd:[
+     {n:"KYOCERA UNIMERCO FASTENING A/S",w:302048.12},
+     {n:"ITW Construction Products",w:246490.65},
+     {n:"ITW Construction P APS DK",w:238140.20}
+   ]},
+  {n:"Papertape",s:962441.97,a:19.3,
+   art:[
+     {nr:"45-310090-005",tx:"DH34\u00b0 3,1x90 mm Stahl Rg G12 2.2M",w:70389.35},
+     {nr:"45-280075-002",tx:"MWK 34\u00b0 2,8x75 mm Ring 2.2M",w:63187.50},
+     {nr:"45-280065-005",tx:"DH34\u00b0 2,8x65 mm Stahl Rg G12 2.2M",w:60305}
+   ],
+   knd:[
+     {n:"W\u00fcrth",w:357660.11},
+     {n:"TTI-EMEA",w:268167.90},
+     {n:"ITW / Venlo",w:175281.40}
+   ]},
+  {n:"Streifenn\u00e4gel Kunststoff",s:604749.57,a:12.1,
+   art:[
+     {nr:"42-400062-006",tx:"RB 4,0x60 Ring G12 34\u00b0 2.0M ETA",w:48503},
+     {nr:"40-380120-003",tx:"3,8/4,2x120 mm Schraub 1.4M",w:41958},
+     {nr:"40-280026-500",tx:"2,8/3,1x26 Ring V2A Haften 0.9M",w:33957}
+   ],
+   knd:[
+     {n:"Rotho Blaas srl (GmbH)",w:83785.40},
+     {n:"ITW / Venlo",w:81645.39},
+     {n:"W\u00fcrth",w:61422.62}
+   ]},
+  {n:"Kernschrauben",s:564842.38,a:11.3,
+   art:[
+     {nr:"03-350070-218",tx:"EWB Kernschraube 4,5X70 mm PZ2TK 3.0M",w:120225.60},
+     {nr:"03-380100-218",tx:"EWB Kernschraube 5,5X100 mm PZ2TK 1.5M",w:105494.40},
+     {nr:"03-380050-217",tx:"FW Kernschraube 5,5X50 mm PZ3D 3.3M",w:90723.60}
+   ],
+   knd:[
+     {n:"Eisenwerk Br\u00fchl",w:225720},
+     {n:"Fritz Winter Eisengie\u00dferei",w:183891.48},
+     {n:"Daimler, Mannheim",w:90951.60}
+   ]},
+  {n:"Drahtcoil",s:532381.45,a:10.7,
+   art:[
+     {nr:"30-250065-002",tx:"2,5/2,8x64 mm Ring 7.2M",w:43064.50},
+     {nr:"30-280065-302",tx:"FAC 2,8/3,2x65 NS SD TX20 G12 5.6M",w:38704.05},
+     {nr:"30-250065-012",tx:"2,5/2,8x64 mm Ring JC900 7.2M",w:19800}
+   ],
+   knd:[
+     {n:"Df2 Befestigungstechnik AG",w:80032.60},
+     {n:"ITW / Venlo",w:79263.82},
+     {n:"First Fix",w:77438.50}
+   ]},
+  {n:"Industrieklammern",s:298849.01,a:6.0,
+   art:[
+     {nr:"20-069010-500",tx:"111 042 01",w:32736},
+     {nr:"20-180063-740",tx:"Q25BXBB-ETA 5.0M",w:20196},
+     {nr:"20-180050-740",tx:"Q21BXBB-ETA 5.0M",w:19404}
+   ],
+   knd:[
+     {n:"KYOCERA Senco Europe",w:157686.27},
+     {n:"Schenker Storen AG",w:32736},
+     {n:"Haberkorn",w:32726.75}
+   ]},
+  {n:"Umpack & Dachpappstifte",s:177696.55,a:3.6,
+   art:[
+     {nr:"36-300025-502",tx:"MWK 3,0x25 Roofingnail Ring V2A 2.16M",w:17755.46},
+     {nr:"27-160050-551",tx:"ESSVE Brads F16/50 1.4401 2.5M",w:15796.80},
+     {nr:"27-180050-534",tx:"MWK 15GA Nails 50mm V2A 34\u00b0 2.5M",w:7905.60}
+   ],
+   knd:[
+     {n:"TTI-EMEA",w:129119.71},
+     {n:"ESSVE AB SE",w:31420.80},
+     {n:"Tricor Packaging & Logistics AG",w:7875}
+   ]},
+  {n:"Maschinenstifte",s:196847.19,a:3.9,
+   art:[
+     {nr:"01-340090-112",tx:"3,4/3,6x90 Ring K-\u00d8 8,4 PAL-KART EPAL",w:44377.38},
+     {nr:"01-340065-127",tx:"3,4x65 mm Ring BULK G12Y H-8,0 25Kg",w:24960},
+     {nr:"01-340070-112",tx:"3,4/3,6x70 Ring K-\u00d8 8,4 PAL-KART EPAL",w:19818.38}
+   ],
+   knd:[
+     {n:"Rademacher",w:52093.40},
+     {n:"First Fix",w:44160},
+     {n:"Tricor Packaging & Logistics AG",w:30564.23}
+   ]},
+  {n:"Sonstiges",s:129977.06,a:2.6,
+   art:[
+     {nr:"55-260025-313",tx:"MAKITA-PIN 2,6x25 ball. Spitze vg mnk",w:19440},
+     {nr:"51-420051-850",tx:"GN 4,2x51 mm PH2 GALV5 4.5M",w:16110.72},
+     {nr:"76-OK165FC",tx:"553416 FC165 Single Fuel Cell",w:14292}
+   ],
+   knd:[
+     {n:"OK Befestigung",w:55152},
+     {n:"ITW Construction P APS DK",w:23006.31},
+     {n:"ESSVE AB SE",w:14937}
+   ]},
+  {n:"Ankern\u00e4gel Lose",s:70926.75,a:1.4,
+   art:[
+     {nr:"62-400060-206",tx:"RB 4,0X60 G12 Bulk 0.25M ETA-2022/0002",w:23660},
+     {nr:"62-400060-221",tx:"4,0X60 G12 lose 0.25M/3.0M ETA",w:17700},
+     {nr:"62-400040-221",tx:"4,0X40 G12 lose 0.25M/3.0M ETA",w:13500}
+   ],
+   knd:[
+     {n:"Rotho Blaas srl (GmbH)",w:36222.75},
+     {n:"W\u00fcrth",w:31200},
+     {n:"SOLTECH IT",w:1776}
+   ]},
+  {n:"Lose Teile Edelstahl",s:58230,a:1.2,
+   art:[
+     {nr:"09-250045-551",tx:"XL 2,5x45 mm Ring V4A Liko R60",w:31800},
+     {nr:"09-250050-551",tx:"XL 2,5x50 mm Ring V4A Liko R60",w:15900},
+     {nr:"09-280032-550",tx:"XL 2,8x32 mm Ring V4A Flachkopf \u00d86,50",w:4770}
+   ],
+   knd:[
+     {n:"XL-Panel BV",w:58230}
+   ]}
+];
+
+// Ankernagel groups (ASCII keys only in object)
+var ANKER = {};
+ANKER["CDF und UTC"] = 1;
+ANKER["Streifenn\u00e4gel Kunststoff"] = 1;
+ANKER["Ankern\u00e4gel Lose"] = 1;
+
+// Consolidation
+var CONS = [
+  {lbl:"ITW",     re:/itw/i},
+  {lbl:"W\u00fcrth", re:/w[u\u00fc]rth/i},
+  {lbl:"Kyocera", re:/kyocera/i},
+  {lbl:"Hilti",   re:/hilti/i}
+];
+
+function consLbl(n) {
+  for (var i=0;i<CONS.length;i++) { if (CONS[i].re.test(n)) return CONS[i].lbl; }
+  return n;
+}
+
+function fmt(v) {
+  return v.toLocaleString("de-DE",{minimumFractionDigits:0,maximumFractionDigits:0}) + " \u20ac";
+}
+
+// Build customer map
+var cmap = {};
+for (var di=0;di<DATA.length;di++) {
+  var knd = DATA[di].knd;
+  for (var ki=0;ki<knd.length;ki++) {
+    var lbl = consLbl(knd[ki].n);
+    cmap[lbl] = (cmap[lbl]||0) + knd[ki].w;
+  }
+}
+var clist = [];
+for (var k in cmap) { clist.push({n:k,w:cmap[k]}); }
+clist.sort(function(a,b){return b.w-a.w;});
+
+var TOP = 3;
+var cmax = clist.length ? clist[0].w : 1;
+
+// Render customer rows
+var ctrEl  = document.getElementById("ctr");
+var cmrEl  = document.getElementById("cmr");
+if (ctrEl && cmrEl) {
+  for (var ci=0;ci<clist.length;ci++) {
+    var bw = Math.round(clist[ci].w/cmax*100);
+    var rc = ci < TOP ? "cust-rank top" : "cust-rank";
+    var row = "<div class=\"cust-row\">"
+      +"<span class=\""+rc+"\">"+(ci+1)+"</span>"
+      +"<span class=\"cust-name\">"+clist[ci].n+"</span>"
+      +"<div class=\"cust-bw\"><div class=\"cust-bf\" style=\"width:"+bw+"%\"></div></div>"
+      +"<span class=\"cust-val\">"+fmt(clist[ci].w)+"</span>"
+      +"</div>";
+    if (ci < TOP) { ctrEl.innerHTML += row; }
+    else          { cmrEl.innerHTML += row; }
+  }
+  if (clist.length <= TOP) {
+    var tb = document.getElementById("ctb");
+    if (tb) tb.style.display = "none";
+  }
+}
+
+function tC() {
+  var card = document.getElementById("cc");
+  var btn  = document.getElementById("ctb");
+  if (!card||!btn) return;
+  var o = card.classList.toggle("open");
+  btn.textContent = o ? "\u2212" : "+";
+}
+
+// Render gruppe rows
+var tbody = document.getElementById("tb");
+var mval  = DATA[0].s;
+
+for (var gi=0;gi<DATA.length;gi++) {
+  var g   = DATA[gi];
+  var bpct = Math.round(g.s/mval*100);
+  var badge = ANKER[g.n] ? " <span class=\"ab\">Ankern\u00e4gel</span>" : "";
+
+  var tr = document.createElement("tr");
+  tr.className = "gr";
+  tr.innerHTML = "<td><span class=\"gn\"><span class=\"ei\">+</span>"+g.n+badge+"</span></td>"
+    +"<td class=\"bc\"><div class=\"bw\"><div class=\"bf\" style=\"width:"+bpct+"%\"></div></div></td>"
+    +"<td class=\"vc\">"+fmt(g.s)+"</td>"
+    +"<td class=\"pc r\">"+g.a+"%</td>";
+
+  var dr = document.createElement("tr");
+  dr.className = "dr";
+  var td = document.createElement("td");
+  td.colSpan = 4;
+
+  var artH = "<h4>Top Artikel</h4>";
+  for (var ai=0;ai<g.art.length;ai++) {
+    artH += "<div class=\"ditem\"><div><div class=\"it\">"+g.art[ai].tx+"</div>"
+           +"<div class=\"in\">"+g.art[ai].nr+"</div></div>"
+           +"<div class=\"iv\">"+fmt(g.art[ai].w)+"</div></div>";
+  }
+  var kndH = "<h4>Top Kunden</h4>";
+  for (var ki2=0;ki2<g.knd.length;ki2++) {
+    kndH += "<div class=\"ditem\"><div class=\"it\">"+g.knd[ki2].n+"</div>"
+           +"<div class=\"iv\">"+fmt(g.knd[ki2].w)+"</div></div>";
+  }
+  td.innerHTML = "<div class=\"di\"><div class=\"dc\">"+artH+"</div><div class=\"dc\">"+kndH+"</div></div>";
+  dr.appendChild(td);
+
+  (function(row, drow){
+    row.addEventListener("click", function(){
+      var o = drow.classList.toggle("open");
+      row.classList.toggle("open", o);
+      row.querySelector(".ei").textContent = o ? "\u2212" : "+";
+    });
+  })(tr, dr);
+
+  tbody.appendChild(tr);
+  tbody.appendChild(dr);
+}
+</script>
+</body>
+</html>
