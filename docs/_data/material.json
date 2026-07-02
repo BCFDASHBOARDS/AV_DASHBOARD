@@ -1,275 +1,328 @@
 ﻿{
-    "timestamp":  "2026-07-02T10:43:55",
-    "vormonat_label":  "Jun 26",
+    "timestamp":  "2026-07-02T11:19:41",
+    "aktuell_label":  "Jul 26",
     "gesamt_bestand":  1289159.14,
     "gesamt_ytd":  3626081.82,
-    "gesamt_vormonat":  631482.07,
-    "vormonat_stiftdraht":  567030.22,
-    "vormonat_kaltstauch":  25648.56,
-    "vormonat_edelstahl":  38803.29,
+    "gesamt_aktuell":  12400.95,
+    "gesamt_offene_prod":  1147094.67,
+    "mat_stiftdraht":  {
+                           "aktuell":  10113.28,
+                           "offene_prod":  992477.99,
+                           "bestand":  1126987.58,
+                           "ytd":  3245273.49
+                       },
+    "mat_kaltstauch":  {
+                           "aktuell":  236.11,
+                           "offene_prod":  60169.88,
+                           "bestand":  46443.6,
+                           "ytd":  160310.15
+                       },
+    "mat_edelstahl":  {
+                          "aktuell":  2051.56,
+                          "offene_prod":  94446.8,
+                          "bestand":  115727.96,
+                          "ytd":  220498.18
+                      },
     "maschinen":  [
                       {
                           "key":  "Nagelpressen",
                           "label":  "Nagelpressen",
+                          "offene_prod":  1084332.73,
                           "bestand":  1216957.05,
                           "ytd":  3432552.39,
-                          "vormonat":  600628.99,
+                          "aktuell":  12164.84,
                           "materialgruppen":  [
                                                   {
                                                       "key":  "Stiftdraht",
                                                       "label":  "Stiftdraht",
+                                                      "offene_prod":  992477.99,
                                                       "bestand":  1126987.58,
                                                       "ytd":  3245273.49,
-                                                      "vormonat":  567030.22,
+                                                      "aktuell":  10113.28,
                                                       "artikel":  [
                                                                       {
                                                                           "artnr":  "01-180",
                                                                           "text":  "Stiftdraht D9-1 Ø 1,80",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  0,
                                                                           "ytd":  0,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "01-210",
                                                                           "text":  "Stiftdraht D9-1 Ø 2,07",
+                                                                          "offene_prod":  15133.23,
                                                                           "bestand":  2002.72,
                                                                           "ytd":  74965.35,
-                                                                          "vormonat":  17111.23
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "01-230",
                                                                           "text":  "Stiftdraht D9-1 Ø 2,27",
+                                                                          "offene_prod":  1354.58,
                                                                           "bestand":  2192.78,
                                                                           "ytd":  5327.22,
-                                                                          "vormonat":  1482.65
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "01-250",
                                                                           "text":  "Stiftdraht D9-1 Ø 2,47",
+                                                                          "offene_prod":  105225.14,
                                                                           "bestand":  200599.28,
                                                                           "ytd":  353662.91,
-                                                                          "vormonat":  53745.62
+                                                                          "aktuell":  717.31
                                                                       },
                                                                       {
                                                                           "artnr":  "01-280",
                                                                           "text":  "Stiftdraht D9-1 Ø 2,75",
+                                                                          "offene_prod":  231302.04,
                                                                           "bestand":  241739.14,
                                                                           "ytd":  1003729.43,
-                                                                          "vormonat":  160153.65
+                                                                          "aktuell":  3134.66
                                                                       },
                                                                       {
                                                                           "artnr":  "01-310",
                                                                           "text":  "Stiftdraht D9-1 Ø 3,05",
+                                                                          "offene_prod":  223490.46,
                                                                           "bestand":  310979.73,
                                                                           "ytd":  573058.34,
-                                                                          "vormonat":  79178.06
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "01-340",
                                                                           "text":  "Stiftdraht D9-1 Ø 3,35",
+                                                                          "offene_prod":  101563.45,
                                                                           "bestand":  164202.64,
                                                                           "ytd":  327483.36,
-                                                                          "vormonat":  79865.42
+                                                                          "aktuell":  3415.65
                                                                       },
                                                                       {
                                                                           "artnr":  "01-380",
                                                                           "text":  "Stiftdraht D9-1 Ø 3,75",
+                                                                          "offene_prod":  81427.34,
                                                                           "bestand":  50597.61,
                                                                           "ytd":  192078.39,
-                                                                          "vormonat":  24693.31
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "01-400",
                                                                           "text":  "Stiftdraht D9-1 Ø 4,00",
+                                                                          "offene_prod":  168376.58,
                                                                           "bestand":  84808.12,
                                                                           "ytd":  434469.92,
-                                                                          "vormonat":  78530.59
+                                                                          "aktuell":  779.22
                                                                       },
                                                                       {
                                                                           "artnr":  "01-420",
                                                                           "text":  "Stiftdraht D9-1 Ø 4,15",
+                                                                          "offene_prod":  14945.55,
                                                                           "bestand":  20925.72,
                                                                           "ytd":  67290.28,
-                                                                          "vormonat":  32810.81
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "01-460",
                                                                           "text":  "Stiftdraht D9-1 Ø 4,50",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  3870.06,
                                                                           "ytd":  80661.94,
-                                                                          "vormonat":  26670.86
+                                                                          "aktuell":  2066.44
                                                                       },
                                                                       {
                                                                           "artnr":  "01-500",
                                                                           "text":  "Stiftdraht D9-1 Ø 4,90",
+                                                                          "offene_prod":  6373.22,
                                                                           "bestand":  12001.03,
                                                                           "ytd":  10100.95,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "01-550",
                                                                           "text":  "Stiftdraht D9-1 Ø 5,50",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  0,
                                                                           "ytd":  0,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "01-600",
                                                                           "text":  "Stiftdraht D9-1 Ø 6,00",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  2272.42,
                                                                           "ytd":  5429.58,
-                                                                          "vormonat":  3463.13
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "01-800",
                                                                           "text":  "Stiftdraht D9-1 Ø 8,00",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  0,
                                                                           "ytd":  27572.23,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "04-280",
                                                                           "text":  "Stiftdraht Ø 2,75 verzinkt",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  6219.11,
                                                                           "ytd":  13923.9,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "04-310",
                                                                           "text":  "Stiftdraht Ø 3,05 verzinkt",
+                                                                          "offene_prod":  43286.4,
                                                                           "bestand":  24577.22,
                                                                           "ytd":  75519.69,
-                                                                          "vormonat":  9324.89
+                                                                          "aktuell":  0
                                                                       }
                                                                   ]
                                                   },
                                                   {
                                                       "key":  "Kaltstauchdraht",
                                                       "label":  "Kaltstauchdraht",
+                                                      "offene_prod":  0,
                                                       "bestand":  2933.92,
                                                       "ytd":  3082.38,
-                                                      "vormonat":  914.41,
+                                                      "aktuell":  0,
                                                       "artikel":  [
                                                                       {
                                                                           "artnr":  "06-220",
                                                                           "text":  "Stiftdraht C60 Ø 2,20",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  1521,
                                                                           "ytd":  0,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "06-280",
                                                                           "text":  "Stiftdraht C60 Ø 2,80",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  1412.92,
                                                                           "ytd":  3082.38,
-                                                                          "vormonat":  914.41
+                                                                          "aktuell":  0
                                                                       }
                                                                   ]
                                                   },
                                                   {
                                                       "key":  "Edelstahl",
                                                       "label":  "Edelstahl",
+                                                      "offene_prod":  91854.74,
                                                       "bestand":  87035.55,
                                                       "ytd":  184196.52,
-                                                      "vormonat":  32684.36,
+                                                      "aktuell":  2051.56,
                                                       "artikel":  [
                                                                       {
                                                                           "artnr":  "08-180-1",
                                                                           "text":  "Stiftdraht 1.4307 Ø 1,80",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  1045.02,
                                                                           "ytd":  1913.99,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "08-210-1",
                                                                           "text":  "Stiftdraht 1.4307 Ø 2,07",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  2132.74,
                                                                           "ytd":  6811.27,
-                                                                          "vormonat":  536.65
+                                                                          "aktuell":  669.49
                                                                       },
                                                                       {
                                                                           "artnr":  "08-230-1",
                                                                           "text":  "Stiftdraht 1.4307 Ø 2,27",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  0,
                                                                           "ytd":  4276.42,
-                                                                          "vormonat":  2024.63
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "08-250-1",
                                                                           "text":  "Stiftdraht 1.4307 Ø 2,47",
+                                                                          "offene_prod":  14810.8,
                                                                           "bestand":  16508.39,
                                                                           "ytd":  45442.61,
-                                                                          "vormonat":  11608.76
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "08-280-1",
                                                                           "text":  "Stiftdraht 1.4307 Ø 2,75",
+                                                                          "offene_prod":  31068.9,
                                                                           "bestand":  23805.73,
                                                                           "ytd":  45877.3,
-                                                                          "vormonat":  2322.75
+                                                                          "aktuell":  1079.86
                                                                       },
                                                                       {
                                                                           "artnr":  "08-310-1",
                                                                           "text":  "Stiftdraht 1.4307 Ø 3,05",
+                                                                          "offene_prod":  2004.16,
                                                                           "bestand":  3196.44,
                                                                           "ytd":  2378.57,
-                                                                          "vormonat":  1061.78
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "08-400-1",
                                                                           "text":  "Stiftdraht 1.4307 Ø 4,00",
+                                                                          "offene_prod":  1354.08,
                                                                           "bestand":  2606.69,
                                                                           "ytd":  1288.31,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "09-210",
                                                                           "text":  "Stiftdraht 1.4401 Ø 2,07",
+                                                                          "offene_prod":  2743.2,
                                                                           "bestand":  255.64,
                                                                           "ytd":  12523.92,
-                                                                          "vormonat":  2491.79
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "09-230",
                                                                           "text":  "Stiftdraht 1.4401 Ø 2,27",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  0,
                                                                           "ytd":  0,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "09-250",
                                                                           "text":  "Stiftdraht 1.4401 Ø 2,47",
+                                                                          "offene_prod":  33815.15,
                                                                           "bestand":  20861,
                                                                           "ytd":  50934,
-                                                                          "vormonat":  12638
+                                                                          "aktuell":  302.21
                                                                       },
                                                                       {
                                                                           "artnr":  "09-280",
                                                                           "text":  "Stiftdraht 1.4401 Ø 2,75",
+                                                                          "offene_prod":  5095.42,
                                                                           "bestand":  7916.16,
                                                                           "ytd":  9801.87,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "09-310",
                                                                           "text":  "Stiftdraht 1.4401 Ø 3,05",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  3847.53,
                                                                           "ytd":  2237.47,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "09-400",
                                                                           "text":  "Stiftdraht 1.4401 Ø 4,00",
+                                                                          "offene_prod":  963.03,
                                                                           "bestand":  3937.21,
                                                                           "ytd":  710.79,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "09-600",
                                                                           "text":  "Stiftdraht 1.4401 Ø 6,00",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  923,
                                                                           "ytd":  0,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       }
                                                                   ]
                                                   }
@@ -278,169 +331,120 @@
                       {
                           "key":  "Doppeldruck",
                           "label":  "Doppeldruck",
+                          "offene_prod":  62761.94,
                           "bestand":  72202.09,
                           "ytd":  193529.43,
-                          "vormonat":  30853.08,
+                          "aktuell":  236.11,
                           "materialgruppen":  [
                                                   {
                                                       "key":  "Kaltstauchdraht",
                                                       "label":  "Kaltstauchdraht",
+                                                      "offene_prod":  60169.88,
                                                       "bestand":  43509.68,
                                                       "ytd":  157227.77,
-                                                      "vormonat":  24734.15,
+                                                      "aktuell":  236.11,
                                                       "artikel":  [
                                                                       {
                                                                           "artnr":  "03-180",
                                                                           "text":  "Kaltst. 20MnB4 Ø 1,80",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  0,
                                                                           "ytd":  0,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "03-190",
                                                                           "text":  "Kaltst. 20MnB4 Ø 1,88",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  492.02,
                                                                           "ytd":  242.98,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "03-210",
                                                                           "text":  "Kaltst. 20MnB4 Ø 2,10",
+                                                                          "offene_prod":  59.65,
                                                                           "bestand":  590.15,
                                                                           "ytd":  2487.85,
-                                                                          "vormonat":  681.68
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "03-250",
                                                                           "text":  "Kaltst. 20MnB4 Ø 2,50",
+                                                                          "offene_prod":  733.89,
                                                                           "bestand":  1718.98,
                                                                           "ytd":  8073.72,
-                                                                          "vormonat":  303.02
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "03-280",
                                                                           "text":  "Kaltst. 20MnB4 Ø 2,80",
+                                                                          "offene_prod":  12892.62,
                                                                           "bestand":  7873.18,
                                                                           "ytd":  28999.5,
-                                                                          "vormonat":  3117.59
+                                                                          "aktuell":  236.11
                                                                       },
                                                                       {
                                                                           "artnr":  "03-310",
                                                                           "text":  "Kaltst. 20MnB4 Ø 3,05",
+                                                                          "offene_prod":  799.51,
                                                                           "bestand":  870.49,
                                                                           "ytd":  3173.5,
-                                                                          "vormonat":  1519.48
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "03-320",
                                                                           "text":  "Kaltst. 20MnB4 Ø 3,20",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  0,
                                                                           "ytd":  0,
-                                                                          "vormonat":  0
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "03-350",
                                                                           "text":  "Kaltst. 20MnB4 Ø 3,45",
+                                                                          "offene_prod":  12604.58,
                                                                           "bestand":  17224.04,
                                                                           "ytd":  35123.97,
-                                                                          "vormonat":  6803.39
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "03-380",
                                                                           "text":  "Kaltst. 20MnB4 Ø 3,72",
+                                                                          "offene_prod":  28755.17,
                                                                           "bestand":  12312.85,
                                                                           "ytd":  70821.2,
-                                                                          "vormonat":  9471.23
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "06-260",
                                                                           "text":  "Kaltst. C60 (BSN)",
+                                                                          "offene_prod":  2966.64,
                                                                           "bestand":  1116.21,
                                                                           "ytd":  3689.81,
-                                                                          "vormonat":  1029.81
+                                                                          "aktuell":  0
                                                                       },
                                                                       {
                                                                           "artnr":  "06-300",
                                                                           "text":  "Kaltst. C60 (BSN)",
+                                                                          "offene_prod":  1357.82,
                                                                           "bestand":  1311.76,
                                                                           "ytd":  4615.24,
-                                                                          "vormonat":  1807.95
+                                                                          "aktuell":  0
                                                                       }
                                                                   ]
                                                   },
                                                   {
                                                       "key":  "Edelstahl",
                                                       "label":  "Edelstahl",
+                                                      "offene_prod":  2592.06,
                                                       "bestand":  28692.41,
                                                       "ytd":  36301.66,
-                                                      "vormonat":  6118.93,
+                                                      "aktuell":  0,
                                                       "artikel":  [
                                                                       {
                                                                           "artnr":  "08-190",
                                                                           "text":  "Kaltst. 1.4567 Ø 1,88",
+                                                                          "offene_prod":  0,
                                                                           "bestand":  168.19,
-                                                                          "ytd":  402.81,
-                                                                          "vormonat":  0
-                                                                      },
-                                                                      {
-                                                                          "artnr":  "08-220",
-                                                                          "text":  "Kaltst. 1.4567 Ø 2,20",
-                                                                          "bestand":  1388,
-                                                                          "ytd":  0,
-                                                                          "vormonat":  0
-                                                                      },
-                                                                      {
-                                                                          "artnr":  "08-250",
-                                                                          "text":  "Kaltst. 1.4567 Ø 2,50",
-                                                                          "bestand":  529.3,
-                                                                          "ytd":  1164.18,
-                                                                          "vormonat":  0
-                                                                      },
-                                                                      {
-                                                                          "artnr":  "08-280",
-                                                                          "text":  "Kaltst. 1.4567 Ø 2,80",
-                                                                          "bestand":  24007.92,
-                                                                          "ytd":  33879.32,
-                                                                          "vormonat":  6118.93
-                                                                      },
-                                                                      {
-                                                                          "artnr":  "08-310",
-                                                                          "text":  "Kaltst. 1.4567 Ø 3,10",
-                                                                          "bestand":  2211,
-                                                                          "ytd":  346.32,
-                                                                          "vormonat":  0
-                                                                      },
-                                                                      {
-                                                                          "artnr":  "09-280-2",
-                                                                          "text":  "Kaltst. 1.4578 Ø 2,80",
-                                                                          "bestand":  0,
-                                                                          "ytd":  509.03,
-                                                                          "vormonat":  0
-                                                                      },
-                                                                      {
-                                                                          "artnr":  "09-340-2",
-                                                                          "text":  "Kaltst. 1.4578 Ø 3,40",
-                                                                          "bestand":  0,
-                                                                          "ytd":  0,
-                                                                          "vormonat":  0
-                                                                      },
-                                                                      {
-                                                                          "artnr":  "09-360-2",
-                                                                          "text":  "Kaltst. 1.4578 Ø 3,60",
-                                                                          "bestand":  388,
-                                                                          "ytd":  0,
-                                                                          "vormonat":  0
-                                                                      },
-                                                                      {
-                                                                          "artnr":  "09-400-2",
-                                                                          "text":  "Kaltst. 1.4578 Ø 3,98",
-                                                                          "bestand":  0,
-                                                                          "ytd":  0,
-                                                                          "vormonat":  0
-                                                                      }
-                                                                  ]
-                                                  }
-                                              ]
-                      }
-                  ]
-}
+                                                                          "ytd":  4
