@@ -77,8 +77,8 @@ body{background:var(--bg);color:var(--text);
 
 <nav class="tab-bar">
   <a href="auftragsbestand.html">Auftragsbestand</a>
-  <a href="../presserei.html">Presserei</a>
-  <a href="../material.html">Material</a>
+  <a href="presserei.html">Presserei</a>
+  <a href="material.html">Material</a>
 </nav>
 
 <div class="page-content">
@@ -274,4 +274,4 @@ fetch("../_data/auftragsbestand.json?t=" + Date.now())
     showNotice("<b>Ladefehler:</b> " + esc(String(err.message || err)));
     document.getElementById("kd-title").textContent = kundeLabel(kundeKey) || "\u2014";
     console.error(err);
- 
+       
