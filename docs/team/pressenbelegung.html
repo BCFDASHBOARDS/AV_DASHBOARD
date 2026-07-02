@@ -386,7 +386,7 @@ function render(d) {
       if (ghEl) {
         ghEl.addEventListener("click", function() {
           var open = gbEl.style.display !== "none";
-          gbEl.style.display = open ? "none" : "";
+          gbEl.style.display = open ? "none" : "block";
           if (gcEl) gcEl.classList.toggle("open", !open);
         });
       }
@@ -398,7 +398,7 @@ function render(d) {
           mhEl.addEventListener("click", function(e) {
             e.stopPropagation();
             var mOpen = mbEl.style.display !== "none";
-            mbEl.style.display = mOpen ? "none" : "";
+            mbEl.style.display = mOpen ? "none" : "block";
             if (mcEl) mcEl.classList.toggle("open", !mOpen);
           });
         }
