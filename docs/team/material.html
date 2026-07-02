@@ -47,11 +47,11 @@ body{background:var(--bg);color:var(--text);
 .stat-cell-value{font-size:16px;font-weight:700;letter-spacing:-.3px;white-space:nowrap;}
 .mat-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
 .mat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
-  box-shadow:var(--shadow);padding:14px 18px;flex:1 1 160px;min-width:140px;}
+  box-shadow:var(--shadow);padding:10px 12px;flex:1 1 80px;min-width:80px;}
 .mat-card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
   color:var(--accent);margin-bottom:8px;}
 .mat-card-row{display:flex;justify-content:space-between;align-items:baseline;
-  font-size:12px;margin-bottom:4px;}
+  font-size:11px;margin-bottom:3px;}
 .mat-card-row-label{color:var(--text-sec);}
 .mat-card-row-val{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;}
 .lager-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
@@ -312,9 +312,8 @@ fetch("../_data/material.json?t="+Date.now())
     for(var mi=0;mi<matCfg.length;mi++){
       var mc=matCfg[mi];var mv=d[mc.key]||{};
       matHtml+="<div class=\"mat-card\"><div class=\"mat-card-title\">"+esc(mc.label)+"</div>"+
-        "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">Lagerbestand</span><span class=\"mat-card-row-val\">"+fmtT(mv.bestand)+"</span></div>"+
-        "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">Offene Prod</span><span class=\"mat-card-row-val\">"+fmtT(mv.offene_prod)+"</span></div>"+
-        "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">"+esc(akLabel)+"</span><span class=\"mat-card-row-val\">"+fmtT(mv.aktuell)+"</span></div>"+
+        "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">Bestand</span><span class=\"mat-card-row-val\">"+fmtT(mv.bestand)+"</span></div>"+
+        "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">Offen</span><span class=\"mat-card-row-val\">"+fmtT(mv.offene_prod)+"</span></div>"+
         "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">YTD</span><span class=\"mat-card-row-val\">"+fmtT(mv.ytd)+"</span></div></div>";
     }
     byId("mat-row").innerHTML=matHtml;
@@ -325,7 +324,7 @@ fetch("../_data/material.json?t="+Date.now())
       machHtml+="<div class=\"machine-block\">"+
         "<div class=\"machine-header\" onclick=\"toggleEl('body-"+mid+"','chev-"+mid+"')\">"+
           "<div><div class=\"machine-title\">"+esc(m2.label||m2.key)+"</div>"+
-          "<div class=\"machine-kpis\"><span>Lager: "+fmtT(m2.bestand)+"</span><span>Off.Prod: "+fmtT(m2.offene_prod)+"</span><span>"+esc(akLabel)+": "+fmtT(m2.aktuell)+"</span><span>YTD: "+fmtT(m2.ytd)+"</span></div></div>"+
+          "<div class=\"machine-kpis\"><div><span style=\"font-weight:700;color:var(--text)\">Off.Prod: "+fmtT(m2.offene_prod)+"</span>"+(vmLabel?"<span>"+esc(vmLabel)+": "+fmtT(m2.vormonat)+"</span>":"")+"<span>"+esc(akLabel)+": "+fmtT(m2.aktuell)+"</span></div><div><span>YTD: "+fmtT(m2.ytd)+"</span><span>Lager: "+fmtT(m2.bestand)+"</span></div></div></div>"+
           "<div class=\"machine-chevron\" id=\"chev-"+mid+"\">&#9654;</div>"+
         "</div>"+
         "<div class=\"machine-body\" id=\"body-"+mid+"\">"+buildMatgrpHtml(m2,mid,akLabel,vmLabel)+"</div></div>";
