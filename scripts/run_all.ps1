@@ -31,7 +31,7 @@ Log "===== Dashboard-Update gestartet ($DATE $TIME) =====" "Cyan"
 # neu gestartet -- auch wenn das Script mit Fehler abbricht.
 # ============================================================
 $odWasRunning = $false
-$odExe = Join-Path $env:LOCALAPPDATA "Microsoft\OneDrive\OneDrive.exe"
+$odExe = "C:\Program Files\Microsoft OneDrive\OneDrive.exe"
 
 $odProc = Get-Process -Name OneDrive -ErrorAction SilentlyContinue
 if ($odProc) {
@@ -105,6 +105,7 @@ try {
     # -- Schritt 5: Auftragsbestand-Extraktion --------------------
     Log "--- Auftragsbestand Extraktion ---" "Yellow"
     $s5 = Join-Path $SCRIPTS "05_auftragsbestand.ps1"
+
     if (Test-Path $s5) {
         try {
             & $s5 2>&1 | Out-String -Stream | ForEach-Object { Log "  $_" }
@@ -115,6 +116,20 @@ try {
             $failed += "Auftragsbestand Extraktion"
         }
     } else { Log "[SKIP] 05_auftragsbestand.ps1 nicht gefunden" "DarkGray" }
+
+    # -- Schritt 6: Material-Extraktion ---------------------------
+    Log "--- Material Extraktion ---" "Yellow"
+    $s6 = Join-Path $SCRIPTS "06_material.ps1"
+    if (Test-Path $s6) {
+        try {
+            & $s6 2>&1 | Out-String -Stream | ForEach-Object { Log "  $_" }
+            if ($LASTEXITCODE -ne 0) { throw "Exit-Code $LASTEXITCODE" }
+            Log "[OK] Material Extraktion" "Green"
+        } catch {
+            Log "[ERR] Material Extraktion: $_" "Red"
+            $failed += "Material Extraktion"
+        }
+    } else { Log "[SKIP] 06_material.ps1 nicht gefunden" "DarkGray" }
 
     # -- GitHub Push via Plumbing ----------------------------------
     # Plumbing-Methode: umgeht lokale Branch-Divergenz, kein git add/commit
@@ -144,31 +159,22 @@ try {
         # Remote-Tree in Temp-Index laden
         git read-tree $remoteHead 2>&1 | Out-Null
 
-        # JSON-Datei hashen und zum Index hinzufuegen
-        $jsonRel = "docs/_data/auftragsbestand.json"
-        $jsonAbs = Join-Path $BASE ($jsonRel -replace "/", "\")
-        if (-not (Test-Path $jsonAbs)) { throw "JSON nicht gefunden: $jsonAbs" }
-        $blob = (git hash-object -w $jsonAbs 2>$null)
-        if ($blob -notmatch '^[0-9a-f]{40}$') { throw "hash-object fehlgeschlagen fuer $jsonRel (blob='$blob')" }
-        git update-index --add --cacheinfo "100644,$blob,$jsonRel" 2>&1 | Out-Null
-        Log "  JSON gehasht: $($blob.Substring(0,8))" "DarkGray"
-
-        # Neuen Tree und Commit erstellen
-        $newTree   = (git write-tree 2>$null)
-        if ($newTree -notmatch '^[0-9a-f]{40}$') { throw "write-tree fehlgeschlagen" }
-        $commitMsg = "Auto-Update $DATE $TIME"
-        $newCommit = (git commit-tree $newTree -p $remoteHead -m $commitMsg 2>$null)
-        if ($newCommit -notmatch '^[0-9a-f]{40}$') { throw "commit-tree fehlgeschlagen" }
-        Log "  Neuer Commit: $($newCommit.Substring(0,8))" "DarkGray"
-
-        # Push
-        $pushOut = (git push origin "${newCommit}:refs/heads/main" 2>&1)
-        Log "  Push: $($pushOut -join '; ')" "DarkGray"
-
-        Pop-Location
-        Log "[OK] GitHub Push erfolgreich" "Green"
-    } catch {
-        Log "[ERR] GitHub Push: $_" "Red"
-        $failed += "GitHub Push"
-        Pop-Location -ErrorAction SilentlyContinue
-    } finally {
+        # Dateien hashen und zum Index hinzufuegen
+        $pushFiles = @(
+            "docs/_data/auftragsbestand.json",
+            "docs/_data/material.json",
+            "docs/auftragsbestand.html",
+            "docs/presserei.html",
+            "docs/material.html",
+            "docs/kunde.html"
+        )
+        foreach ($rel in $pushFiles) {
+            $abs = Join-Path $BASE ($rel -replace "/", "\")
+            if (-not (Test-Path $abs)) {
+                Log "  [SKIP] nicht gefunden: $rel" "DarkGray"
+                continue
+            }
+            $blob = (git hash-object -w $abs 2>$null)
+            if ($blob -notmatch '^[0-9a-f]{40}$') { throw "hash-object fehlgeschlagen fuer $rel (blob='$blob')" }
+            git update-index --add --cacheinfo "100644,$blob,$rel" 2>&1 | Out-Null
+            Log 

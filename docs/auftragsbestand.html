@@ -120,6 +120,7 @@ body{background:var(--bg);color:var(--text);
 <nav class="tab-bar">
   <a href="auftragsbestand.html" class="active">Auftragsbestand</a>
   <a href="presserei.html">Presserei</a>
+  <a href="material.html">Material</a>
 </nav>
 
 <div class="page-content">
@@ -479,10 +480,4 @@ fetch("_data/auftragsbestand.json?t=" + Date.now())
     showNotice("<b>Netzwerkfehler:</b> " + esc(String(err)));
     render(EMPTY);
     console.error("Dashboard-Fehler:", err);
-  });
-
-}());
-
-</script>
-</body>
-</html>
+ 
