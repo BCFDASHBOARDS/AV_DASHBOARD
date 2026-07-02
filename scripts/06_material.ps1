@@ -95,14 +95,14 @@ $pending  = [System.Collections.Generic.List[object]]::new()
 $allArts  = [System.Collections.Generic.List[object]]::new()
 
 for ($r = 2; $r -le $maxRow; $r++) {
-    $artnr = [string]($ws.Cells[$r, $COL_ARTNR].Value).Trim()
+    $artnr = "$($ws.Cells[$r, $COL_ARTNR].Value)".Trim()
 
     if ($artnr -match $ART_RE) {
         # Artikel-Zeile
         $vm = if ($COL_VM -gt 0) { Dbl ($ws.Cells[$r, $COL_VM].Value) } else { 0.0 }
         $art = [PSCustomObject]@{
             artnr    = $artnr
-            text     = [string]($ws.Cells[$r, $COL_KTEXT].Value).Trim()
+            text     = "$($ws.Cells[$r, $COL_KTEXT].Value)".Trim()
             bestand  = Dbl ($ws.Cells[$r, $COL_BESTAND].Value)
             ytd      = Dbl ($ws.Cells[$r, $COL_YTD].Value)
             vormonat = $vm
@@ -222,3 +222,4 @@ Write-Host "     Bestand: $gesamtBestand kg  |  YTD: $gesamtYtd kg  |  Vormonat 
 
 Close-ExcelPackage $pkg -NoSave
 exit 0
+          
