@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pressenbelegung &mdash; BCF Dashboard</title>
 <style>
+
 :root {
-  --bg:#f5f6f8; --surface:#ffffff; --border:#e1e4e8;
-  --text:#1a1e27; --text-sec:#6b7280; --accent:#1c5fa6;
-  --shadow:0 1px 4px rgba(0,0,0,.08); --r:8px;
+  --bg:#f5f6f8; --surface:#ffffff; --border:#e1e4e8; --text:#1a1e27;
+  --text-sec:#6b7280; --accent:#1c5fa6; --shadow:0 1px 4px rgba(0,0,0,.08); --r:8px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{font-size:14px;}
 body{background:var(--bg);color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
-  padding:0 0 40px;-webkit-font-smoothing:antialiased;}
+  padding:0 0 48px;-webkit-font-smoothing:antialiased;}
 .tab-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);
   padding:0 24px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
   position:sticky;top:0;z-index:10;}
@@ -24,20 +24,116 @@ body{background:var(--bg);color:var(--text);
   white-space:nowrap;transition:color .15s,border-color .15s;}
 .tab-bar a:hover{color:var(--text);}
 .tab-bar a.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
-.page-content{padding:20px 24px 0;}
-.page-header{margin-bottom:20px;}
-.page-header h1{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.3px;}
-.page-header .sub{font-size:12px;color:var(--text-sec);margin-top:3px;}
-.placeholder-card{background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--r);box-shadow:var(--shadow);padding:48px 32px;text-align:center;}
-.placeholder-icon{font-size:40px;margin-bottom:16px;opacity:.35;}
-.placeholder-card h2{font-size:16px;font-weight:600;color:var(--text);margin-bottom:8px;}
-.placeholder-card p{font-size:13px;color:var(--text-sec);max-width:360px;
-  margin:0 auto;line-height:1.6;}
+
+.page-content{padding:20px 24px 0;max-width:960px;}
+.kpi-row{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:16px 20px;flex:1 1 160px;min-width:140px;}
+.kpi-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--text-sec);margin-bottom:6px;}
+.kpi-value{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1.1;}
+.kpi-unit{font-size:12px;font-weight:400;color:var(--text-sec);margin-left:3px;}
+
+.widget-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden;}
+.widget-header{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border-bottom:1px solid var(--border);}
+.widget-title{font-size:13px;font-weight:700;}
+
+/* ---- Group rows ---- */
+.grp-item{border-bottom:1px solid #f1f3f6;}
+.grp-item:last-child{border-bottom:none;}
+.grp-hdr{display:flex;align-items:center;justify-content:space-between;
+  padding:11px 18px;cursor:pointer;user-select:none;transition:background .12s;}
+.grp-hdr:hover{background:#f8fafc;}
+.grp-left{display:flex;align-items:center;gap:8px;}
+.grp-chev{font-size:9px;color:var(--text-sec);transition:transform .2s;display:inline-block;}
+.grp-chev.open{transform:rotate(90deg);}
+.grp-name{font-size:13px;font-weight:700;color:var(--text);}
+.grp-right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.grp-stat{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text);min-width:62px;text-align:right;}
+.grp-stat-lbl{font-size:10px;color:var(--text-sec);margin-left:2px;font-weight:400;}
+.grp-body{display:none;background:#fafbfc;border-top:1px solid #f1f3f6;}
+
+/* ---- Machine rows ---- */
+.mach-item{border-bottom:1px solid #eef0f3;}
+.mach-item:last-child{border-bottom:none;}
+.mach-hdr{display:flex;align-items:center;justify-content:space-between;
+  padding:9px 18px 9px 34px;cursor:pointer;user-select:none;transition:background .12s;}
+.mach-hdr:hover{background:#f1f4f9;}
+.mach-left{display:flex;align-items:center;gap:7px;min-width:0;}
+.mach-chev{font-size:9px;color:var(--text-sec);transition:transform .2s;flex-shrink:0;}
+.mach-chev.open{transform:rotate(90deg);}
+.mach-name{font-size:12px;font-weight:700;color:var(--text);white-space:nowrap;}
+.mach-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.mach-stat{font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text-sec);min-width:52px;text-align:right;}
+.mach-stat b{color:var(--text);}
+.al-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+.al-green {background:#dcfce7;color:#166534;}
+.al-yellow{background:#fef9c3;color:#854d0e;}
+.al-orange{background:#ffedd5;color:#c2410c;}
+.al-red   {background:#fee2e2;color:#991b1b;}
+
+/* Auslastungsbalken */
+.al-bar-wrap   {width:88px;height:5px;background:#e5e7eb;border-radius:3px;overflow:hidden;flex-shrink:0;}
+.al-bar-wrap-sm{width:66px;height:4px;background:#e5e7eb;border-radius:2px;overflow:hidden;flex-shrink:0;}
+.al-bar        {height:100%;}
+.alb-grn{background:#22c55e;}
+.alb-blu{background:#3b82f6;}
+.alb-red{background:#ef4444;}
+
+.mach-body{display:none;background:#f5f7fa;border-top:1px solid #e8ebf0;padding:8px 18px 10px 34px;}
+
+/* ---- Order rows (2-line, like MAG article rows) ---- */
+.ord-row{padding:6px 0;border-bottom:1px solid #eaedf1;}
+.ord-row:last-of-type{border-bottom:none;}
+.ord-row.hidden{display:none;}
+.ord-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+.ord-kurztext{font-size:12px;font-weight:600;color:var(--text);
+  flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ord-vals{display:flex;align-items:baseline;gap:10px;flex-shrink:0;}
+.ord-val{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.ord-val-unit{font-size:10px;font-weight:400;color:var(--text-sec);}
+.ord-bot{display:flex;align-items:center;gap:8px;margin-top:2px;flex-wrap:wrap;}
+.ord-artnr{font-size:11px;color:#4b5563;font-family:monospace;}
+.ord-fa{font-size:11px;color:var(--text-sec);}
+.ord-badge{font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;}
+.zs-frei  {background:#dbeafe;color:#1e40af;}
+.zs-term  {background:#e5e7eb;color:#374151;}
+.zs-unterb{background:#ffedd5;color:#c2410c;}
+.zs-unk   {background:#f3f4f6;color:#6b7280;}
+.zs-gepl  {background:#ede9fe;color:#5b21b6;}
+.ord-row.extrapoliert{background:rgba(255,210,150,.28);}
+.ord-termin{font-size:10px;color:var(--text-sec);}
+.info-bar{background:#eff6ff;border:1px solid #bfdbfe;border-radius:var(--r);
+  padding:10px 16px;margin-bottom:14px;font-size:12px;color:#1e40af;
+  display:flex;align-items:center;gap:8px;}
+
+.expand-wrap{padding:6px 0 2px;}
+.expand-btn{display:block;width:100%;background:none;border:1px solid var(--border);
+  border-radius:6px;padding:6px;font-size:11px;font-weight:600;color:var(--accent);
+  cursor:pointer;text-align:center;transition:background .12s;}
+.expand-btn:hover{background:#eff6ff;border-color:var(--accent);}
+
+.ts-bar{font-size:11px;color:var(--text-sec);padding-top:4px;}
+.state-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:40px 32px;text-align:center;margin-bottom:14px;
+  color:var(--text-sec);font-size:13px;}
+.notice-bar{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);
+  padding:10px 16px;margin-bottom:14px;font-size:12px;color:#92400e;
+  display:flex;align-items:center;gap:8px;}
+.notice-bar b{font-weight:700;}
+
 @media(max-width:599px){
   .page-content{padding:12px 12px 0;}.tab-bar{padding:0 12px;}
-  .tab-bar a{padding:12px 14px 10px;}
+  .tab-bar a{padding:12px 14px 10px;}.kpi-value{font-size:18px;}
+  .kpi-card{padding:12px 14px;}.grp-hdr{padding:10px 12px;}
+  .mach-hdr{padding:8px 12px 8px 24px;}.mach-body{padding:6px 12px 8px 24px;}
+  .grp-right .grp-stat:not(:first-child){display:none;}
 }
+@media(min-width:600px) and (max-width:1023px){.page-content{padding:16px 16px 0;}}
+@media(min-width:1024px){.page-content{padding:24px 32px 0;}}
+
 </style>
 </head>
 <body>
@@ -51,16 +147,244 @@ body{background:var(--bg);color:var(--text);
 </nav>
 
 <div class="page-content">
-  <div class="page-header">
-    <h1>Pressenbelegung</h1>
-    <div class="sub">BCF Dashboard &middot; Daten noch nicht konfiguriert</div>
+  <div id="notice-bar" class="notice-bar" style="display:none">
+    <span>&#9888;</span><span id="notice-text"></span>
   </div>
-  <div class="placeholder-card">
-    <div class="placeholder-icon">&#128313;</div>
-    <h2>Noch keine Daten verf&uuml;gbar</h2>
-    <p>Diese Ansicht wird konfiguriert sobald die Datenstruktur f&uuml;r Pressenbelegung definiert ist.</p>
+  <div id="info-bar" class="info-bar" style="display:none">
+    <span>&#8505;</span><span id="info-text"></span>
+  </div>
+
+  <div id="root-loading" class="state-card">Daten werden geladen&hellip;</div>
+
+  <div id="root-data" style="display:none">
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Gesamt Belegung</div>
+        <div class="kpi-value" id="kv-pm">&mdash;<span class="kpi-unit">&#8240;</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Gesamt Tonnage</div>
+        <div class="kpi-value" id="kv-kg">&mdash;<span class="kpi-unit">t</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Gesamt Maschinenstunden</div>
+        <div class="kpi-value" id="kv-h">&mdash;<span class="kpi-unit">h</span></div>
+      </div>
+    </div>
+
+    <div class="widget-card">
+      <div class="widget-header">
+        <span class="widget-title">Pressenbelegung nach Maschinengruppe</span>
+      </div>
+      <div id="pb-rows"></div>
+    </div>
+
+    <div class="ts-bar" id="ts-bar"></div>
   </div>
 </div>
 
-</body>
-</html>
+<script>
+(function () {
+"use strict";
+
+var TOP_N = 5;
+
+function fmtN(v) {
+  if (v == null || isNaN(+v)) return "—";
+  return Math.round(+v).toLocaleString("de-DE");
+}
+function fmtKg(v) {
+  if (v == null || isNaN(+v)) return "—";
+  return (+v / 1000).toLocaleString("de-DE", {minimumFractionDigits:1, maximumFractionDigits:1});
+}
+function fmtH(v) {
+  if (v == null || isNaN(+v)) return "—";
+  return Math.round(+v).toLocaleString("de-DE");
+}
+function barHtml(h, maxH, thresh1, thresh2, sm) {
+  var pct = Math.min((+h || 0) / maxH, 1.0);
+  var col = (h < thresh1) ? 'grn' : (h < thresh2) ? 'blu' : 'red';
+  return '<div class="al-bar-wrap' + (sm ? '-sm' : '') + '">'
+       + '<div class="al-bar alb-' + col + '" style="width:' + Math.round(pct * 100) + '%"></div></div>';
+}
+function grpBarHtml(stunden, machCount) {
+  var avg = machCount > 0 ? (stunden || 0) / machCount : 0;
+  return barHtml(avg, 700, 250, 420, false);
+}
+function machBarHtml(stunden) {
+  return barHtml(stunden || 0, 900, 250, 400, true);
+}
+function fmtDate(s) {
+  if (!s) return "";
+  try {
+    var p = s.split("-");
+    return p[2] + "." + p[1] + "." + p[0].slice(2);
+  } catch(e) { return s; }
+}
+function esc(s) {
+  return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function auslastClass(t) {
+  if (t <= 10) return "al-green";
+  if (t <= 20) return "al-yellow";
+  if (t <= 30) return "al-orange";
+  return "al-red";
+}
+function zustandLabel(z) {
+  var m = {freigegeben:"frei",terminiert:"term.",unterbrochen:"unterb.",unbekannt:"?",geplant:"geplant"};
+  return m[z] || z;
+}
+function zustandClass(z) {
+  var m = {freigegeben:"zs-frei",terminiert:"zs-term",unterbrochen:"zs-unterb",unbekannt:"zs-unk",geplant:"zs-gepl"};
+  return m[z] || "zs-unk";
+}
+function showInfo(msg) {
+  var ib = document.getElementById("info-bar");
+  var it = document.getElementById("info-text");
+  if (ib && it) { it.innerHTML = msg; ib.style.display = ""; }
+}
+
+function showNotice(msg) {
+  var nb = document.getElementById("notice-bar");
+  var nt = document.getElementById("notice-text");
+  if (nb && nt) { nt.innerHTML = msg; nb.style.display = ""; }
+}
+function showStructure() {
+  document.getElementById("root-loading").style.display = "none";
+  document.getElementById("root-data").style.display = "";
+}
+
+/* Build order rows for one machine */
+function buildOrderHtml(auftraege, machId) {
+  if (!auftraege || !auftraege.length) {
+    return '<div style="padding:8px 0;font-size:12px;color:var(--text-sec);">Keine Aufträge</div>';
+  }
+  // Extrapolierte Aufträge ans Ende sortieren
+  var sorted = auftraege.slice().sort(function(a,b){return (a.extrapoliert?1:0)-(b.extrapoliert?1:0);});
+  var h = "";
+  for (var i = 0; i < sorted.length; i++) {
+    var a = sorted[i];
+    var hidden = i >= TOP_N ? " hidden" : "";
+    var exCls  = a.extrapoliert ? " extrapoliert" : "";
+    /* Restmenge = Soll - Ist (falls Ist vorhanden) */
+    var rest = (a.ist != null && a.ist > 0) ? (a.menge - a.ist) : a.menge;
+    var kt = a.kurztext || a.artnr || "—";
+    h += '<div class="ord-row' + hidden + exCls + '">'
+       + '<div class="ord-top">'
+       + '<div class="ord-kurztext">' + esc(kt) + '</div>'
+       + '<div class="ord-vals">'
+       + '<span class="ord-val">' + fmtN(rest) + '<span class="ord-val-unit">&thinsp;&#8240;</span></span>'
+       + (a.kg != null ? '<span class="ord-val">' + fmtKg(a.kg) + '<span class="ord-val-unit">&thinsp;t</span></span>' : '')
+       + (a.stunden != null ? '<span class="ord-val">' + fmtH(a.stunden) + '<span class="ord-val-unit">&thinsp;h</span></span>' : '')
+       + '</div>'
+       + '</div>'
+       + '<div class="ord-bot">'
+       + '<span class="ord-artnr">' + esc(a.artnr) + '</span>'
+       + '<span class="ord-fa">FA&nbsp;' + esc(a.fa) + '</span>'
+       + '<span class="ord-badge ' + zustandClass(a.zustand) + '">' + zustandLabel(a.zustand) + '</span>'
+       + (a.termin ? '<span class="ord-termin">KT:&nbsp;' + fmtDate(a.termin) + '</span>' : '')
+       + (a.bemerkung ? '<span class="ord-termin" style="color:#6b7280">' + esc(a.bemerkung.slice(0,40)) + '</span>' : '')
+       + '</div>'
+       + '</div>';
+  }
+  var rest2 = sorted.length - TOP_N;
+  if (rest2 > 0) {
+    h += '<div class="expand-wrap" id="ew-' + machId + '">'
+       + '<button class="expand-btn" onclick="toggleOrd(\'' + machId + '\',' + rest2 + ')">'
+       + '&#9660;&nbsp;Alle anzeigen (' + rest2 + ' weitere)</button></div>';
+  }
+  return h;
+}
+
+window.toggleOrd = function(machId, rest) {
+  var body = document.getElementById("mb-" + machId);
+  if (!body) return;
+  var rows = body.querySelectorAll(".ord-row.hidden");
+  var ewDiv = document.getElementById("ew-" + machId);
+  var btn = ewDiv ? ewDiv.querySelector("button") : null;
+  if (rows.length > 0) {
+    rows.forEach(function(r){ r.classList.remove("hidden"); });
+    if (btn) btn.innerHTML = "&#9650;&nbsp;Weniger anzeigen";
+  } else {
+    var allRows = body.querySelectorAll(".ord-row");
+    for (var j = TOP_N; j < allRows.length; j++) allRows[j].classList.add("hidden");
+    if (btn) btn.innerHTML = "&#9660;&nbsp;Alle anzeigen (" + rest + " weitere)";
+  }
+};
+
+function render(d) {
+  var kpi = d.kpi || {};
+  document.getElementById("kv-pm").innerHTML =
+    fmtN(kpi.gesamt_permille) + '<span class="kpi-unit">&thinsp;&#8240;</span>';
+  document.getElementById("kv-kg").innerHTML =
+    fmtKg(kpi.gesamt_kg) + '<span class="kpi-unit">&thinsp;t</span>';
+  document.getElementById("kv-h").innerHTML =
+    fmtH(kpi.gesamt_stunden) + '<span class="kpi-unit">&thinsp;h</span>';
+
+  var gruppen = d.gruppen || [];
+  var html = "";
+  var binds = []; /* {gId, mIds:[]} */
+
+  for (var gi = 0; gi < gruppen.length; gi++) {
+    var g = gruppen[gi];
+    var gId = "g" + gi;
+
+    var machCount = (g.maschinen || []).length;
+    html += '<div class="grp-item">'
+          + '<div class="grp-hdr" id="gh-' + gId + '">'
+          + '<div class="grp-left">'
+          + '<span class="grp-chev" id="gc-' + gId + '">&#9658;</span>'
+          + '<span class="grp-name">' + esc(g.name) + '</span>'
+          + '</div>'
+          + '<div class="grp-right">'
+          + grpBarHtml(g.stunden, machCount)
+          + '<span class="grp-stat">' + fmtN(g.permille) + '<span class="grp-stat-lbl">&#8240;</span></span>'
+          + '<span class="grp-stat">' + fmtKg(g.kg) + '<span class="grp-stat-lbl">&thinsp;t</span></span>'
+          + '<span class="grp-stat">' + fmtH(g.stunden) + '<span class="grp-stat-lbl">&thinsp;h</span></span>'
+          + '</div>'
+          + '</div>'
+          /* Group body — display:none initial für korrekte Accordion-Logik */
+          + '<div class="grp-body" id="gb-' + gId + '" style="display:none">';
+
+    var maschinen = g.maschinen || [];
+    var mIds = [];
+    for (var mi = 0; mi < maschinen.length; mi++) {
+      var m = maschinen[mi];
+      var mId = gId + "m" + mi;
+      mIds.push(mId);
+      var alCls = auslastClass(m.auslastung_tage || 0);
+
+      html += '<div class="mach-item">'
+            + '<div class="mach-hdr" id="mh-' + mId + '">'
+            + '<div class="mach-left">'
+            + '<span class="mach-chev" id="mc-' + mId + '">&#9658;</span>'
+            + '<span class="mach-name">' + esc(m.name) + '</span>'
+            + '</div>'
+            + '<div class="mach-right">'
+            + machBarHtml(m.stunden)
+            + '<span class="mach-stat"><b>' + fmtN(m.permille) + '</b>&thinsp;&#8240;</span>'
+            + '<span class="mach-stat"><b>' + fmtKg(m.kg) + '</b>&thinsp;t</span>'
+            + '<span class="mach-stat"><b>' + fmtH(m.stunden) + '</b>&thinsp;h</span>'
+            + '<span class="al-pill ' + alCls + '">'
+            + (m.auslastung_tage > 0 ? (Math.round(m.auslastung_tage * 10)/10).toFixed(1).replace(".",",") + '&thinsp;Tage' : '&mdash;')
+            + '</span>'
+            + '</div>'
+            + '</div>'
+            /* Machine orders — display:none initial für korrekte Accordion-Logik */
+            + '<div class="mach-body" id="mb-' + mId + '" style="display:none">'
+            + buildOrderHtml(m.auftraege, mId)
+            + '</div>'
+            + '</div>';
+    }
+
+    html += '</div></div>'; /* end grp-body + grp-item */
+    binds.push({ gId: gId, mIds: mIds });
+  }
+
+  document.getElementById("pb-rows").innerHTML = html;
+
+  /* Wire up toggles */
+  for (var bi = 0; bi < binds.length; bi++) {
+    (function(b) {
+      var ghEl = document.getElementById("gh-" + b.gId);
+      var gbEl = document.getElementById("gb-" + b
