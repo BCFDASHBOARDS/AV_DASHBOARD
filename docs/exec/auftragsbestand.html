@@ -461,7 +461,11 @@ fetch("../_data/auftragsbestand.json?t=" + Date.now())
   .then(function(r) {
     if (r.status === 404) return { _kein_datenstand: true };
     if (!r.ok) return { _error: "HTTP " + r.status };
-    return r.json().catch(function() { return { _error: "JSON parse-Fehler" }; });
+    return r.text().then(function(txt) {
+      if (txt.charCodeAt(0) === 0xFEFF) txt = txt.slice(1);  /* BOM strip */
+      try { return JSON.parse(txt); }
+      catch(e) { return { _error: "JSON: " + e.message + " ("+txt.length+" Zeichen, Start: "+txt.slice(0,20)+")" }; }
+    });
   })
   .then(function(data) {
     if (data._kein_datenstand) {
@@ -475,11 +479,4 @@ fetch("../_data/auftragsbestand.json?t=" + Date.now())
       render(EMPTY); return;
     }
     showStructure();
-    render(data);
-  })
-  .catch(function(err) {
-    showStructure();
-    showNotice("<b>Netzwerkfehler:</b> " + esc(String(err)));
-    render(EMPTY);
-    console.error("Dashboard-Fehler:", err);
-       
+   
