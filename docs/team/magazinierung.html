@@ -289,7 +289,7 @@ function render(d) {
 var EMPTY = { gesamt:null, gruppen:{}, davon_ankernaegel:null,
               ankernaegel_detail:{}, gruppen_detail:{}, timestamp:null };
 
-fetch("_data/magazinierung.json?t=" + Date.now())
+fetch("../_data/magazinierung.json?t=" + Date.now())
   .then(function(r) {
     if (r.status === 404) return { _kein_datenstand: true };
     if (!r.ok) return { _error: "HTTP " + r.status };
