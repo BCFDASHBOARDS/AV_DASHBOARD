@@ -274,4 +274,10 @@ fetch("_data/auftragsbestand.json?t=" + Date.now())
     showNotice("<b>Ladefehler:</b> " + esc(String(err.message || err)));
     document.getElementById("kd-title").textContent = kundeLabel(kundeKey) || "\u2014";
     console.error(err);
- 
+  });
+
+}());
+
+</script>
+</body>
+</html>
