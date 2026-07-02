@@ -359,4 +359,137 @@ fetch("_data/material.json?t="+Date.now())
     function lagerMach(m){
       if(!m) return "";
       var stift=matgrpByKey(m,"Stiftdraht");
-   
+      var edel =matgrpByKey(m,"Edelstahl");
+      var kalt =matgrpByKey(m,"Kaltstauchdraht");
+      var h="<div class=\"lager-machine\">"+
+        "<div class=\"lager-machine-name\">"+esc(m.key)+"</div>"+
+        "<div class=\"lager-machine-total\">"+fmtT(m.bestand)+"</div>"+
+        "<div class=\"lager-sub\">";
+      if(stift) h+="<div class=\"lager-sub-row\"><span class=\"lager-sub-label\">Stiftdraht (01-)</span><span class=\"lager-sub-val\">"+fmtT(stift.bestand)+"</span></div>";
+      if(edel)  h+="<div class=\"lager-sub-row\"><span class=\"lager-sub-label\">Edelstahl (08-/09-)</span><span class=\"lager-sub-val\">"+fmtT(edel.bestand)+"</span></div>";
+      if(kalt)  h+="<div class=\"lager-sub-row\"><span class=\"lager-sub-label\">Kaltstauchdraht</span><span class=\"lager-sub-val\">"+fmtT(kalt.bestand)+"</span></div>";
+      h+="</div></div>";
+      return h;
+    }
+    byId("lager-block").innerHTML=
+      "<div class=\"lager-header\">"+
+        "<div class=\"lager-header-title\">Gesamtlagerbestand</div>"+
+        "<div class=\"lager-header-value\">"+fmtT(d.gesamt_bestand)+"</div>"+
+      "</div>"+
+      "<div class=\"lager-machines\">"+lagerMach(nag)+lagerMach(dop)+"</div>";
+
+    /* MATERIALGÜTE */
+    var matCfg=[
+      {key:"mat_stiftdraht", label:"Stiftdraht"},
+      {key:"mat_kaltstauch", label:"Kaltstauchdraht"},
+      {key:"mat_edelstahl",  label:"Edelstahl"}
+    ];
+    var matHtml="";
+    for(var mi=0;mi<matCfg.length;mi++){
+      var mc=matCfg[mi]; var mv=d[mc.key]||{};
+      matHtml+="<div class=\"mat-card\">"+
+        "<div class=\"mat-card-title\">"+esc(mc.label)+"</div>"+
+        "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">Lagerbestand</span><span class=\"mat-card-row-val\">"+fmtT(mv.bestand)+"</span></div>"+
+        "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">Offene Prod</span><span class=\"mat-card-row-val\">"+fmtT(mv.offene_prod)+"</span></div>"+
+        "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">"+esc(akLabel)+"</span><span class=\"mat-card-row-val\">"+fmtT(mv.aktuell)+"</span></div>"+
+        "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">YTD</span><span class=\"mat-card-row-val\">"+fmtT(mv.ytd)+"</span></div>"+
+        "</div>";
+    }
+    byId("mat-row").innerHTML=matHtml;
+
+    /* MACHINE WIDGETS */
+    var machHtml="";
+    for(var mi2=0;mi2<masch.length;mi2++){
+      var m2=masch[mi2];
+      var mid="mach"+mi2;
+      machHtml+="<div class=\"machine-block\">"+
+        "<div class=\"machine-header\" onclick=\"toggleEl('body-"+mid+"','chev-"+mid+"')\">"+
+          "<div>"+
+            "<div class=\"machine-title\">"+esc(m2.label||m2.key)+"</div>"+
+            "<div class=\"machine-kpis\">"+
+              "<span>Lager: "+fmtT(m2.bestand)+"</span>"+
+              "<span>Off.Prod: "+fmtT(m2.offene_prod)+"</span>"+
+              "<span>"+esc(akLabel)+": "+fmtT(m2.aktuell)+"</span>"+
+              "<span>YTD: "+fmtT(m2.ytd)+"</span>"+
+            "</div>"+
+          "</div>"+
+          "<div class=\"machine-chevron\" id=\"chev-"+mid+"\">&#9654;</div>"+
+        "</div>"+
+        "<div class=\"machine-body\" id=\"body-"+mid+"\">"+
+          buildMatgrpHtml(m2,mid,akLabel,vmLabel)+
+        "</div></div>";
+    }
+    byId("machines-container").innerHTML=machHtml;
+  })
+  .catch(function(err){
+    byId("root-loading").style.display="none";
+    byId("root-data").style.display="";
+    showNotice("<b>Ladefehler:</b> "+esc(String(err.message||err)));
+    console.error(err);
+  });
+
+function buildMatgrpHtml(machine,mid,akLabel,vmLabel){
+  var mgs=machine.materialgruppen||[];
+  if(!mgs.length) return "<div style=\"padding:16px 18px;color:#6b7280;font-size:12px\">Keine Materialgruppen</div>";
+  var html="";
+  for(var gi=0;gi<mgs.length;gi++){
+    var g=mgs[gi];
+    var gid=mid+"mg"+gi;
+    html+="<div class=\"matgrp-block\">"+
+      "<div class=\"matgrp-header\" onclick=\"toggleEl('body-"+gid+"','chev-"+gid+"')\">"+
+        "<div>"+
+          "<div class=\"matgrp-title\">"+esc(g.label||g.key)+"</div>"+
+          "<div class=\"matgrp-kpis\">"+
+            "<span>Lager: "+fmtT(g.bestand)+"</span>"+
+            "<span>Off.Prod: "+fmtT(g.offene_prod)+"</span>"+
+            "<span>"+esc(akLabel)+": "+fmtT(g.aktuell)+"</span>"+
+          "</div>"+
+        "</div>"+
+        "<div class=\"matgrp-chevron\" id=\"chev-"+gid+"\">&#9654;</div>"+
+      "</div>"+
+      "<div class=\"matgrp-body\" id=\"body-"+gid+"\">"+
+        buildArtTable(g.artikel||[],akLabel,vmLabel)+
+      "</div></div>";
+  }
+  return html;
+}
+
+function buildArtTable(arts,akLabel,vmLabel){
+  if(!arts.length) return "<div style=\"padding:12px 18px;color:#6b7280;font-size:12px\">Keine Artikel</div>";
+  var vmCol = vmLabel ? esc(vmLabel) : "Vormonat";
+  var h="<div class=\"art-table-wrap\"><table class=\"art-table\"><thead><tr>"+
+    "<th>Art.-Nr.</th>"+
+    "<th>Kurztext</th>"+
+    "<th class=\"r\">Off. Prod</th>"+
+    "<th class=\"r\">Bestand</th>"+
+    "<th class=\"r\">Verbr. "+vmCol+"</th>"+
+    "<th class=\"r\">Verbr. YTD</th>"+
+    "<th class=\"r\">"+esc(akLabel)+"</th>"+
+    "</tr></thead><tbody>";
+  for(var i=0;i<arts.length;i++){
+    var a=arts[i];
+    var warn=(a.offene_prod>0 && a.bestand<a.offene_prod) ? " art-row-warn" : "";
+    h+="<tr class=\""+warn+"\">"+
+      "<td><span class=\"art-artnr\">"+esc(a.artnr)+"</span></td>"+
+      "<td><span class=\"art-text\">"+esc(a.text)+"</span></td>"+
+      "<td class=\"r num\">"+fmtKg(a.offene_prod)+"</td>"+
+      "<td class=\"r num\">"+fmtKg(a.bestand)+"</td>"+
+      "<td class=\"r num\">"+fmtKg(a.vormonat)+"</td>"+
+      "<td class=\"r num\">"+fmtKg(a.ytd)+"</td>"+
+      "<td class=\"r num\">"+fmtKg(a.aktuell)+"</td>"+
+      "</tr>";
+  }
+  h+="</tbody></table></div>";
+  return h;
+}
+
+window.toggleEl=function(bodyId,chevId){
+  var b=document.getElementById(bodyId);
+  var c=document.getElementById(chevId);
+  if(b&&c){ var o=b.classList.toggle("open"); c.classList.toggle("open",o); }
+};
+
+}());
+</script>
+</body>
+</html>
