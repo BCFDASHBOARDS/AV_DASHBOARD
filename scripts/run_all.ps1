@@ -160,13 +160,13 @@ try {
         git read-tree $remoteHead 2>&1 | Out-Null
 
         # Dateien hashen und zum Index hinzufuegen
+        # Nur JSON-Daten -- HTML-Seiten (exec/, team/) werden separat via
+        # git-Plumbing gepusht wenn sich das Dashboard aendert.
+        # Root-HTML-Dateien (auftragsbestand.html etc.) sind veraltet;
+        # kanonische Seiten liegen unter docs/exec/ und docs/team/.
         $pushFiles = @(
             "docs/_data/auftragsbestand.json",
-            "docs/_data/material.json",
-            "docs/auftragsbestand.html",
-            "docs/presserei.html",
-            "docs/material.html",
-            "docs/kunde.html"
+            "docs/_data/material.json"
         )
         foreach ($rel in $pushFiles) {
             $abs = Join-Path $BASE ($rel -replace "/", "\")
@@ -175,6 +175,4 @@ try {
                 continue
             }
             $blob = (git hash-object -w $abs 2>$null)
-            if ($blob -notmatch '^[0-9a-f]{40}$') { throw "hash-object fehlgeschlagen fuer $rel (blob='$blob')" }
-            git update-index --add --cacheinfo "100644,$blob,$rel" 2>&1 | Out-Null
-            Log 
+            if ($blob -notmatch '^[0-9a-f]{40}$') { throw "hash-object fehlge
