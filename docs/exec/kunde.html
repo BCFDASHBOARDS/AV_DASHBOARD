@@ -277,4 +277,13 @@ fetch("../_data/auftragsbestand.json?t=" + Date.now())
   .catch(function(err) {
     document.getElementById("root-loading").style.display = "none";
     showData();
-    showNotice("<b>Ladefehler:</b> " + esc(String(err.message || err
+    showNotice("<b>Ladefehler:</b> " + esc(String(err.message || err)));
+    document.getElementById("kd-title").textContent = kundeLabel(kundeKey) || "—";
+    console.error(err);
+  });
+
+}());
+</script>
+
+</body>
+</html>

@@ -479,4 +479,17 @@ fetch("../_data/auftragsbestand.json?t=" + Date.now())
       render(EMPTY); return;
     }
     showStructure();
-   
+    render(data);
+  })
+  .catch(function(err) {
+    showStructure();
+    showNotice("<b>Netzwerkfehler:</b> " + esc(String(err)));
+    render(EMPTY);
+    console.error("Dashboard-Fehler:", err);
+  });
+
+}());
+</script>
+
+</body>
+</html>
