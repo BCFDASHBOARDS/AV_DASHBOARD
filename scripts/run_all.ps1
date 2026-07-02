@@ -131,6 +131,20 @@ try {
         }
     } else { Log "[SKIP] 06_material.ps1 nicht gefunden" "DarkGray" }
 
+    # -- Schritt 7: MAG-Extraktion --------------------------------
+    Log "--- MAG Extraktion ---" "Yellow"
+    $s7 = Join-Path $SCRIPTS "07_magazinierung.ps1"
+    if (Test-Path $s7) {
+        try {
+            & $s7 2>&1 | Out-String -Stream | ForEach-Object { Log "  $_" }
+            if ($LASTEXITCODE -ne 0) { throw "Exit-Code $LASTEXITCODE" }
+            Log "[OK] MAG Extraktion" "Green"
+        } catch {
+            Log "[ERR] MAG Extraktion: $_" "Red"
+            $failed += "MAG Extraktion"
+        }
+    } else { Log "[SKIP] 07_magazinierung.ps1 nicht gefunden" "DarkGray" }
+
     # -- GitHub Push via Plumbing ----------------------------------
     # Plumbing-Methode: umgeht lokale Branch-Divergenz, kein git add/commit
     # Pushed immer auf Basis des aktuellen Remote-HEAD
@@ -162,17 +176,4 @@ try {
         # Dateien hashen und zum Index hinzufuegen
         # Nur JSON-Daten -- HTML-Seiten (exec/, team/) werden separat via
         # git-Plumbing gepusht wenn sich das Dashboard aendert.
-        # Root-HTML-Dateien (auftragsbestand.html etc.) sind veraltet;
-        # kanonische Seiten liegen unter docs/exec/ und docs/team/.
-        $pushFiles = @(
-            "docs/_data/auftragsbestand.json",
-            "docs/_data/material.json"
-        )
-        foreach ($rel in $pushFiles) {
-            $abs = Join-Path $BASE ($rel -replace "/", "\")
-            if (-not (Test-Path $abs)) {
-                Log "  [SKIP] nicht gefunden: $rel" "DarkGray"
-                continue
-            }
-            $blob = (git hash-object -w $abs 2>$null)
-            if ($blob -notmatch '^[0-9a-f]{40}$') { throw "hash-object fehlge
+        # Root-HTML-Dateien (auftragsbestan
