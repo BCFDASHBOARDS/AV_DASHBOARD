@@ -1,175 +1,2578 @@
 {
-  "gesamt": 442075,
+  "gesamt": 405789,
   "gruppen": {
-    "CDF_UTC": 166401,
+    "CDF_UTC": 139359,
     "Papertape": 121821,
     "Drahtcoil": 92219,
     "Streifennaegel_KS": 47313,
-    "BSN": 13866,
+    "BSN": 4622,
     "KRL": 456
   },
   "davon_ankernaegel": 44104,
   "ankernaegel_detail": {
-    "top_artikel": [
+    "artikel": [
       {
         "artnr": "50-400040-101-13107",
+        "kurztext": "BC 40/40 Ring anchor 12µm 1.6M",
         "menge": 18240
       },
       {
         "artnr": "42-400050-005-13212",
+        "kurztext": "4,0x50 mm Ring G12 Ankernagel 34° 1.0M",
         "menge": 4500
       },
       {
         "artnr": "42-400062-006-12611",
+        "kurztext": "RB 4,0x60 mm Ring G12 34° 2.0M ETA",
         "menge": 2972
       },
       {
         "artnr": "42-400042-011-11913",
+        "kurztext": "141039 4,0x40 mm Ring G12 ITW 2.0M",
         "menge": 2252
       },
       {
         "artnr": "42-400060-100-12611",
+        "kurztext": "LBA 25° 4,0x60 mm Ring G12 2.0M ETA",
         "menge": 2064
+      },
+      {
+        "artnr": "47-400050-001-12407",
+        "kurztext": "34° 4,0x50 mm Ring G12 Papertape 2.0M",
+        "menge": 1300
+      },
+      {
+        "artnr": "42-400050-025-13307",
+        "kurztext": "4,0x50 mm Ring G12 Würth 34° 2.0M",
+        "menge": 1040
+      },
+      {
+        "artnr": "42-400040-005-13212",
+        "kurztext": "4,0x40 mm Ring G12 Ankernagel 34° 1.0M",
+        "menge": 1025
+      },
+      {
+        "artnr": "50-400040-111-13107",
+        "kurztext": "BC 40/40 Ring anchor HDG55 1.6M",
+        "menge": 987
+      },
+      {
+        "artnr": "42-400052-001-11209",
+        "kurztext": "4,0x50 mm Ring G12 Ankernagel 34° 2.0M",
+        "menge": 910
+      },
+      {
+        "artnr": "42-400052-011-11913",
+        "kurztext": "141043 4,0x50 mm Ring G12 ITW 1.6M",
+        "menge": 720
+      },
+      {
+        "artnr": "42-400062-001-11209",
+        "kurztext": "4,0x60 mm Ring G12 Ankernagel 34° 2.0M",
+        "menge": 650
+      },
+      {
+        "artnr": "42-400042-010-13107",
+        "kurztext": "4,0 x 40 mm Ring HDG Ankernagel 34° 2.4M",
+        "menge": 624
+      },
+      {
+        "artnr": "42-400052-001",
+        "kurztext": "4,0 x 50 mm Ring G12 Ankernagel 34° 2.0M",
+        "menge": 520
+      },
+      {
+        "artnr": "40-400060-047-12502",
+        "kurztext": "4,0x60 mm Ring G12 Ankernagel 25° 2.0M",
+        "menge": 516
+      },
+      {
+        "artnr": "47-400052-001-12919",
+        "kurztext": "34° 4,0x50 mm Ring G12 Papertape 2.0M",
+        "menge": 480
+      },
+      {
+        "artnr": "42-400042-010-11510",
+        "kurztext": "4,0 x 40 mm Ring HDG Ankernagel 34° 2.4M",
+        "menge": 374
+      },
+      {
+        "artnr": "40-400050-001",
+        "kurztext": "4,0 x 50 mm Ring G12 Ankernagel 25° 2.0M",
+        "menge": 360
+      },
+      {
+        "artnr": "50-400050-101",
+        "kurztext": "4,0 x 50 mm Ring Ankernagel blau 1.6M",
+        "menge": 307
+      },
+      {
+        "artnr": "42-400042-502-11913",
+        "kurztext": "141041 4,0x40 mm Ring SS304 ITW 2.0M",
+        "menge": 300
+      },
+      {
+        "artnr": "50-400040-111-11510",
+        "kurztext": "4,0 x 40 mm Ring Ankernagel FZN 1.8M",
+        "menge": 281
+      },
+      {
+        "artnr": "50-400060-101-12714",
+        "kurztext": "4,0 x 60 mm Ring G12 Ankernagel 15° 1.6M",
+        "menge": 269
+      },
+      {
+        "artnr": "50-400060-106-12611",
+        "kurztext": "4,0x60 mm 15° Ankernagel DACH G12 1.6M",
+        "menge": 269
+      },
+      {
+        "artnr": "42-400060-025-13307",
+        "kurztext": "4,0x60 mm Ring G12 Würth 34° 2.0M",
+        "menge": 260
+      },
+      {
+        "artnr": "47-400052-001",
+        "kurztext": "34° 4,0 x 50 mm Ring G12 Papertape 2.0M",
+        "menge": 260
+      },
+      {
+        "artnr": "40-400050-001-12028",
+        "kurztext": "4,0 x 50 mm Ring nk Ankernagel 2.0M",
+        "menge": 240
+      },
+      {
+        "artnr": "50-400050-101-13107",
+        "kurztext": "BC 40/50 Ring anchor 12µm 1.2M",
+        "menge": 216
+      },
+      {
+        "artnr": "50-400035-101-13107",
+        "kurztext": "BC 40/35 Ring anchor 12µm 1.6M",
+        "menge": 192
+      },
+      {
+        "artnr": "42-400042-001-11209",
+        "kurztext": "4,0x40 mm Ring G12 Ankernagel 34° 2.4M",
+        "menge": 156
+      },
+      {
+        "artnr": "50-400050-101-12028",
+        "kurztext": "4,0 x 50 mm Ring Ankernagel blau 1.6M",
+        "menge": 154
+      },
+      {
+        "artnr": "47-400062-001-12919",
+        "kurztext": "34° 4,0x60 mm Ring G12 Papertape 1.7M",
+        "menge": 133
+      },
+      {
+        "artnr": "42-400042-006-12611",
+        "kurztext": "RB 4,0x40 mm Ring G12 34° 2.0M ETA",
+        "menge": 130
+      },
+      {
+        "artnr": "42-400050-021-13307",
+        "kurztext": "4,0x50 mm Ring FZN55 Würth 34° 2.0M",
+        "menge": 130
+      },
+      {
+        "artnr": "42-400050-100-12611",
+        "kurztext": "LBA 25° 4,0x50 mm Ring G12 2.0M ETA",
+        "menge": 130
+      },
+      {
+        "artnr": "42-400052-001-13105",
+        "kurztext": "4,0 x 50 mm Ring G12 Ankernagel 34° 2.0M",
+        "menge": 130
+      },
+      {
+        "artnr": "42-400052-006-12611",
+        "kurztext": "RB 4,0x50 mm Ring G12 34° 2.0M ETA",
+        "menge": 130
+      },
+      {
+        "artnr": "42-400062-001",
+        "kurztext": "4,0 x 60 mm Ring G12 Ankernagel 34° 2.0M",
+        "menge": 130
+      },
+      {
+        "artnr": "42-400062-001-11826",
+        "kurztext": "4,0x60 mm Ring G12 Ankernagel 34° 2.0M",
+        "menge": 130
+      },
+      {
+        "artnr": "42-400062-001-13105",
+        "kurztext": "4,0 x 60 mm Ring G12 Ankernagel 34° 2.0M",
+        "menge": 130
+      },
+      {
+        "artnr": "42-400042-551-13107",
+        "kurztext": "4,0 x 40 mm Ring V4A  Ankernagel 34° 2.4M",
+        "menge": 125
+      },
+      {
+        "artnr": "40-400038-010-12803",
+        "kurztext": "ANCHOR STICK 4.00-38 RING GAL",
+        "menge": 120
+      },
+      {
+        "artnr": "40-400040-030-12028",
+        "kurztext": "4,0 x 40 mm Ring G12 Ankernagel 34° 2.0M",
+        "menge": 120
+      },
+      {
+        "artnr": "50-400040-570-13107",
+        "kurztext": "BC 40/40 Ring anchor A4 1.4401 1.6M",
+        "menge": 96
+      },
+      {
+        "artnr": "40-600080-006",
+        "kurztext": "6,0 x 80 mm Ring G12 Ankernagel 34° 8.25M",
+        "menge": 33
       }
     ]
   },
   "gruppen_detail": {
-    "Drahtcoil": {
-      "top_artikel": [
-        {
-          "artnr": "30-250065-002-11623",
-          "menge": 9792
-        },
-        {
-          "artnr": "30-250065-042-11913",
-          "menge": 4608
-        },
-        {
-          "artnr": "30-250065-012-11623",
-          "menge": 3456
-        },
-        {
-          "artnr": "30-280065-006-11913",
-          "menge": 3120
-        },
-        {
-          "artnr": "30-280040-002",
-          "menge": 2656
-        }
-      ]
-    },
-    "Streifennaegel_KS": {
-      "top_artikel": [
-        {
-          "artnr": "42-400050-005-13212",
-          "menge": 4500
-        },
-        {
-          "artnr": "40-280026-500-13107",
-          "menge": 3519
-        },
-        {
-          "artnr": "40-380120-003-12502",
-          "menge": 3276
-        },
-        {
-          "artnr": "42-400062-006-12611",
-          "menge": 2972
-        },
-        {
-          "artnr": "42-400042-011-11913",
-          "menge": 2252
-        }
-      ]
-    },
-    "Papertape": {
-      "top_artikel": [
-        {
-          "artnr": "45-280065-005-13307",
-          "menge": 8571
-        },
-        {
-          "artnr": "45-280075-002-13025",
-          "menge": 8197
-        },
-        {
-          "artnr": "45-310090-041-11913",
-          "menge": 7296
-        },
-        {
-          "artnr": "45-310090-005-13307",
-          "menge": 7137
-        },
-        {
-          "artnr": "45-310080-005-13307",
-          "menge": 5940
-        }
-      ]
-    },
     "CDF_UTC": {
-      "top_artikel": [
+      "artikel": [
         {
           "artnr": "50-400040-101-13107",
+          "kurztext": "BC 40/40 Ring anchor 12µm 1.6M",
           "menge": 18240
         },
         {
-          "artnr": "50-310038-605-11913",
-          "menge": 12600
-        },
-        {
-          "artnr": "50-310045-605-11913",
-          "menge": 12516
-        },
-        {
           "artnr": "50-280026-825-11913",
+          "kurztext": "142200 2,8/3,0X25 Ring HDG55 Haften 1.0M",
           "menge": 8184
         },
         {
           "artnr": "50-250050-551-11913",
+          "kurztext": "391068 IN 2,5x50 mm Ring A2 Liko 9.75M",
           "menge": 6484
+        },
+        {
+          "artnr": "50-310038-610-11913",
+          "kurztext": "923890 3,1X38 Ring ALU Tile Nail 1.0M +1",
+          "menge": 6300
+        },
+        {
+          "artnr": "50-310045-610-11913",
+          "kurztext": "923891 3,1X45 Ring ALU Tile Nail 1.0M +1",
+          "menge": 6258
+        },
+        {
+          "artnr": "50-250050-580-13107",
+          "kurztext": "ZE 25/50 Ring Liko 1.4401 1.95M",
+          "menge": 4171
+        },
+        {
+          "artnr": "50-250050-108-11913",
+          "kurztext": "395615 IN 2,5/2,8x50 mm Ring HDG55 1.95M",
+          "menge": 4036
+        },
+        {
+          "artnr": "50-250065-108-11913",
+          "kurztext": "395479 IN 2,5/2,7x65 mm Ring HDG55 1.95M",
+          "menge": 3789
+        },
+        {
+          "artnr": "50-250065-552-11510",
+          "kurztext": "2,5/2,8 x 65 mm Ring V4A 1.75M",
+          "menge": 3504
+        },
+        {
+          "artnr": "50-250065-580-13107",
+          "kurztext": "ZE 25/65 Ring Liko 1.4401 1.3M",
+          "menge": 3272
+        },
+        {
+          "artnr": "50-210045-116-11913",
+          "kurztext": "396253 IN 2,1x45 Ring EG12Y JC1200 12.0M",
+          "menge": 3156
+        },
+        {
+          "artnr": "50-280065-115-11913",
+          "kurztext": "142218 IN 2,8/3,0x65 mm Ring HDG55 7.8M",
+          "menge": 2808
+        },
+        {
+          "artnr": "50-280050-117-11913",
+          "kurztext": "IN-JC 2,8x50 Ring EG12 JC2100 GIKA 163.8M",
+          "menge": 2621
+        },
+        {
+          "artnr": "50-210045-102-11913",
+          "kurztext": "312368 IN 2,1/2,3x45 mm Ring 11.7M",
+          "menge": 2527
+        },
+        {
+          "artnr": "50-250050-115-11913",
+          "kurztext": "142220 IN 2,5/2,8x50 mm Ring HDG55 9.75M",
+          "menge": 2476
+        },
+        {
+          "artnr": "50-210050-102-11913",
+          "kurztext": "312370 IN 2,1/2,3x50 mm Ring 9.75M",
+          "menge": 2457
+        },
+        {
+          "artnr": "50-250060-114-11913",
+          "kurztext": "396026 IN 2,5/2,7x60 Ring G12 7.8M",
+          "menge": 2246
+        },
+        {
+          "artnr": "50-250075-108-11913",
+          "kurztext": "395623 IN 2,5/2,7x75 mm Ring HDG55 1.95M",
+          "menge": 2044
+        },
+        {
+          "artnr": "50-280026-830-11913",
+          "kurztext": "140612 GN 2,8/3,0X25 Ring A2 Haften 1.2M",
+          "menge": 1946
+        },
+        {
+          "artnr": "50-210040-102-11913",
+          "kurztext": "312366 IN 2,1/2,3x40 mm Ring 11.70M",
+          "menge": 1919
+        },
+        {
+          "artnr": "50-280050-817-11913",
+          "kurztext": "GN-JC 2,8x50 Ring EG12Y JC600 GIKA 86.4M",
+          "menge": 1901
+        },
+        {
+          "artnr": "50-210050-561-13107",
+          "kurztext": "MX 21/50 Ring Liko 1.4401 2.4M",
+          "menge": 1728
+        },
+        {
+          "artnr": "50-250050-117-11913",
+          "kurztext": "IN-JC 2,5x50 Ring EG12Y JC1200 GIKA 9.6M",
+          "menge": 1670
+        },
+        {
+          "artnr": "50-280032-825-11913",
+          "kurztext": "142209 2,8/3,0X32 Ring HDG55 Haften 1.0M",
+          "menge": 1660
+        },
+        {
+          "artnr": "50-210035-102-11913",
+          "kurztext": "312364 IN 2,1/2,3x35 mm Ring 13.65M",
+          "menge": 1474
+        },
+        {
+          "artnr": "50-250065-115-11913",
+          "kurztext": "142221 IN 2,5/2,8x65 mm Ring HDG55 7.8M",
+          "menge": 1404
+        },
+        {
+          "artnr": "50-250045-119-11913",
+          "kurztext": "312547 IN 2,5x45 mm Ring G12 GIKA 11.7M",
+          "menge": 1264
+        },
+        {
+          "artnr": "51-420051-850-11913",
+          "kurztext": "GN 4,2x51 mm PH2 GALV5 4.5M",
+          "menge": 1260
+        },
+        {
+          "artnr": "50-250055-500-13212",
+          "kurztext": "2,5/2,8 x 55 mm Ring A2 LIKO 5.25M",
+          "menge": 1160
+        },
+        {
+          "artnr": "50-210032-102-11913",
+          "kurztext": "312362 IN 2,1/2,3x32 mm Ring 15.6M",
+          "menge": 1123
+        },
+        {
+          "artnr": "50-250070-102-11913",
+          "kurztext": "312382 IN 2,5x70 mm Ring 7.8M",
+          "menge": 1123
+        },
+        {
+          "artnr": "50-210040-112-11913",
+          "kurztext": "IN-JC 2,1x40 Ring JC1200 12.0M",
+          "menge": 1080
+        },
+        {
+          "artnr": "50-250060-108-11913",
+          "kurztext": "142222 IN 2,5/2,8x60 mm Ring HDG55 1.95M",
+          "menge": 1076
+        },
+        {
+          "artnr": "50-280050-106-12717",
+          "kurztext": "2,5/3,1 x 50 mm Ring G12 0° JC1200 9.6M",
+          "menge": 1037
+        },
+        {
+          "artnr": "50-250050-552-11510",
+          "kurztext": "2,5/2,8 x 50 mm Ring V4A 1.75M",
+          "menge": 1024
+        },
+        {
+          "artnr": "50-400040-111-13107",
+          "kurztext": "BC 40/40 Ring anchor HDG55 1.6M",
+          "menge": 987
+        },
+        {
+          "artnr": "50-210035-106-11913",
+          "kurztext": "312504 IN 2,1/2,3x35 mm Ring G12 13.65M",
+          "menge": 983
+        },
+        {
+          "artnr": "50-280055-113-11913",
+          "kurztext": "IN-JC 2,8/3,1x55 mm Ring HDG55 JC900",
+          "menge": 983
+        },
+        {
+          "artnr": "50-280026-851",
+          "kurztext": "2,8/3,1 x 26 mm Ring Hutkopf V2A 2.25M",
+          "menge": 945
+        },
+        {
+          "artnr": "50-280065-580-11913",
+          "kurztext": "142217 IN 2,8x65 mm Ring A4 1.95M",
+          "menge": 942
+        },
+        {
+          "artnr": "50-210027-301",
+          "kurztext": "2,1/2,4 x 27mm NS TX10 10.8M",
+          "menge": 864
+        },
+        {
+          "artnr": "50-280026-821-11913",
+          "kurztext": "142200 2,8/3,0X25 Ring HDG55 1.0M",
+          "menge": 768
+        },
+        {
+          "artnr": "50-250025-003-12702",
+          "kurztext": "2,5/2,8 x 25 Ring Haften V2A 3.6M",
+          "menge": 720
+        },
+        {
+          "artnr": "50-280035-306",
+          "kurztext": "2,8/3,1x35 TX15 G12 Pilotspitze 8.4M",
+          "menge": 672
+        },
+        {
+          "artnr": "51-280040-318-11913",
+          "kurztext": "IN-JC 2,8x40 Ballistic EG10 JC1200 9.6M",
+          "menge": 595
+        },
+        {
+          "artnr": "50-250040-304",
+          "kurztext": "2,5/2,8x40 NS TX15 VG G12 7.2M",
+          "menge": 576
+        },
+        {
+          "artnr": "50-250060-118-11913",
+          "kurztext": "IN-JC 2,5x60 Ring EG12Y JC1200 9.6M",
+          "menge": 576
+        },
+        {
+          "artnr": "50-280045-512",
+          "kurztext": "2,8/3,2x45 mm NS TX15 V2A 7.2M",
+          "menge": 576
+        },
+        {
+          "artnr": "50-250070-103-11913",
+          "kurztext": "312575 IN 2,5/2,7x70 mm Screw 7.8M",
+          "menge": 562
+        },
+        {
+          "artnr": "50-180038-595-11913",
+          "kurztext": "395808 SN 1,8x38 mm Screw Lens V2A 7.2M",
+          "menge": 547
+        },
+        {
+          "artnr": "50-210045-500-13212",
+          "kurztext": "2,1/2,4 x 45 mm Ring V2A LIKO 6.0M",
+          "menge": 540
+        },
+        {
+          "artnr": "50-210050-581-13107",
+          "kurztext": "ZE 21/50 Ring Liko 1.4401 1.95M",
+          "menge": 538
+        },
+        {
+          "artnr": "50-250050-500-13107",
+          "kurztext": "ZE 25/50 Ring Liko 1.4301 1.95M",
+          "menge": 538
+        },
+        {
+          "artnr": "50-250075-101-11913",
+          "kurztext": "312383 IN 2,5x75 mm 5.85M",
+          "menge": 526
+        },
+        {
+          "artnr": "50-280035-104-13212",
+          "kurztext": "2,8/3,0 x 35 Profiliert VGNK blau 8.4M",
+          "menge": 504
+        },
+        {
+          "artnr": "50-210045-551-11913",
+          "kurztext": "391053 IN 2,1x45 mm Ring A2 Liko 11.7M",
+          "menge": 421
+        },
+        {
+          "artnr": "50-250040-102-11913",
+          "kurztext": "395756 IN 2,5/2,7x40 mm Ring 11.7M",
+          "menge": 421
+        },
+        {
+          "artnr": "50-250045-115-11913",
+          "kurztext": "395977 IN 2,5/2,8x45 mm Ring HDG55 11.7M",
+          "menge": 421
+        },
+        {
+          "artnr": "50-250050-580-11913",
+          "kurztext": "395617 IN 2,5x50 mm Ring A4 Liko 1.95M",
+          "menge": 404
+        },
+        {
+          "artnr": "50-250065-580-11913",
+          "kurztext": "395622 IN 2,5x65 mm Ring A4 Liko 1.95M",
+          "menge": 404
+        },
+        {
+          "artnr": "50-210035-561-13107",
+          "kurztext": "MX 21/35 Ring Liko 1.4401 3.2M",
+          "menge": 384
+        },
+        {
+          "artnr": "50-250025-003",
+          "kurztext": "2,5/2,8 x 25 Ring Haften V2A 3.6M",
+          "menge": 360
+        },
+        {
+          "artnr": "50-250025-003-11202",
+          "kurztext": "TC 26X26 RF 1.4301 Ring 3.6M",
+          "menge": 360
+        },
+        {
+          "artnr": "50-250025-005-13107",
+          "kurztext": "PC 2,5/2,8 x 25 Ring Haften HDG55 3.6M",
+          "menge": 360
+        },
+        {
+          "artnr": "50-250030-003-12702",
+          "kurztext": "2,5/2,8 x 30 Ring Haften V2A 3.6M",
+          "menge": 360
+        },
+        {
+          "artnr": "50-250050-550-11503",
+          "kurztext": "2,5/2,8 x 50 mm Ring V4A LIKO 1.2M",
+          "menge": 360
+        },
+        {
+          "artnr": "50-250050-552-11503",
+          "kurztext": "2,5/2,8 x 50 mm Ring V4A 1.2M FLATHEAD",
+          "menge": 360
+        },
+        {
+          "artnr": "51-390055-851-11913",
+          "kurztext": "GN 3,9x55 mm PH2 GALV5 JC600 3.0M",
+          "menge": 360
+        },
+        {
+          "artnr": "50-210050-052-11510",
+          "kurztext": "2,1/2,3 x 50 mm Ring FZN 2.4M",
+          "menge": 350
+        },
+        {
+          "artnr": "51-420042-850-11913",
+          "kurztext": "GN 4,2x42 mm PH2 GALV5 5.4M",
+          "menge": 313
+        },
+        {
+          "artnr": "50-250065-550-13107",
+          "kurztext": "PC 25/65 Ring Liko 1.4401 1.6M",
+          "menge": 307
+        },
+        {
+          "artnr": "50-400050-101",
+          "kurztext": "4,0 x 50 mm Ring Ankernagel blau 1.6M",
+          "menge": 307
+        },
+        {
+          "artnr": "51-280040-315-11913",
+          "kurztext": "575382 IN 2,8x40 SB EG10 11.7M",
+          "menge": 304
+        },
+        {
+          "artnr": "50-250035-003-11913",
+          "kurztext": "504709 2,5x35 Ring V2A Haften 3.0M",
+          "menge": 300
+        },
+        {
+          "artnr": "50-210045-561-13107",
+          "kurztext": "MX 21/45 Ring Liko 1.4401 BLUNT 2.4M",
+          "menge": 288
+        },
+        {
+          "artnr": "50-250040-520-11202",
+          "kurztext": "TC 2,5/2,8x40 mm NS TX15 V2A 7.2M",
+          "menge": 288
+        },
+        {
+          "artnr": "50-250050-501-13212",
+          "kurztext": "2,5/2,8 x 50 mm Ring V2A LIKO 1.4301 4.8M",
+          "menge": 288
+        },
+        {
+          "artnr": "50-280045-514-11209",
+          "kurztext": "CS 2,8/3,1 x 45 mm NS TX15 A2 7.2M",
+          "menge": 288
+        },
+        {
+          "artnr": "50-250060-101-11913",
+          "kurztext": "312376 IN 2,5x60 mm 7.8M",
+          "menge": 281
+        },
+        {
+          "artnr": "50-250065-331",
+          "kurztext": "2,5/2,9 x 65 mm NS 0° TX15 VG G12 7.8M",
+          "menge": 281
+        },
+        {
+          "artnr": "50-400040-111-11510",
+          "kurztext": "4,0 x 40 mm Ring Ankernagel FZN 1.8M",
+          "menge": 281
+        },
+        {
+          "artnr": "51-390042-850-11913",
+          "kurztext": "GN 3,9x42 mm PH2 GALV5 5.4M",
+          "menge": 280
+        },
+        {
+          "artnr": "50-280050-120-11913",
+          "kurztext": "395736 IN 2,8/3,1x50 Ring HDG BLACK 1.95M",
+          "menge": 269
+        },
+        {
+          "artnr": "50-280055-530-11913",
+          "kurztext": "396021 IN 2,8/3,2x55 mm TX15 V2A 1.95M",
+          "menge": 269
+        },
+        {
+          "artnr": "50-280065-530-11913",
+          "kurztext": "395966 IN 2,8/3,2x65 mm TX15 V2A 1.95M",
+          "menge": 269
+        },
+        {
+          "artnr": "50-280075-530-11913",
+          "kurztext": "395967 IN 2,8/3,2x75 mm TX15 V2A 1.95M",
+          "menge": 269
+        },
+        {
+          "artnr": "50-400060-101-12714",
+          "kurztext": "4,0 x 60 mm Ring G12 Ankernagel 15° 1.6M",
+          "menge": 269
+        },
+        {
+          "artnr": "50-400060-106-12611",
+          "kurztext": "4,0x60 mm 15° Ankernagel DACH G12 1.6M",
+          "menge": 269
+        },
+        {
+          "artnr": "50-210025-561-13107",
+          "kurztext": "MX 21/25 Ring Liko 1.4401 4.0M",
+          "menge": 240
+        },
+        {
+          "artnr": "50-250065-552-11503",
+          "kurztext": "2,5/2,8 x 65 mm Ring V4A 1.2M",
+          "menge": 240
+        },
+        {
+          "artnr": "50-280050-500-12510",
+          "kurztext": "2,8/3,1x50 mm NS TX20 S V2A 6.0M",
+          "menge": 240
+        },
+        {
+          "artnr": "50-280055-502-11209",
+          "kurztext": "CS 2,8/3,1 X 55 Ring V2A Liko 6.0M",
+          "menge": 240
+        },
+        {
+          "artnr": "50-250065-006-11510",
+          "kurztext": "2,5/2,8 x 65 mm Ring FZN 1.75M",
+          "menge": 228
+        },
+        {
+          "artnr": "50-280048-555-13107",
+          "kurztext": "PC 28/48 Ring A4 1.4401 LIKO 2.4M",
+          "menge": 223
+        },
+        {
+          "artnr": "50-400050-101-13107",
+          "kurztext": "BC 40/50 Ring anchor 12µm 1.2M",
+          "menge": 216
+        },
+        {
+          "artnr": "50-280026-854-12510",
+          "kurztext": "2,8/3,1 x 26 mm Ring Hutkopf V2A 2.5M",
+          "menge": 200
+        },
+        {
+          "artnr": "50-250035-830-11913",
+          "kurztext": "GN 2,5/2,9x35 mm TX15 EG12 1.0M",
+          "menge": 192
+        },
+        {
+          "artnr": "50-280065-330-11209",
+          "kurztext": "IN 2,8/3,2x65 mm NS TX15 VGNK blau 2.0M",
+          "menge": 192
+        },
+        {
+          "artnr": "50-280065-500-11209",
+          "kurztext": "CS 2,8/3,1 x 65 mm Ring V2A LIKO 4.8M",
+          "menge": 192
+        },
+        {
+          "artnr": "50-280065-505-11209",
+          "kurztext": "CS 2,8/3,1 x 65 mm NS TX15 A2 4.8M",
+          "menge": 192
+        },
+        {
+          "artnr": "50-400035-101-13107",
+          "kurztext": "BC 40/35 Ring anchor 12µm 1.6M",
+          "menge": 192
+        },
+        {
+          "artnr": "50-210045-052-11510",
+          "kurztext": "2,1/2,3 x 45 mm Ring FZN 2.4M",
+          "menge": 187
+        },
+        {
+          "artnr": "50-250045-501-13212",
+          "kurztext": "2,5/2,8 x 45 Ring V2A Liko 6.0M",
+          "menge": 180
+        },
+        {
+          "artnr": "50-250050-501-11913",
+          "kurztext": "504702 2,5x50 / 200 Ring V2A LIKO 6.0M",
+          "menge": 180
+        },
+        {
+          "artnr": "50-280065-817-11913",
+          "kurztext": "GN-JC 2,8x65 Ring EG12Y JC600 GIKA 64.8M",
+          "menge": 171
+        },
+        {
+          "artnr": "50-280032-830-11913",
+          "kurztext": "140613 GN 2,8/3,0X32 Ring A2 Haften 1.2M",
+          "menge": 170
+        },
+        {
+          "artnr": "50-280048-113-11913",
+          "kurztext": "IN-JC 2,8/3,1x48 mm Ring HDG JC600 158.4M",
+          "menge": 158
+        },
+        {
+          "artnr": "50-250075-552-11510",
+          "kurztext": "2,5/2,8 x 75 mm Ring V4A 0.875M",
+          "menge": 158
+        },
+        {
+          "artnr": "50-280075-335-11209",
+          "kurztext": "IN 2,8/3,1x75 mm NS EG12 TX15 JC650 3.9M",
+          "menge": 156
+        },
+        {
+          "artnr": "50-400050-101-12028",
+          "kurztext": "4,0 x 50 mm Ring Ankernagel blau 1.6M",
+          "menge": 154
+        },
+        {
+          "artnr": "50-250050-108-11510",
+          "kurztext": "2,5/2,8 x 50 mm Ring FZN55 1.95M",
+          "menge": 152
+        },
+        {
+          "artnr": "50-250065-108-11510",
+          "kurztext": "2,5/2,8 x 65 mm Ring FZN55 1.95M",
+          "menge": 152
+        },
+        {
+          "artnr": "50-250075-108-11510",
+          "kurztext": "2,5/2,8 x 75 mm Ring FZN55 0.975M",
+          "menge": 152
+        },
+        {
+          "artnr": "50-250057-304",
+          "kurztext": "2,5/2,8x57 NS TX15 VG G12 4.8M",
+          "menge": 144
+        },
+        {
+          "artnr": "50-280045-330-11209",
+          "kurztext": "IN 2,8/3,2x45 mm NaSchr TX15 VG NK 3.0M",
+          "menge": 144
+        },
+        {
+          "artnr": "50-280065-530-11209",
+          "kurztext": "IN 2,8/3,1 x 65 mm NS TX15 A2 2.0M",
+          "menge": 144
+        },
+        {
+          "artnr": "50-280075-550-11503",
+          "kurztext": "2,8/3,1 x 75 mm Ring V4A LIKO 1.2M",
+          "menge": 120
+        },
+        {
+          "artnr": "50-250050-552-13107",
+          "kurztext": "PC 25/51 Ring 1.4401 2.4M",
+          "menge": 115
+        },
+        {
+          "artnr": "50-310038-912-11913",
+          "kurztext": "923893 3,1X38 COPPER Tile Nail 1.0M +1",
+          "menge": 110
+        },
+        {
+          "artnr": "50-280040-517-11209",
+          "kurztext": "CS 2,8/3,1x40 mm Ring V2A Hutkopf 3.0M",
+          "menge": 108
+        },
+        {
+          "artnr": "50-250065-580-11510",
+          "kurztext": "2,5/2,8 x 65 mm Ring V4A Liko 1.95M",
+          "menge": 101
+        },
+        {
+          "artnr": "50-280055-508-11209",
+          "kurztext": "IN 2,8/3,1x55 mm Ring Liko V2A 2.0M",
+          "menge": 96
+        },
+        {
+          "artnr": "50-400040-570-13107",
+          "kurztext": "BC 40/40 Ring anchor A4 1.4401 1.6M",
+          "menge": 96
+        },
+        {
+          "artnr": "50-250065-500-13107",
+          "kurztext": "ZE 25/65 Ring Liko 1.4301 1.3M",
+          "menge": 90
+        },
+        {
+          "artnr": "50-310030-912-11913",
+          "kurztext": "923892 3,1X30 COPPER Tile Nail 1.0M +1",
+          "menge": 85
+        },
+        {
+          "artnr": "50-250065-552-13107",
+          "kurztext": "PC 25/66 Ring 1.4401 1.6M",
+          "menge": 77
+        },
+        {
+          "artnr": "50-280055-501",
+          "kurztext": "2,8/3,1 x 55 mm TX15 V2A NaSchr 6.0M",
+          "menge": 60
+        }
+      ]
+    },
+    "Papertape": {
+      "artikel": [
+        {
+          "artnr": "45-280065-005-13307",
+          "kurztext": "DH34° 2,8 x 65 mm Stahl Rg G12 2.2M",
+          "menge": 8571
+        },
+        {
+          "artnr": "45-280075-002-13025",
+          "kurztext": "MWK 34° 2,8x75 mm Ring 2.2M",
+          "menge": 8197
+        },
+        {
+          "artnr": "45-310090-041-11913",
+          "kurztext": "141056 34D 3,1x90 mm GALV+ 4.0M",
+          "menge": 7296
+        },
+        {
+          "artnr": "45-310090-005-13307",
+          "kurztext": "DH34° 3,1 x 90 mm Stahl Rg G12 2.2M",
+          "menge": 7137
+        },
+        {
+          "artnr": "45-310080-005-13307",
+          "kurztext": "DH34° 3,1 x 80 mm Stahl Rg G12 2.2M",
+          "menge": 5940
+        },
+        {
+          "artnr": "47-340100-001-11913",
+          "kurztext": "142069 NFP 3,4x100 OS smooth 2.5M+2",
+          "menge": 4978
+        },
+        {
+          "artnr": "46-310075-002-11913",
+          "kurztext": "141226 NFP 3,1/3,3x75 DH Ring 2.2M +2",
+          "menge": 4950
+        },
+        {
+          "artnr": "45-280070-002-13025",
+          "kurztext": "MWK 34° 2,8x70 mm Ring 2.2M",
+          "menge": 4554
+        },
+        {
+          "artnr": "45-280050-002-13025",
+          "kurztext": "MWK 34° 2,8x50 mm Ring 2.2M",
+          "menge": 4055
+        },
+        {
+          "artnr": "45-310090-002-13025",
+          "kurztext": "MWK 34° 3,1x90 mm Ring 2.2M",
+          "menge": 3597
+        },
+        {
+          "artnr": "45-280070-005-13307",
+          "kurztext": "DH34° 2,8 x 70 mm Stahl Rg G12 2.2M",
+          "menge": 3377
+        },
+        {
+          "artnr": "45-280063-002-13025",
+          "kurztext": "MWK 34° 2,8x63 mm Ring 2.2M",
+          "menge": 3366
+        },
+        {
+          "artnr": "46-280063-002-11830",
+          "kurztext": "GX-WF 2,8x63 RD34 3.0M",
+          "menge": 2571
+        },
+        {
+          "artnr": "46-280050-026-13307",
+          "kurztext": "2,8x50 mm Ring NK12 - 3.0M+3 UN1950",
+          "menge": 2106
+        },
+        {
+          "artnr": "45-310090-002-11913",
+          "kurztext": "140260 34D 3,1x90 mm Ring 3.5M",
+          "menge": 2088
+        },
+        {
+          "artnr": "46-280070-026-13307",
+          "kurztext": "2,8x70 mm Ring NK12 - 3.0M+3 UN1950",
+          "menge": 1872
+        },
+        {
+          "artnr": "45-280080-005-13307",
+          "kurztext": "DH34° 2,8 x 80 mm Stahl Rg G12 2.2M",
+          "menge": 1782
+        },
+        {
+          "artnr": "47-310075-022-11913",
+          "kurztext": "141081 NFP 3,1/3,3x75 OS Ring 2.2M +2",
+          "menge": 1664
+        },
+        {
+          "artnr": "45-280050-005-13307",
+          "kurztext": "DH34° 2,8 x 50 mm Stahl Rg G12 2.2M",
+          "menge": 1584
+        },
+        {
+          "artnr": "47-280051-530-11913",
+          "kurztext": "142045 2,8x51 OS Ring A2 1.4301 1.25M",
+          "menge": 1454
+        },
+        {
+          "artnr": "46-280065-026-13307",
+          "kurztext": "2,8x65 mm Ring NK12 - 3.0M+3 UN1950",
+          "menge": 1404
+        },
+        {
+          "artnr": "47-400050-001-12407",
+          "kurztext": "34° 4,0x50 mm Ring G12 Papertape 2.0M",
+          "menge": 1300
+        },
+        {
+          "artnr": "46-310090-001-11830",
+          "kurztext": "GX-WF 3,1x90 D34 3.0M",
+          "menge": 1260
+        },
+        {
+          "artnr": "45-280065-001-13307",
+          "kurztext": "DH34° 2,8 x 65 mm Stahl 2.2M",
+          "menge": 1188
+        },
+        {
+          "artnr": "46-280075-002-11913",
+          "kurztext": "141215 NFP 2,8/3,1x75 DH Ring 2.2M +2",
+          "menge": 1188
+        },
+        {
+          "artnr": "47-280080-002-11913",
+          "kurztext": "142022 NFP 2,8/3,1x80 OS Ring 2.5M +2",
+          "menge": 1125
+        },
+        {
+          "artnr": "46-280063-001-11830",
+          "kurztext": "GX-WF 2,8x63 D34 3.0M",
+          "menge": 1083
+        },
+        {
+          "artnr": "47-280051-022-11913",
+          "kurztext": "141083 NFP 2,8/3,1x50 OS Ring 3.3M +3",
+          "menge": 1060
+        },
+        {
+          "artnr": "45-310090-001-13307",
+          "kurztext": "DH34° 3,1 x 90 mm Stahl 2.2M",
+          "menge": 990
+        },
+        {
+          "artnr": "45-280050-001-13025",
+          "kurztext": "MWK 34° 2,8x50 mm 2.2M",
+          "menge": 946
+        },
+        {
+          "artnr": "46-280065-025-13307",
+          "kurztext": "2,8x65 mm glatt NK12 - 3.0M+3 UN1950",
+          "menge": 936
+        },
+        {
+          "artnr": "46-280080-026-13307",
+          "kurztext": "2,8x80 mm Ring G12 2.0M+2 UN1950",
+          "menge": 936
+        },
+        {
+          "artnr": "46-280051-002-11830",
+          "kurztext": "GX-WF 2,8x51 RD34 3.0M",
+          "menge": 927
+        },
+        {
+          "artnr": "46-280051-002-11913",
+          "kurztext": "141202 NFP 2,8/3,1x51 DH Ring 3.3M +3",
+          "menge": 891
+        },
+        {
+          "artnr": "46-280063-001-11913",
+          "kurztext": "141207 NFP 2,8x63 DH 3.3M +3",
+          "menge": 891
+        },
+        {
+          "artnr": "45-280080-002-13025",
+          "kurztext": "MWK 34° 2,8x80 mm Ring 2.2M",
+          "menge": 880
+        },
+        {
+          "artnr": "45-310090-001-13025",
+          "kurztext": "MWK 34° 3,1x90 mm 2.2M",
+          "menge": 865
+        },
+        {
+          "artnr": "45-280065-002-13307",
+          "kurztext": "DH34° 2,8 x 65 mm Stahl Rg 2.2M",
+          "menge": 792
+        },
+        {
+          "artnr": "45-280075-005-13307",
+          "kurztext": "DH34° 2,8 x 75 mm Stahl Rg G12 2.2M",
+          "menge": 792
+        },
+        {
+          "artnr": "45-310075-005-13025",
+          "kurztext": "MWK 34° 3,1x75 mm Ring G12 2.2M",
+          "menge": 792
+        },
+        {
+          "artnr": "45-310090-004-13307",
+          "kurztext": "DH34° 3,1 x 90 mm Stahl G12 2.2M",
+          "menge": 744
+        },
+        {
+          "artnr": "45-310090-001-12502",
+          "kurztext": "3,1 x 90 mm 3.0M",
+          "menge": 720
+        },
+        {
+          "artnr": "45-310090-005-13025",
+          "kurztext": "MWK 34° 3,1x90 mm Ring G12 2.2M",
+          "menge": 686
+        },
+        {
+          "artnr": "47-280063-530-11913",
+          "kurztext": "142047 2,8x63 OS Ring A2 1.4301 1.25M",
+          "menge": 675
+        },
+        {
+          "artnr": "45-310090-001-12919",
+          "kurztext": "3,1 x 90 mm 4.0M",
+          "menge": 665
+        },
+        {
+          "artnr": "45-280080-001-11913",
+          "kurztext": "090083 34D 2,8x80 mm 5.0M",
+          "menge": 630
+        },
+        {
+          "artnr": "45-280050-002-13307",
+          "kurztext": "DH34° 2,8 x 50 mm Stahl Rg 2.2M",
+          "menge": 594
+        },
+        {
+          "artnr": "45-280050-005-13025",
+          "kurztext": "MWK 34° 2,8x50 mm Ring G12 2.2M",
+          "menge": 594
+        },
+        {
+          "artnr": "45-280075-001-13025",
+          "kurztext": "MWK 34° 2,8x75 mm 2.2M",
+          "menge": 594
+        },
+        {
+          "artnr": "45-310080-002-11913",
+          "kurztext": "090074 34D 3,1x80 mm Ring 4.0M",
+          "menge": 576
+        },
+        {
+          "artnr": "47-310075-002-11913",
+          "kurztext": "142029 NFP 3,1/3,3x75 OS Ring 2.5M +2",
+          "menge": 562
+        },
+        {
+          "artnr": "47-310075-042-11913",
+          "kurztext": "142030 NFP 3,1x75 OS Ring GALV+ 2.5M +2",
+          "menge": 562
+        },
+        {
+          "artnr": "45-280063-001-12502",
+          "kurztext": "2,8 x 63 mm 4.0M",
+          "menge": 480
+        },
+        {
+          "artnr": "45-280075-002-11913",
+          "kurztext": "140057 34D 2,8x75 mm Ring 5.0M",
+          "menge": 480
+        },
+        {
+          "artnr": "47-400052-001-12919",
+          "kurztext": "34° 4,0x50 mm Ring G12 Papertape 2.0M",
+          "menge": 480
+        },
+        {
+          "artnr": "45-310080-001",
+          "kurztext": "3,1 x 80 mm 4.5M",
+          "menge": 432
+        },
+        {
+          "artnr": "45-280070-002-11913",
+          "kurztext": "140056 34D 2,8x70 mm Ring 5.0M",
+          "menge": 420
+        },
+        {
+          "artnr": "45-280050-012-13025",
+          "kurztext": "MWK 34° 2,8x50 mm Ring HDG55 2.2M",
+          "menge": 396
+        },
+        {
+          "artnr": "45-280063-001-13025",
+          "kurztext": "MWK 34° 2,8x64 mm 2.2M",
+          "menge": 396
+        },
+        {
+          "artnr": "45-280063-005-13025",
+          "kurztext": "MWK 34° 2,8x63 mm Ring G12 2.2M",
+          "menge": 396
+        },
+        {
+          "artnr": "45-280063-012-13025",
+          "kurztext": "MWK 34° 2,8x63 mm Ring HDG55 2.2M",
+          "menge": 396
+        },
+        {
+          "artnr": "45-280070-002-13307",
+          "kurztext": "DH34° 2,8 x 70 mm Stahl Rg 2.2M",
+          "menge": 396
+        },
+        {
+          "artnr": "45-310090-012-13025",
+          "kurztext": "MWK 34° 3,1x90 mm Ring HDG55 2.2M",
+          "menge": 396
+        },
+        {
+          "artnr": "47-310080-002-11913",
+          "kurztext": "142033 NFP 3,1x80 OS Ring 2.5M +2",
+          "menge": 375
+        },
+        {
+          "artnr": "47-310080-041-11913",
+          "kurztext": "142034 NFP 3,1x80 OS smooth GALV+ 2.5M +2",
+          "menge": 375
+        },
+        {
+          "artnr": "46-280063-002-11913",
+          "kurztext": "141208 NFP 2,8/3,1x63 DH Ring 3.3M +3",
+          "menge": 297
+        },
+        {
+          "artnr": "45-280063-001-11913",
+          "kurztext": "141050 34D 2,8x63 mm 6.0M",
+          "menge": 288
+        },
+        {
+          "artnr": "45-280063-101-13307",
+          "kurztext": "34° DH 2,8 x 63 mm Stahl 6.0M",
+          "menge": 288
+        },
+        {
+          "artnr": "45-280070-001-13105",
+          "kurztext": "2,8 x 70 mm 6.0M",
+          "menge": 287
+        },
+        {
+          "artnr": "47-400052-001",
+          "kurztext": "34° 4,0 x 50 mm Ring G12 Papertape 2.0M",
+          "menge": 260
+        },
+        {
+          "artnr": "45-280080-002-11209",
+          "kurztext": "RB34° 2,8/3,1 x 80 mm Ring 4.0M",
+          "menge": 240
+        },
+        {
+          "artnr": "47-280051-525-11913",
+          "kurztext": "140624 2,8x51 OS Ring A2 1.4301 1.1M",
+          "menge": 238
+        },
+        {
+          "artnr": "45-280075-002-11209",
+          "kurztext": "RB34° 2,8 x 75 mm Ring 3.0M",
+          "menge": 234
+        },
+        {
+          "artnr": "45-310090-105-13307",
+          "kurztext": "34° DH 3,1 x 90 mm Stahl  (A4C) 4.2M",
+          "menge": 202
+        },
+        {
+          "artnr": "46-280075-002-11830",
+          "kurztext": "GX-WF 2,8x75 RD34 3.0M",
+          "menge": 201
+        },
+        {
+          "artnr": "45-280063-005",
+          "kurztext": "2,8/3,1 x 63 mm Ring G12 6.6M",
+          "menge": 198
+        },
+        {
+          "artnr": "45-280063-005-12202",
+          "kurztext": "DH34 2,8/3,1x65 mm Ring G12 2.2M",
+          "menge": 198
+        },
+        {
+          "artnr": "45-280063-005-12615",
+          "kurztext": "DH34° 2,8/3,1x63 mm Ring G12 2.2M",
+          "menge": 198
+        },
+        {
+          "artnr": "45-280065-004-13307",
+          "kurztext": "DH34° 2,8 x 65 mm Stahl G12 2.2M",
+          "menge": 198
+        },
+        {
+          "artnr": "45-280065-005-12304",
+          "kurztext": "DH34° 2,8/3,1x65 mm Ring G12 2.2M",
+          "menge": 198
+        },
+        {
+          "artnr": "45-280065-502-13307",
+          "kurztext": "DH34° 2,8 x 65 mm V2A Ring 2.2M",
+          "menge": 198
+        },
+        {
+          "artnr": "45-280070-001-13307",
+          "kurztext": "DH34° 2,8 x 70 mm Stahl 2.2M",
+          "menge": 198
+        },
+        {
+          "artnr": "45-310080-005-13025",
+          "kurztext": "MWK 34° 3,1x80 mm Ring G12 2.2M",
+          "menge": 198
+        },
+        {
+          "artnr": "45-310090-005-12615",
+          "kurztext": "DH34° 3,1/3,3x90 mm Ring G12 2.2M",
+          "menge": 198
+        },
+        {
+          "artnr": "46-280080-001-11913",
+          "kurztext": "141218 NFP 2,8x80 DH smoth 2.2M +2",
+          "menge": 198
+        },
+        {
+          "artnr": "45-310070-002",
+          "kurztext": "3,1/3,4 x 70 mm Ring 4.0M",
+          "menge": 192
+        },
+        {
+          "artnr": "45-310080-002-13105",
+          "kurztext": "3,1/3,4 x 80 mm Ring 4.0M",
+          "menge": 192
+        },
+        {
+          "artnr": "45-310090-001",
+          "kurztext": "3,1 x 90 mm 4.0M",
+          "menge": 192
+        },
+        {
+          "artnr": "45-310080-001-12502",
+          "kurztext": "3,1 x 80 mm 3.0M",
+          "menge": 180
+        },
+        {
+          "artnr": "45-310090-002-12304",
+          "kurztext": "DH34° 3,1/3,3x90 mm Ring 2.2M",
+          "menge": 165
+        },
+        {
+          "artnr": "46-280065-021-13307",
+          "kurztext": "2,8x65 mm glatt blank - 3.0M+3 UN1950",
+          "menge": 156
+        },
+        {
+          "artnr": "46-310080-026-13307",
+          "kurztext": "3,1x80 mm Ring NK12 - 2.0M+2 UN1950",
+          "menge": 156
+        },
+        {
+          "artnr": "46-310090-021-13307",
+          "kurztext": "3,1x90 mm glatt blank - 2.0M+2 UN1950",
+          "menge": 156
+        },
+        {
+          "artnr": "46-310090-026-13307",
+          "kurztext": "3,1x90 mm Ring NK12 - 2.0M+2 UN1950",
+          "menge": 156
+        },
+        {
+          "artnr": "45-280063-502-11830",
+          "kurztext": "GX-WF 2,8x63 RD34 A2 stainless",
+          "menge": 144
+        },
+        {
+          "artnr": "46-280070-001-11830",
+          "kurztext": "GX-WF 2,8x70 D34 3.0M",
+          "menge": 144
+        },
+        {
+          "artnr": "47-310090-533-11913",
+          "kurztext": "142086 3,1x90 OS Ring SL UNI A2 1.25M",
+          "menge": 135
+        },
+        {
+          "artnr": "47-400062-001-12919",
+          "kurztext": "34° 4,0x60 mm Ring G12 Papertape 1.7M",
+          "menge": 133
+        },
+        {
+          "artnr": "46-280051-001-11830",
+          "kurztext": "GX-WF 2,8x51 D34 3.0M",
+          "menge": 126
+        },
+        {
+          "artnr": "46-280070-002-11830",
+          "kurztext": "GX-WF 2,8x70 RD34 3.0M",
+          "menge": 123
+        },
+        {
+          "artnr": "45-310083-105-13307",
+          "kurztext": "34° DH 3,1 x 83 mm Stahl  (A4C)",
+          "menge": 120
+        },
+        {
+          "artnr": "46-310080-525-11913",
+          "kurztext": "141266 3,1/3,3x80 DH Ring A2 1.4301 1.1M",
+          "menge": 119
+        },
+        {
+          "artnr": "47-310080-525-11913",
+          "kurztext": "140627 3,1x80 OS Ring A2 1.4301 1.1M",
+          "menge": 119
+        },
+        {
+          "artnr": "45-280075-002-13307",
+          "kurztext": "DH34° 2,8 x 75 mm Stahl Rg 2.2M",
+          "menge": 99
+        },
+        {
+          "artnr": "45-310080-502-11830",
+          "kurztext": "GX-WF 3,1x80 RD34 A2 stainless 1.0M",
+          "menge": 96
+        }
+      ]
+    },
+    "Drahtcoil": {
+      "artikel": [
+        {
+          "artnr": "30-250065-002-11623",
+          "kurztext": "2,5/2,8 x 64 mm Ring 7.2M",
+          "menge": 9792
+        },
+        {
+          "artnr": "30-250065-042-11913",
+          "kurztext": "504502 CW 2,5x65 / 300 Rille 7.2M",
+          "menge": 4608
+        },
+        {
+          "artnr": "30-250065-012-11623",
+          "kurztext": "2,5/2,8 x 64 mm Ring JC900 7.2M",
+          "menge": 3456
+        },
+        {
+          "artnr": "30-280065-006-11913",
+          "kurztext": "504583 CW 2,8x65 / 250 Rille G12 6.0M",
+          "menge": 3120
+        },
+        {
+          "artnr": "30-280040-002",
+          "kurztext": "2,8/3,1 x 40 mm Ring EPAL UJ 10.5M",
+          "menge": 2656
+        },
+        {
+          "artnr": "30-250050-002-11913",
+          "kurztext": "504493 CW 2,5x50 / 300 Rille 9.0M",
+          "menge": 2160
+        },
+        {
+          "artnr": "30-210035-002-11913",
+          "kurztext": "505724 CW 2,1x35 / 350 Rille 16.8M",
+          "menge": 2016
+        },
+        {
+          "artnr": "30-280065-302-12803",
+          "kurztext": "FAC 2,8/3,2x65 NS SD TX20 G12 5.6M",
+          "menge": 1764
+        },
+        {
+          "artnr": "30-210027-002-11913",
+          "kurztext": "505718 CW 2,1x27 / 350 Rille 21.0M",
+          "menge": 1680
+        },
+        {
+          "artnr": "30-310090-003-11913",
+          "kurztext": "505782 CW 3,1x90 / 225 Schraub 4.05M",
+          "menge": 1620
+        },
+        {
+          "artnr": "30-250075-002-11623",
+          "kurztext": "2,5/2,8 x 75 mm Ring 7.2M",
+          "menge": 1519
+        },
+        {
+          "artnr": "30-210045-202-11105",
+          "kurztext": "2,1/2,3 x 45 mm Ring 15.4M",
+          "menge": 1478
+        },
+        {
+          "artnr": "30-250055-005-11913",
+          "kurztext": "504453 CW 2,5x55 / 300 Rille G12 7.2M",
+          "menge": 1440
+        },
+        {
+          "artnr": "30-250055-035-11302",
+          "kurztext": "2,5 x 55 mm Nietspitze G12 GC900 9.0M",
+          "menge": 1440
+        },
+        {
+          "artnr": "30-250055-002-11913",
+          "kurztext": "504490 CW 2,5x55 / 300 Rille 7.2M",
+          "menge": 1426
+        },
+        {
+          "artnr": "30-250065-005-11913",
+          "kurztext": "504446 CW 2,5x65 / 300 Rille G12 7.2M",
+          "menge": 1418
+        },
+        {
+          "artnr": "30-280070-001-13105",
+          "kurztext": "2,8 x 70 mm 6.0M",
+          "menge": 1200
+        },
+        {
+          "artnr": "30-340090-010-11209",
+          "kurztext": "3,4/3,6 x 90 mm Ring EPAL UL 3.0M",
+          "menge": 1200
+        },
+        {
+          "artnr": "30-250060-002-11913",
+          "kurztext": "504501 CW 2,5x60 / 300 Rille 7.2M",
+          "menge": 1152
+        },
+        {
+          "artnr": "30-250050-066-13307",
+          "kurztext": "2,5x50 mm Ring G12 blau 9.0M 0481 591 50",
+          "menge": 1080
+        },
+        {
+          "artnr": "30-230045-002-11209",
+          "kurztext": "2,3/2,5 x 45 mm Ring 10.8M",
+          "menge": 1058
+        },
+        {
+          "artnr": "30-250070-003-11913",
+          "kurztext": "PLS 504918 CW 2,5x70 / 300 Screw 7.2M",
+          "menge": 1044
+        },
+        {
+          "artnr": "30-230042-002-11209",
+          "kurztext": "2,3/2,5 x 42 mm Ring 12.6M",
+          "menge": 1008
+        },
+        {
+          "artnr": "30-310080-002-13307",
+          "kurztext": "3,1/3,4 x 80 mm Ring 3.6M",
+          "menge": 1008
+        },
+        {
+          "artnr": "30-310080-066-13307",
+          "kurztext": "3,1x80 mm Ring G12 blau 3.6M 0481 591 80",
+          "menge": 1008
+        },
+        {
+          "artnr": "30-310080-006-11913",
+          "kurztext": "504607 CW 3,1x80 / 225 Rille G12 4.05M",
+          "menge": 972
+        },
+        {
+          "artnr": "30-280070-001",
+          "kurztext": "2,8 x 70 mm 6.0M",
+          "menge": 900
+        },
+        {
+          "artnr": "30-250040-002",
+          "kurztext": "2,5/2,8 x 40 mm Ring 10.8M",
+          "menge": 864
+        },
+        {
+          "artnr": "30-250065-002-12227",
+          "kurztext": "2,5/2,8 x 65 mm Ring 7.2M",
+          "menge": 864
+        },
+        {
+          "artnr": "30-250050-002-11623",
+          "kurztext": "2,5/2,8 x 50 mm Ring 9.0M",
+          "menge": 855
+        },
+        {
+          "artnr": "30-210050-102-11209",
+          "kurztext": "2,03/2,3 x 50 mm Rille T7 10.5M",
+          "menge": 840
+        },
+        {
+          "artnr": "30-210050-102-12227",
+          "kurztext": "2,1/2,3 x 50 mm Ring 10.5M",
+          "menge": 840
+        },
+        {
+          "artnr": "30-280035-026-11302",
+          "kurztext": "2,8/3,1 x 35 mm Ring G12 10.5M",
+          "menge": 840
+        },
+        {
+          "artnr": "30-310090-001-13105",
+          "kurztext": "3,1 x 90 mm 4.0M",
+          "menge": 800
+        },
+        {
+          "artnr": "30-340090-010-12919",
+          "kurztext": "3,4/3,6 x 90 mm Ring EPAL UL 3.24M",
+          "menge": 778
+        },
+        {
+          "artnr": "30-250050-037-12803",
+          "kurztext": "FAC 2.50-50 Ring BG 9.0M",
+          "menge": 720
+        },
+        {
+          "artnr": "30-250055-036-11302",
+          "kurztext": "2,5 x 55 mm Ring G12 JC900 9.0M",
+          "menge": 720
+        },
+        {
+          "artnr": "30-280065-002-11209",
+          "kurztext": "2,8/3,1 x 65 mm Ring 6.0M",
+          "menge": 720
+        },
+        {
+          "artnr": "30-280075-006-11209",
+          "kurztext": "2,8/3,1 x 75 mm Ring G12 4.5M",
+          "menge": 720
+        },
+        {
+          "artnr": "30-280080-001-11209",
+          "kurztext": "2,8 x 80 mm 4.5M",
+          "menge": 720
+        },
+        {
+          "artnr": "30-280080-002-11209",
+          "kurztext": "2,8/3,1 x 80 mm Ring 4.5M",
+          "menge": 720
+        },
+        {
+          "artnr": "30-310090-014-11913",
+          "kurztext": "396248 CW 3,1x90 / 600 Schraub JC600 3.6M",
+          "menge": 720
+        },
+        {
+          "artnr": "30-210035-112-11209",
+          "kurztext": "2,03/2,3 x 35 mm Ring T7 16.8M",
+          "menge": 672
+        },
+        {
+          "artnr": "30-250038-023-11503",
+          "kurztext": "2,5/2,8 x 38 mm Schraub FZN 3.3M",
+          "menge": 660
+        },
+        {
+          "artnr": "30-210027-014-11913",
+          "kurztext": "CW 2,1x27 / 900 Rille 16.2M",
+          "menge": 648
+        },
+        {
+          "artnr": "30-310090-001-11913",
+          "kurztext": "505814 CW 3,1x90 / 225 4.05M",
+          "menge": 648
+        },
+        {
+          "artnr": "30-210025-101",
+          "kurztext": "2,1 x 25 mm 21.0M",
+          "menge": 630
+        },
+        {
+          "artnr": "30-210045-202",
+          "kurztext": "2,1/2,3 x 45 mm Ring 15.4M",
+          "menge": 605
+        },
+        {
+          "artnr": "30-210038-102",
+          "kurztext": "2,1/2,3 x 38 mm Ring 14.7M",
+          "menge": 588
+        },
+        {
+          "artnr": "30-210038-102-12227",
+          "kurztext": "2,1/2,3 x 38 mm Ring 14.7M",
+          "menge": 588
+        },
+        {
+          "artnr": "30-250060-013-11913",
+          "kurztext": "CW 2,5x60 / 900 Screw 7.2M",
+          "menge": 576
+        },
+        {
+          "artnr": "30-250065-001",
+          "kurztext": "2,5 x 65 mm 7.2M",
+          "menge": 576
+        },
+        {
+          "artnr": "30-250070-002-11913",
+          "kurztext": "504443 CW 2,5x70 / 300 Rille 7.2M",
+          "menge": 576
+        },
+        {
+          "artnr": "30-250070-038-12803",
+          "kurztext": "FAC 2.50-70 Ring BG 7.2M",
+          "menge": 576
+        },
+        {
+          "artnr": "30-250070-052-11209",
+          "kurztext": "2,5/2,8 x 70 mm Ring JC900 7.2M",
+          "menge": 576
+        },
+        {
+          "artnr": "30-210040-106-11913",
+          "kurztext": "650468 CW 2,1x40/350 CLINCH P6,8 12.6M",
+          "menge": 504
+        },
+        {
+          "artnr": "30-210040-112-11209",
+          "kurztext": "2,03/2,3 x 40 mm Ring T7 12.6M",
+          "menge": 504
+        },
+        {
+          "artnr": "30-210045-002-11913",
+          "kurztext": "505730 CW 2,1x45 / 350 Ring 12.6M",
+          "menge": 504
+        },
+        {
+          "artnr": "30-280065-002",
+          "kurztext": "2,8/3,1 x 65 mm Ring 6.0M",
+          "menge": 498
+        },
+        {
+          "artnr": "30-310090-001-11209",
+          "kurztext": "3,1 x 90 mm 4.05M",
+          "menge": 486
+        },
+        {
+          "artnr": "30-310090-006-11913",
+          "kurztext": "504604 CW 3,1x90 / 225 Rille G12 4.05M",
+          "menge": 486
+        },
+        {
+          "artnr": "30-280070-002-11209",
+          "kurztext": "2,8/3,1 x 70 mm Ring 6.0M",
+          "menge": 480
+        },
+        {
+          "artnr": "30-280070-302-12803",
+          "kurztext": "FAC 2,8/3,2x70 NS SD TX20 G12 5.6M",
+          "menge": 448
+        },
+        {
+          "artnr": "30-280080-302-12803",
+          "kurztext": "FAC 2,8/3,2x80 NS SD TX20 G12 4.2M",
+          "menge": 374
+        },
+        {
+          "artnr": "30-250050-001-12028",
+          "kurztext": "2,5 x 50 mm 9.0M",
+          "menge": 360
+        },
+        {
+          "artnr": "30-280075-006-11804",
+          "kurztext": "2,8/3,1 x 75 mm Ring G12 4.5M",
+          "menge": 360
+        },
+        {
+          "artnr": "30-280065-302-12510",
+          "kurztext": "2,8/3,5x65 NS SD TX20 VG G12 5.6M",
+          "menge": 336
+        },
+        {
+          "artnr": "30-280065-310-11913",
+          "kurztext": "504798 CW 28/65 NS TX 15 5.6M",
+          "menge": 336
+        },
+        {
+          "artnr": "30-310080-001-11209",
+          "kurztext": "3,1 x 80 mm 4.05M",
+          "menge": 324
+        },
+        {
+          "artnr": "30-310080-002-11913",
+          "kurztext": "505753 CW 3,1x80 / 225 Rille 4.05M",
+          "menge": 324
+        },
+        {
+          "artnr": "30-310090-002-11913",
+          "kurztext": "505754 CW 3,1x90 / 225 Rille 4.05M",
+          "menge": 324
+        },
+        {
+          "artnr": "30-380130-003",
+          "kurztext": "3,8 x 130 mm Schraub 1.2M",
+          "menge": 324
+        },
+        {
+          "artnr": "30-310080-001",
+          "kurztext": "3,1 x 80 mm 4.0M",
+          "menge": 320
+        },
+        {
+          "artnr": "30-310080-001-12028",
+          "kurztext": "3,1 x 80 mm 4.0M",
+          "menge": 320
+        },
+        {
+          "artnr": "30-310080-006",
+          "kurztext": "3,1/3,4 x 80 mm Ring G12 4.0M",
+          "menge": 320
+        },
+        {
+          "artnr": "30-310080-006-11804",
+          "kurztext": "3,1/3,4 x 80 mm Ring G12 4.0M",
+          "menge": 320
+        },
+        {
+          "artnr": "30-310090-006",
+          "kurztext": "3,1/3,4 x 90 mm Ring G12 4.0M",
+          "menge": 320
+        },
+        {
+          "artnr": "30-310090-006-11804",
+          "kurztext": "3,1/3,4 x 90 mm Ring G12 4.0M",
+          "menge": 320
+        },
+        {
+          "artnr": "30-310080-306-11209",
+          "kurztext": "3,1/3,6 x 82 NS TX20 JC650 3.9M",
+          "menge": 308
+        },
+        {
+          "artnr": "30-250060-001-13105",
+          "kurztext": "2,5 x 60 mm 7.2M",
+          "menge": 288
+        },
+        {
+          "artnr": "30-250060-003-11209",
+          "kurztext": "2,5/2,8 x 60 mm Schraub 7.2M",
+          "menge": 288
+        },
+        {
+          "artnr": "30-250065-001-11804",
+          "kurztext": "2,5 x 65 mm 7.2M",
+          "menge": 288
+        },
+        {
+          "artnr": "30-250065-001-12028",
+          "kurztext": "2,5 x 65 mm 7.2M",
+          "menge": 288
+        },
+        {
+          "artnr": "30-250065-004-11804",
+          "kurztext": "2,5 x 65 mm G12 7.2M",
+          "menge": 288
+        },
+        {
+          "artnr": "30-250065-012-11209",
+          "kurztext": "2,5/2,8 x 65 mm Ring JC900 7.2M",
+          "menge": 288
+        },
+        {
+          "artnr": "30-250070-002-12028",
+          "kurztext": "2,5/2,8 x 70 mm Ring 7.2M",
+          "menge": 288
+        },
+        {
+          "artnr": "30-280080-010-11209",
+          "kurztext": "2,8 x 80 mm JC600 3.6M",
+          "menge": 288
+        },
+        {
+          "artnr": "30-310080-044-11209",
+          "kurztext": "3,1/3,4 x 80 mm Ring JC600 3.6M",
+          "menge": 288
+        },
+        {
+          "artnr": "30-380120-001",
+          "kurztext": "3,8 x 120 mm 1.2M",
+          "menge": 259
+        },
+        {
+          "artnr": "30-380120-002-13212",
+          "kurztext": "3,8 x 120 mm Ring 1.2M",
+          "menge": 259
+        },
+        {
+          "artnr": "30-280065-005-11804",
+          "kurztext": "2,8 x 65 mm G12 6.0M",
+          "menge": 240
+        },
+        {
+          "artnr": "30-280065-006",
+          "kurztext": "2,8/3,1 x 65 mm Ring G12 6.0M",
+          "menge": 240
+        },
+        {
+          "artnr": "30-280070-003-11209",
+          "kurztext": "2,8/3,1 x 70 mm Schraub 6.0M",
+          "menge": 240
+        },
+        {
+          "artnr": "30-280070-006-11804",
+          "kurztext": "2,8/3,1 x 70 mm Ring G12 6.0M",
+          "menge": 240
+        },
+        {
+          "artnr": "30-280070-006-13105",
+          "kurztext": "2,8/3,1 x 70 mm Ring G12 6.0M",
+          "menge": 240
+        },
+        {
+          "artnr": "30-280065-305",
+          "kurztext": "2,8/3,1 x 65 NaSchr SD TX20 S VG 5.6M",
+          "menge": 224
+        },
+        {
+          "artnr": "30-280090-120-13212",
+          "kurztext": "2,8 x 90 mm 4.5M",
+          "menge": 216
+        },
+        {
+          "artnr": "30-310070-005",
+          "kurztext": "3,1 x 70 mm G12 5.4M",
+          "menge": 216
+        },
+        {
+          "artnr": "30-310060-013-11209",
+          "kurztext": "3,1/3,4 x 60 mm Schraub JC650 5.2M",
+          "menge": 208
+        },
+        {
+          "artnr": "30-380120-003",
+          "kurztext": "3,8 x 120 mm Schraub 1.2M",
+          "menge": 194
+        },
+        {
+          "artnr": "30-380130-001",
+          "kurztext": "3,8 x 130 mm 1.2M",
+          "menge": 194
+        },
+        {
+          "artnr": "30-280075-006-11913",
+          "kurztext": "504523 CW 2,8x75 / 250 Rille G12 4.5M",
+          "menge": 180
+        },
+        {
+          "artnr": "30-280080-005-11209",
+          "kurztext": "2,8 x 80 mm G12 4.5M",
+          "menge": 180
+        },
+        {
+          "artnr": "30-310070-302",
+          "kurztext": "3,1/4,0 x 70 NS-SD TX20 S VG G12 3.6M",
+          "menge": 180
+        },
+        {
+          "artnr": "30-280075-311-11209",
+          "kurztext": "CW 2,8/3,2 x 75 NS TX20 NK12 4.2M",
+          "menge": 168
+        },
+        {
+          "artnr": "30-280080-015-11209",
+          "kurztext": "2,8 x 80 mm HDG55  JC700 4.2M",
+          "menge": 168
+        },
+        {
+          "artnr": "30-280080-302-12510",
+          "kurztext": "2,8/3,5 x 80 NaSchr SD TX20 VG G12 4.2M",
+          "menge": 168
+        },
+        {
+          "artnr": "30-310080-003-11209",
+          "kurztext": "3,1/3,4 x 80 mm Schraub 4.05M",
+          "menge": 162
+        },
+        {
+          "artnr": "30-310090-006-11209",
+          "kurztext": "3,1/3,4 x 90 mm Ring G12 4.05M",
+          "menge": 162
+        },
+        {
+          "artnr": "30-310075-005-11209",
+          "kurztext": "3,1 x 75 mm G12 4.0M",
+          "menge": 160
+        },
+        {
+          "artnr": "30-310080-001-13105",
+          "kurztext": "3,1 x 80 mm 4.0M",
+          "menge": 160
+        },
+        {
+          "artnr": "30-310080-005-12028",
+          "kurztext": "3,1 x 80 mm G12 4.0M",
+          "menge": 160
+        },
+        {
+          "artnr": "30-310080-005-13105",
+          "kurztext": "3,1 x 80 mm G12 4.0M",
+          "menge": 160
+        },
+        {
+          "artnr": "30-310090-001",
+          "kurztext": "3,1 x 90 mm 4.0M",
+          "menge": 160
+        },
+        {
+          "artnr": "30-310090-001-12025",
+          "kurztext": "3,1 x 90 mm 4.0M",
+          "menge": 160
+        },
+        {
+          "artnr": "30-310090-002-13105",
+          "kurztext": "3,1/3,4 x 90 mm Ring 4.0M",
+          "menge": 160
+        },
+        {
+          "artnr": "30-310090-005",
+          "kurztext": "3,1 x 90 mm G12 4.0M",
+          "menge": 160
+        },
+        {
+          "artnr": "30-310090-005-11804",
+          "kurztext": "3,1 x 90 mm G12 4.0M",
+          "menge": 160
+        },
+        {
+          "artnr": "30-310090-005-13105",
+          "kurztext": "3,1 x 90 mm G12 4.0M",
+          "menge": 160
+        },
+        {
+          "artnr": "30-310100-002",
+          "kurztext": "3,1/3,4 x 100 mm Ring 4.0M",
+          "menge": 160
+        },
+        {
+          "artnr": "30-325100-040-12803",
+          "kurztext": "FAC 3.25-100 Spiral BG 4.0M",
+          "menge": 160
+        },
+        {
+          "artnr": "30-310080-012-11209",
+          "kurztext": "3,1/3,4 x 80 mm Schraub JC650 3.9M",
+          "menge": 156
+        },
+        {
+          "artnr": "30-310090-044-11209",
+          "kurztext": "3,1/3,4 x 90 mm Ring GC650 3.9M",
+          "menge": 156
+        },
+        {
+          "artnr": "30-310080-016-11209",
+          "kurztext": "3,1/3,4 x 80 mm Ring G12 JC600 3.6M",
+          "menge": 144
+        },
+        {
+          "artnr": "30-310090-060-13307",
+          "kurztext": "3,1 x 90 mm G12 blau 3.6M 0481 694 090",
+          "menge": 144
+        },
+        {
+          "artnr": "30-280065-302",
+          "kurztext": "2,8/3,5 x 65 NS SD TX20 VG G12 5.6M",
+          "menge": 112
+        },
+        {
+          "artnr": "30-280065-500-13307",
+          "kurztext": "2,8/3,1 x 65 mm Ring V2A Liko 6.0M",
+          "menge": 102
+        },
+        {
+          "artnr": "30-280080-500",
+          "kurztext": "2,8/3,1 x 80 mm Ring V2A Liko 4.5M",
+          "menge": 90
+        },
+        {
+          "artnr": "30-380130-007-13107",
+          "kurztext": "CN 3,8 x 130 mm Schraub G12 1.44M",
+          "menge": 86
+        },
+        {
+          "artnr": "30-310090-500-11209",
+          "kurztext": "3,1/3,4 x 90 mm Ring V2A Liko 4.05M",
+          "menge": 81
+        },
+        {
+          "artnr": "30-380130-001-13212",
+          "kurztext": "3,8 x 130 mm 1.2M",
+          "menge": 65
+        },
+        {
+          "artnr": "30-280065-500",
+          "kurztext": "2,8/3,1 x 65 mm Ring V2A Liko 6.0M",
+          "menge": 60
+        },
+        {
+          "artnr": "30-380120-001-11209",
+          "kurztext": "3,8 x 120 mm 1.44M",
+          "menge": 58
+        },
+        {
+          "artnr": "30-310080-505-13307",
+          "kurztext": "3,1/3,4 x 80 mm Ring V2A Liko 3.6M",
+          "menge": 50
+        }
+      ]
+    },
+    "Streifennaegel_KS": {
+      "artikel": [
+        {
+          "artnr": "42-400050-005-13212",
+          "kurztext": "4,0x50 mm Ring G12 Ankernagel 34° 1.0M",
+          "menge": 4500
+        },
+        {
+          "artnr": "40-280026-500-13107",
+          "kurztext": "2,8/3,1 x 26 mm Ring V2A Haften 0.9M",
+          "menge": 3519
+        },
+        {
+          "artnr": "40-380120-003-12502",
+          "kurztext": "3,8/4,2 x 120 mm Schraub 1.4M",
+          "menge": 3276
+        },
+        {
+          "artnr": "42-400062-006-12611",
+          "kurztext": "RB 4,0x60 mm Ring G12 34° 2.0M ETA",
+          "menge": 2972
+        },
+        {
+          "artnr": "42-400042-011-11913",
+          "kurztext": "141039 4,0x40 mm Ring G12 ITW 2.0M",
+          "menge": 2252
+        },
+        {
+          "artnr": "42-280055-562-11913",
+          "kurztext": "FCi34° 2,8/3,1x55 Ring V2A Hutkopf 1.25M",
+          "menge": 2250
+        },
+        {
+          "artnr": "42-400060-100-12611",
+          "kurztext": "LBA 25° 4,0x60 mm Ring G12 2.0M ETA",
+          "menge": 2064
+        },
+        {
+          "artnr": "42-280026-505-13307",
+          "kurztext": "2,8/3,1x25 mm Ring V2A Haften 2.0M",
+          "menge": 1590
+        },
+        {
+          "artnr": "42-280026-012-13107",
+          "kurztext": "HA 2,8x25 mm Ring FZN Haften 2.0M",
+          "menge": 1440
+        },
+        {
+          "artnr": "40-340090-017-11913",
+          "kurztext": "PLS 3,4/3,6x90 mm Schraub G12 CN350 2.5M",
+          "menge": 1200
+        },
+        {
+          "artnr": "42-280026-012-13307",
+          "kurztext": "2,8/3,1x25 mm Ring FZN55 Haften 2.0M",
+          "menge": 1200
+        },
+        {
+          "artnr": "40-420160-001",
+          "kurztext": "4,2 x 160 mm 0.84M",
+          "menge": 1200
+        },
+        {
+          "artnr": "40-280026-500",
+          "kurztext": "2,8/3,1x26 mm Ring V2A Haften Pan 2.0M",
+          "menge": 1056
+        },
+        {
+          "artnr": "42-400050-025-13307",
+          "kurztext": "4,0x50 mm Ring G12 Würth 34° 2.0M",
+          "menge": 1040
+        },
+        {
+          "artnr": "42-400040-005-13212",
+          "kurztext": "4,0x40 mm Ring G12 Ankernagel 34° 1.0M",
+          "menge": 1025
+        },
+        {
+          "artnr": "42-400052-001-11209",
+          "kurztext": "4,0x50 mm Ring G12 Ankernagel 34° 2.0M",
+          "menge": 910
+        },
+        {
+          "artnr": "42-400052-011-11913",
+          "kurztext": "141043 4,0x50 mm Ring G12 ITW 1.6M",
+          "menge": 720
+        },
+        {
+          "artnr": "40-380130-003",
+          "kurztext": "3,8 x 130 mm Schraub 1.4M",
+          "menge": 672
+        },
+        {
+          "artnr": "42-400062-001-11209",
+          "kurztext": "4,0x60 mm Ring G12 Ankernagel 34° 2.0M",
+          "menge": 650
+        },
+        {
+          "artnr": "42-400042-010-13107",
+          "kurztext": "4,0 x 40 mm Ring HDG Ankernagel 34° 2.4M",
+          "menge": 624
+        },
+        {
+          "artnr": "42-280065-330-11913",
+          "kurztext": "FCi 2,8/3,2x65 mm TX15 EG12 1.25M",
+          "menge": 562
+        },
+        {
+          "artnr": "40-280026-500-12614",
+          "kurztext": "2,8/3,1x26 mm Ring A2 Haften Panhead 2.0M",
+          "menge": 528
+        },
+        {
+          "artnr": "40-280026-500-13212",
+          "kurztext": "2,8/3,1 x 26 mm Ring V2A Haften 2.0M",
+          "menge": 528
+        },
+        {
+          "artnr": "42-400052-001",
+          "kurztext": "4,0 x 50 mm Ring G12 Ankernagel 34° 2.0M",
+          "menge": 520
+        },
+        {
+          "artnr": "40-400060-047-12502",
+          "kurztext": "4,0x60 mm Ring G12 Ankernagel 25° 2.0M",
+          "menge": 516
+        },
+        {
+          "artnr": "40-340100-017-11913",
+          "kurztext": "PLS 3,4/3,6x100 mm Schraub G12 CN350 2.5M",
+          "menge": 482
+        },
+        {
+          "artnr": "40-460160-001",
+          "kurztext": "4,6 x 160 mm 0.66M",
+          "menge": 475
+        },
+        {
+          "artnr": "42-280026-501-11913",
+          "kurztext": "141176FC 2,8x25 Ring V2A Haftenpack 2.0M",
+          "menge": 432
+        },
+        {
+          "artnr": "42-250050-070-11913",
+          "kurztext": "FCi 2,5/2,8x50 Ring HDG55 SCHWARZ 2.5M",
+          "menge": 375
+        },
+        {
+          "artnr": "42-400042-010-11510",
+          "kurztext": "4,0 x 40 mm Ring HDG Ankernagel 34° 2.4M",
+          "menge": 374
+        },
+        {
+          "artnr": "40-400050-001",
+          "kurztext": "4,0 x 50 mm Ring G12 Ankernagel 25° 2.0M",
+          "menge": 360
+        },
+        {
+          "artnr": "40-380120-001",
+          "kurztext": "3,8 x 120 mm 1.4M",
+          "menge": 336
+        },
+        {
+          "artnr": "40-280070-021-12803",
+          "kurztext": "RH STICK 2.80-70 RING  GAL-HD50 2M",
+          "menge": 300
+        },
+        {
+          "artnr": "42-400042-502-11913",
+          "kurztext": "141041 4,0x40 mm Ring SS304 ITW 2.0M",
+          "menge": 300
+        },
+        {
+          "artnr": "40-420150-001",
+          "kurztext": "4,2 x 150 mm 0.84M",
+          "menge": 282
+        },
+        {
+          "artnr": "42-400060-025-13307",
+          "kurztext": "4,0x60 mm Ring G12 Würth 34° 2.0M",
+          "menge": 260
+        },
+        {
+          "artnr": "40-280070-001-13105",
+          "kurztext": "2,8 x 70 mm 3.0M",
+          "menge": 252
+        },
+        {
+          "artnr": "40-400050-001-12028",
+          "kurztext": "4,0 x 50 mm Ring nk Ankernagel 2.0M",
+          "menge": 240
+        },
+        {
+          "artnr": "40-380100-001-12502",
+          "kurztext": "3,8 x 100 mm 2.0M",
+          "menge": 228
+        },
+        {
+          "artnr": "40-310090-021-12803",
+          "kurztext": "RH STICK 3.10-90 RING  GAL-HD50 2M",
+          "menge": 200
+        },
+        {
+          "artnr": "40-310090-004-13307",
+          "kurztext": "20° RH 3,1 x 90 mm Stahl (A4C) 4.0M",
+          "menge": 192
+        },
+        {
+          "artnr": "42-280050-330-11913",
+          "kurztext": "FCi 2,8/3,2x50 mm TX15 EG12 1.25M",
+          "menge": 188
+        },
+        {
+          "artnr": "40-310080-001-13105",
+          "kurztext": "3,1 x 80 mm 3.0M",
+          "menge": 180
+        },
+        {
+          "artnr": "40-310090-001",
+          "kurztext": "3,1 x 90 mm 3.0M",
+          "menge": 180
+        },
+        {
+          "artnr": "42-280065-106-13025",
+          "kurztext": "MWK 20° 2,8x65 mm Ring G12 2.0M",
+          "menge": 180
+        },
+        {
+          "artnr": "40-380130-001-12502",
+          "kurztext": "3,8 x 130 mm 1.4M",
+          "menge": 168
+        },
+        {
+          "artnr": "40-380130-004-11804",
+          "kurztext": "3,8 x 130 mm G12 1.4M",
+          "menge": 168
+        },
+        {
+          "artnr": "40-380130-010-11215",
+          "kurztext": "3,8 x 130 mm 24° 1.4M",
+          "menge": 168
+        },
+        {
+          "artnr": "40-280075-331-11913",
+          "kurztext": "2,8/3,2 x 75 mm NaSchr TX 15S 12µm 3.4M",
+          "menge": 163
+        },
+        {
+          "artnr": "42-310075-106-13025",
+          "kurztext": "MWK 20° 3,1x75 mm Ring G12 1.75M",
+          "menge": 158
+        },
+        {
+          "artnr": "42-310080-106-13025",
+          "kurztext": "MWK 20° 3,1x80 mm Ring G12 1.75M",
+          "menge": 158
+        },
+        {
+          "artnr": "42-310090-102-13025",
+          "kurztext": "MWK 20° 3,1x90 mm Ring 1.75M",
+          "menge": 158
+        },
+        {
+          "artnr": "42-310090-106-13025",
+          "kurztext": "MWK 20° 3,1x90 mm Ring G12 1.75M",
+          "menge": 158
+        },
+        {
+          "artnr": "42-400042-001-11209",
+          "kurztext": "4,0x40 mm Ring G12 Ankernagel 34° 2.4M",
+          "menge": 156
+        },
+        {
+          "artnr": "40-280026-501",
+          "kurztext": "2,8/3,1x26 mm Ring V2A Haften Pan 3.0M",
+          "menge": 150
+        },
+        {
+          "artnr": "40-310090-012-11913",
+          "kurztext": "PLS RB 3,1/3,4x90 mm Schraub CN350 3.0M",
+          "menge": 144
+        },
+        {
+          "artnr": "40-420160-001-11209",
+          "kurztext": "4,2 x 160 mm 0.84M",
+          "menge": 141
+        },
+        {
+          "artnr": "40-280055-562-11830",
+          "kurztext": "GX-WF 2,8x55 R34 A2 stainless 0.5M",
+          "menge": 136
+        },
+        {
+          "artnr": "42-400042-006-12611",
+          "kurztext": "RB 4,0x40 mm Ring G12 34° 2.0M ETA",
+          "menge": 130
+        },
+        {
+          "artnr": "42-400050-021-13307",
+          "kurztext": "4,0x50 mm Ring FZN55 Würth 34° 2.0M",
+          "menge": 130
+        },
+        {
+          "artnr": "42-400050-100-12611",
+          "kurztext": "LBA 25° 4,0x50 mm Ring G12 2.0M ETA",
+          "menge": 130
+        },
+        {
+          "artnr": "42-400052-001-13105",
+          "kurztext": "4,0 x 50 mm Ring G12 Ankernagel 34° 2.0M",
+          "menge": 130
+        },
+        {
+          "artnr": "42-400052-006-12611",
+          "kurztext": "RB 4,0x50 mm Ring G12 34° 2.0M ETA",
+          "menge": 130
+        },
+        {
+          "artnr": "42-400062-001",
+          "kurztext": "4,0 x 60 mm Ring G12 Ankernagel 34° 2.0M",
+          "menge": 130
+        },
+        {
+          "artnr": "42-400062-001-11826",
+          "kurztext": "4,0x60 mm Ring G12 Ankernagel 34° 2.0M",
+          "menge": 130
+        },
+        {
+          "artnr": "42-400062-001-13105",
+          "kurztext": "4,0 x 60 mm Ring G12 Ankernagel 34° 2.0M",
+          "menge": 130
+        },
+        {
+          "artnr": "42-400042-551-13107",
+          "kurztext": "4,0 x 40 mm Ring V4A  Ankernagel 34° 2.4M",
+          "menge": 125
+        },
+        {
+          "artnr": "40-280060-300-11215",
+          "kurztext": "2,8/3,2 x 60 NS TX 20 S Blunt G12 3.0M",
+          "menge": 120
+        },
+        {
+          "artnr": "40-400038-010-12803",
+          "kurztext": "ANCHOR STICK 4.00-38 RING GAL",
+          "menge": 120
+        },
+        {
+          "artnr": "40-400040-030-12028",
+          "kurztext": "4,0 x 40 mm Ring G12 Ankernagel 34° 2.0M",
+          "menge": 120
+        },
+        {
+          "artnr": "42-280065-353-13307",
+          "kurztext": "34° RH 2,8 x 65 mm NS AW20 vg G12 2.0M",
+          "menge": 120
+        },
+        {
+          "artnr": "42-280080-335-12510",
+          "kurztext": "34° 2,8/3,2x80 mm SD TX20 VG G12 2.0M",
+          "menge": 120
+        },
+        {
+          "artnr": "40-280050-021-12803",
+          "kurztext": "RH STICK 2.80-50 RING  GAL-HD50 2M",
+          "menge": 100
+        },
+        {
+          "artnr": "40-310090-002-12803",
+          "kurztext": "RH STICK 3.10-90 RING 2M",
+          "menge": 100
+        },
+        {
+          "artnr": "40-500160-001",
+          "kurztext": "5,0 x 160 mm 0.5M",
+          "menge": 90
+        },
+        {
+          "artnr": "40-380120-001-11209",
+          "kurztext": "RB 3,8 x 120 mm 1.4M",
+          "menge": 84
+        },
+        {
+          "artnr": "40-380130-001-12510",
+          "kurztext": "3,8 x 130 mm 1.4M",
+          "menge": 84
+        },
+        {
+          "artnr": "40-380130-001-13105",
+          "kurztext": "3,8 x 130 mm 1.4M",
+          "menge": 84
+        },
+        {
+          "artnr": "40-380130-003-13212",
+          "kurztext": "3,8 x 130 mm Schraub 1.4M",
+          "menge": 84
+        },
+        {
+          "artnr": "40-380130-004",
+          "kurztext": "3,8 x 130 mm G12 1.4M",
+          "menge": 84
+        },
+        {
+          "artnr": "40-460145-001-12502",
+          "kurztext": "4,6 x 145 mm 0.5M",
+          "menge": 42
+        },
+        {
+          "artnr": "40-460160-010-11215",
+          "kurztext": "4,6 x 160 mm 24° 0.5M",
+          "menge": 42
+        },
+        {
+          "artnr": "40-460160-001-13105",
+          "kurztext": "4,6 x 160 mm 0.66M",
+          "menge": 40
+        },
+        {
+          "artnr": "40-600080-006",
+          "kurztext": "6,0 x 80 mm Ring G12 Ankernagel 34° 8.25M",
+          "menge": 33
+        },
+        {
+          "artnr": "42-280080-334-13307",
+          "kurztext": "34° RH 2,8x80m NS PZ2 vg nk 2.0M+2UN1950",
+          "menge": 26
         }
       ]
     },
     "BSN": {
-      "top_artikel": [
-        {
-          "artnr": "55-260025-312",
-          "menge": 2880
-        },
-        {
-          "artnr": "55-260020-312",
-          "menge": 1440
-        },
+      "artikel": [
         {
           "artnr": "55-260025-313-12408",
+          "kurztext": "MAKITA-PIN 2,6 X 25 ball. Spitze vg mnk",
           "menge": 1440
         },
         {
-          "artnr": "55-300022-318",
-          "menge": 1440
+          "artnr": "55-260020-313-12408",
+          "kurztext": "MAKITA-PIN 2,6 X 20 ball. Spitze vg mnk",
+          "menge": 720
         },
         {
-          "artnr": "55-300027-318",
-          "menge": 1440
+          "artnr": "55-300022-320-12408",
+          "kurztext": "MAKITA-PIN 3,0 X 22 ball. Spitze vg mnk",
+          "menge": 720
+        },
+        {
+          "artnr": "55-300027-320-12408",
+          "kurztext": "MAKITA-PIN 3,0 X 27 ball. Spitze vg mnk",
+          "menge": 720
+        },
+        {
+          "artnr": "55-300032-320-12408",
+          "kurztext": "MAKITA-PIN 3,0 X 32 ball. Spitze vg mnk",
+          "menge": 360
+        },
+        {
+          "artnr": "55-260025-340-13307",
+          "kurztext": "2,6x25 CS2 Nägel+Kart 4 mm frei UN3150",
+          "menge": 282
+        },
+        {
+          "artnr": "55-260040-340-13307",
+          "kurztext": "2,6x40 CS2 Nägel+Kart 4 mm frei UN3150",
+          "menge": 232
+        },
+        {
+          "artnr": "55-260025-309-13307",
+          "kurztext": "2,6x25 CS2 Nägel+Kart 4 mm frei UN3150",
+          "menge": 120
+        },
+        {
+          "artnr": "55-260040-309-13307",
+          "kurztext": "2,6x40 CS2 Nägel+Kart 4 mm frei UN3150",
+          "menge": 28
         }
       ]
     },
     "KRL": {
-      "top_artikel": [
+      "artikel": [
         {
           "artnr": "60-280070-001-13105",
+          "kurztext": "2,8 x 70 H/BK 6.0M",
           "menge": 180
         },
         {
           "artnr": "60-280080-001",
+          "kurztext": "2,8 x 80 H/BK 6.0M",
           "menge": 180
         },
         {
           "artnr": "60-310090-001",
+          "kurztext": "3,1 x 90 H/BK 3.2M",
           "menge": 96
         }
       ]
     }
   },
-  "timestamp": "2026-07-02T17:40:25.712206"
+  "timestamp": "2026-07-02T18:52:52.905388"
 }

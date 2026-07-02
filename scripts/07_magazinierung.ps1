@@ -8,12 +8,14 @@
 # Menge netto = Spalte C minus Spalte D
 # ============================================================
 
-$SCRIPTS = [string]$PSScriptRoot
-$BASE    = [string](Split-Path -Parent $SCRIPTS)
-$SRC_DIR = [string](Join-Path $BASE "_source")
-$OUT_DIR = [string](Join-Path $BASE "_data")
-$SRC_XLS = [string](Join-Path $SRC_DIR "Istmengen.xlsx")
-$JSON_OUT = [string](Join-Path $OUT_DIR "magazinierung.json")
+$SCRIPTS   = [string]$PSScriptRoot
+$BASE      = [string](Split-Path -Parent $SCRIPTS)
+$SRC_DIR   = [string](Join-Path $BASE "_source")
+$OUT_DIR   = [string](Join-Path $BASE "_data")
+$SRC_XLS   = [string](Join-Path $SRC_DIR "Istmengen.xlsx")
+$JSON_OUT  = [string](Join-Path $OUT_DIR "magazinierung.json")
+$ae        = [char]0x00E4
+$SRC_STAMM = [string](Join-Path $SRC_DIR "fertigungsauftr${ae}ge_stammdaten_gesamt.xlsx")
 
 if (-not (Test-Path $OUT_DIR)) { New-Item -ItemType Directory -Path $OUT_DIR | Out-Null }
 
@@ -30,13 +32,6 @@ try {
 function Get-MAGGruppe([string]$artnr) {
     if ([string]::IsNullOrWhiteSpace($artnr)) { return $null }
     $p3 = if ($artnr.Length -ge 3) { $artnr.Substring(0,3) } else { $artnr }
-    $p5 = if ($artnr.Length -ge 5) { $artnr.Substring(0,5) } else { $artnr }
-    $p6 = if ($artnr.Length -ge 6) { $artnr.Substring(0,6) } else { $artnr }
-
-    # Ankernagel-Sondergruppe zuerst pruefen (vor regulaerer Gruppen-Zuweisung)
-    if ($p5 -in @("40-40","40-60","42-40","50-40")) { return "Ankernaegel" }
-    if ($p6 -eq "47-400") { return "Ankernaegel" }
-
     switch ($p3) {
         "30-" { return "Drahtcoil" }
         "40-" { return "Streifennaegel_KS" }
@@ -54,6 +49,52 @@ function Get-MAGGruppe([string]$artnr) {
     }
 }
 
+function Test-IsAnkernagel([string]$artnr) {
+    # Ankernagel bleibt in Hauptgruppe, wird aber zusaetzlich als davon_ankernaegel gezaehlt
+    if ($artnr.Length -ge 5) {
+        $p5 = $artnr.Substring(0,5)
+        if ($p5 -in @("40-40","40-60","42-40","50-40")) { return $true }
+    }
+    if ($artnr.Length -ge 6 -and $artnr.Substring(0,6) -eq "47-400") { return $true }
+    return $false
+}
+
+function Test-ShouldSkip([string]$artnr, [string]$gruppe) {
+    # Regel 1: BSN (55-) -- nur Artikel mit Kundennummer-Suffix (-DDDDD) behalten
+    if ($gruppe -eq "BSN") {
+        if ($artnr -notmatch '-\d{5}$') { return $true }
+    }
+    # Regel 2: CDF_UTC -- Artikel mit *815-11913, *905-11913, *605-11913 ignorieren
+    if ($gruppe -eq "CDF_UTC") {
+        if ($artnr -match '(815|905|605)-11913$') { return $true }
+    }
+    return $false
+}
+
+# ---- Kurztexte aus Stammdaten_gesamt laden -------------------
+$ktextMap = @{}
+Write-Host "Lese Stammdaten (MAG und HKL) ..." -ForegroundColor Yellow
+if (Test-Path $SRC_STAMM) {
+    try {
+        $stammdaten = Import-Excel -Path $SRC_STAMM -WorksheetName "MAG und HKL" `
+            -HeaderName @("Auftrag","Artikelnummer","Zustand","Kurztext","Menge_Auftrag","ME",
+                          "StkPal","GewPro1000","StkKarton","Kundenauftrag","Kunde","Zusatz","Typ") `
+            -StartRow 2 -ErrorAction Stop
+        foreach ($row in $stammdaten) {
+            $an = [string]$row.Artikelnummer
+            $kt = [string]$row.Kurztext
+            if ($an -and $kt -and -not $ktextMap.ContainsKey($an)) {
+                $ktextMap[$an] = $kt.Trim()
+            }
+        }
+        Write-Host "  Kurztexte geladen: $($ktextMap.Count)" -ForegroundColor DarkGray
+    } catch {
+        Write-Host "  [WARN] Kurztexte nicht ladbar: $_" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "  [WARN] Stammdaten nicht gefunden: $SRC_STAMM" -ForegroundColor Yellow
+}
+
 # ---- Excel einlesen ------------------------------------------
 Write-Host "Lese Istmengen.xlsx ..." -ForegroundColor Yellow
 if (-not (Test-Path $SRC_XLS)) {
@@ -68,9 +109,11 @@ Write-Host "  $($xlRows.Count) Zeilen gelesen." -ForegroundColor DarkGray
 
 # ---- Auswerten -----------------------------------------------
 $gruppen    = @{ CDF_UTC=0.0; Papertape=0.0; Drahtcoil=0.0;
-                 Streifennaegel_KS=0.0; Ankernaegel=0.0; KRL=0.0; BSN=0.0 }
+                 Streifennaegel_KS=0.0; KRL=0.0; BSN=0.0 }
 $artMengen  = @{}   # artnr -> netto menge (konsolidiert)
 $artGruppe  = @{}   # artnr -> gruppe
+$ankerMenge = 0.0   # davon_ankernaegel (subset, bleibt in Hauptgruppe)
+$ankerArts  = @{}   # artnr -> menge (nur Ankernagel-Artikel)
 
 foreach ($row in $xlRows) {
     $artnr = [string]($row.Ressource)
@@ -81,55 +124,10 @@ foreach ($row in $xlRows) {
 
     $g = Get-MAGGruppe $artnr
     if ($null -eq $g) { continue }
+    if (Test-ShouldSkip $artnr $g) { continue }
 
     if (-not $artMengen.ContainsKey($artnr)) {
         $artMengen[$artnr] = 0.0
         $artGruppe[$artnr] = $g
     }
-    $artMengen[$artnr] += $netto
-    $gruppen[$g] += $netto
-}
-
-$gesamt = ($gruppen.Values | Measure-Object -Sum).Sum
-
-# ---- Gruppen-Detail: Top-5 Artikel je Gruppe -----------------
-$gruppenDetail = @{}
-foreach ($g in $gruppen.Keys) {
-    $topArts = $artMengen.Keys |
-        Where-Object { $artGruppe[$_] -eq $g } |
-        Sort-Object { -$artMengen[$_] } |
-        Select-Object -First 5
-    $gruppenDetail[$g] = @{
-        top_artikel = @($topArts | ForEach-Object {
-            @{ artnr = $_; menge = [Math]::Round($artMengen[$_], 0) }
-        })
-    }
-}
-
-# ---- Ausgabe -------------------------------------------------
-$result = [ordered]@{
-    gesamt         = [Math]::Round($gesamt, 0)
-    gruppen        = [ordered]@{
-        CDF_UTC           = [Math]::Round($gruppen["CDF_UTC"], 0)
-        Papertape         = [Math]::Round($gruppen["Papertape"], 0)
-        Drahtcoil         = [Math]::Round($gruppen["Drahtcoil"], 0)
-        Streifennaegel_KS = [Math]::Round($gruppen["Streifennaegel_KS"], 0)
-        Ankernaegel       = [Math]::Round($gruppen["Ankernaegel"], 0)
-        KRL               = [Math]::Round($gruppen["KRL"], 0)
-        BSN               = [Math]::Round($gruppen["BSN"], 0)
-    }
-    gruppen_detail = $gruppenDetail
-    timestamp      = (Get-Date -Format "o")
-}
-
-$json = $result | ConvertTo-Json -Depth 6 -Compress:$false
-[System.IO.File]::WriteAllText($JSON_OUT, $json, [System.Text.Encoding]::UTF8)
-
-Write-Host "[OK] magazinierung.json geschrieben ($([Math]::Round($gesamt,0).ToString('N0')) Stk. gesamt)" -ForegroundColor Green
-
-# Log
-$gruppen.GetEnumerator() | Sort-Object Name | ForEach-Object {
-    $pct = if ($gesamt -gt 0) { [Math]::Round($_.Value/$gesamt*100,1) } else { 0 }
-    Write-Host ("  {0,-22} {1,10:N0} Stk.  ({2,5:N1}%)" -f $_.Key, $_.Value, $pct) -ForegroundColor DarkGray
-}
-exit 0
+  

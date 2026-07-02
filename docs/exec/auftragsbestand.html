@@ -114,26 +114,6 @@ body{background:var(--bg);color:var(--text);
 @media(min-width:600px) and (max-width:1023px){.page-content{padding:16px 16px 0;}.kpi-value{font-size:20px;}}
 @media(min-width:1024px){.page-content{padding:24px 32px 0;}}
 
-/* ── Splash overlay ─────────────────────────────────────────── */
-#splash-overlay {
-  position: fixed; inset: 0; z-index: 9999;
-  background: #000;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-  transition: opacity 0.6s ease;
-}
-#splash-overlay.fade-out { opacity: 0; pointer-events: none; }
-/* Cover-crop: keeps 16:9 video filling the screen */
-#splash-overlay iframe {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width:  100vw;
-  height: 56.25vw;   /* 16:9 */
-  min-height: 100vh;
-  min-width:  177.78vh;
-  border: none; pointer-events: none;
-}
 </style>
 </head>
 <body>
@@ -513,56 +493,7 @@ fetch("../_data/auftragsbestand.json?t=" + Date.now())
 </script>
 
 
-<!-- ── Splash screen ─────────────────────────────────────────── -->
-<div id="splash-overlay">
-  <div id="yt-splash-target"></div>
-</div>
-
-<script src="https://www.youtube.com/iframe_api"></script>
-<script>
-(function () {
-  var _splashDone = false;
-  var _timerSet   = false;
-
-  function hideSplash() {
-    if (_splashDone) return;
-    _splashDone = true;
-    var el = document.getElementById("splash-overlay");
-    if (!el) return;
-    el.classList.add("fade-out");
-    setTimeout(function () { el.style.display = "none"; }, 650);
-  }
-
-  /* Hard fallback: hide after 10 s no matter what */
-  setTimeout(hideSplash, 10000);
-
-  /* YouTube IFrame API callback */
-  window.onYouTubeIframeAPIReady = function () {
-    new YT.Player("yt-splash-target", {
-      videoId: "w_9SYWbWPks",
-      playerVars: {
-        autoplay: 1, mute: 1, controls: 0,
-        start: 0, end: 7,
-        rel: 0, modestbranding: 1,
-        iv_load_policy: 3, disablekb: 1,
-        playsinline: 1
-      },
-      events: {
-        onReady: function (e) { e.target.playVideo(); },
-        onStateChange: function (e) {
-          /* Start 7-second countdown the moment video actually plays */
-          if (e.data === YT.PlayerState.PLAYING && !_timerSet) {
-            _timerSet = true;
-            setTimeout(hideSplash, 7000);
-          }
-          if (e.data === YT.PlayerState.ENDED) { hideSplash(); }
-        },
-        onError: function () { hideSplash(); }
-      }
-    });
-  };
-}());
-</script>
 
 </body>
 </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    

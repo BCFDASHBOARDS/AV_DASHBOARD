@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAG &mdash; BCF Dashboard</title>
+<title>MAG — BCF Dashboard</title>
 <style>
 
 :root {
@@ -11,6 +11,7 @@
   --text:#1a1e27; --text-sec:#6b7280; --accent:#1c5fa6;
   --bar-bg:#e8edf5; --bar-fill:#3b82f6; --bar-anker:#f59e0b;
   --shadow:0 1px 4px rgba(0,0,0,.08); --r:8px;
+  --artnr-color:#374151;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{font-size:14px;}
@@ -67,10 +68,16 @@ body{background:var(--bg);color:var(--text);
 .det-table{width:100%;border-collapse:collapse;font-size:11px;}
 .det-table th{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;
   color:var(--text-sec);padding:4px 6px;border-bottom:1px solid var(--border);text-align:left;}
-.det-table td{padding:4px 6px;border-bottom:1px solid #eef0f3;}
+.det-table td{padding:5px 6px;border-bottom:1px solid #eef0f3;vertical-align:top;}
 .det-table tr:last-child td{border-bottom:none;}
-.det-artnr{font-family:monospace;color:var(--text-sec);font-size:10px;}
-.det-val{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;}
+.det-artnr{font-family:monospace;color:var(--artnr-color);font-size:10px;white-space:nowrap;}
+.det-ktext{font-size:11px;color:var(--text);font-weight:500;display:block;margin-bottom:1px;}
+.det-val{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap;}
+.det-hidden{display:none;}
+.det-show-more{text-align:center;padding:7px 6px;border-top:1px solid var(--border);}
+.det-show-more button{background:none;border:1px solid var(--border);border-radius:4px;
+  padding:3px 10px;font-size:10px;color:var(--text-sec);cursor:pointer;}
+.det-show-more button:hover{background:#f1f3f6;color:var(--text);}
 .state-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
   box-shadow:var(--shadow);padding:40px 32px;text-align:center;
   margin-bottom:14px;color:var(--text-sec);font-size:13px;}
@@ -108,12 +115,12 @@ body{background:var(--bg);color:var(--text);
   <div id="root-data" style="display:none">
     <div class="kpi-row">
       <div class="kpi-card">
-        <div class="kpi-label">Gesamt zu produzieren</div>
-        <div class="kpi-value" id="kv-gesamt">&mdash;<span class="kpi-unit">Stk.</span></div>
+        <div class="kpi-label">Gesamt zu magazinieren</div>
+        <div class="kpi-value" id="kv-gesamt">&mdash;<span class="kpi-unit">&#8240;</span></div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">davon Ankern&auml;gel</div>
-        <div class="kpi-value" id="kv-anker">&mdash;<span class="kpi-unit">Stk.</span></div>
+        <div class="kpi-value" id="kv-anker">&mdash;<span class="kpi-unit">&#8240;</span></div>
         <div class="kpi-sub">in Gruppen enthalten</div>
       </div>
     </div>
@@ -125,7 +132,7 @@ body{background:var(--bg);color:var(--text);
       </div>
       <div id="wb-ag">
         <table class="ag-table">
-          <thead><tr><th>Gruppe</th><th>Menge (Stk.)</th><th class="r">Anteil</th></tr></thead>
+          <thead><tr><th>Gruppe</th><th>Menge (&#8240;)</th><th class="r">Anteil</th></tr></thead>
           <tbody id="ag-rows"></tbody>
         </table>
       </div>
@@ -144,12 +151,12 @@ var AG_LABELS = {
   "CDF_UTC":           "CDF & UTC",
   "Papertape":         "Papertape",
   "Drahtcoil":         "Drahtcoil",
-  "Streifennaegel_KS": "Streifennägel KS",
-  "BSN":               "55-BSN",
-  "KRL":               "60-KRL"
+  "Streifennaegel_KS": "Streifennägel P1 + P3 + P4",
+  "BSN":               "Betonstifte",
+  "KRL":               "K-Rolle"
 };
-var ANKER_KEY = "Ankernaegel";
 var ANKER_LABEL = "Ankernägel (davon)";
+var TOP_N = 5;
 
 function fmtNum(v) {
   if (v == null || isNaN(+v)) return "—";
@@ -180,9 +187,9 @@ function bindCollapse(hId, cId, bId) {
   });
 }
 function bindAgToggle(idx) {
-  var row   = document.getElementById("ag-row-"    + idx);
-  var panel = document.getElementById("ag-panel-"  + idx);
-  var chev  = document.getElementById("ag-chev-"   + idx);
+  var row   = document.getElementById("ag-row-"   + idx);
+  var panel = document.getElementById("ag-panel-" + idx);
+  var chev  = document.getElementById("ag-chev-"  + idx);
   if (!row || !panel) return;
   row.addEventListener("click", function () {
     var open = panel.classList.contains("open");
@@ -191,30 +198,62 @@ function bindAgToggle(idx) {
   });
 }
 
-function buildDetailHtml(arts) {
+function buildDetailHtml(arts, panelId) {
   if (!arts || !arts.length) return "";
-  var h = '<table class="det-table"><thead><tr><th>Artikel</th><th class="r">Menge (Stk.)</th></tr></thead><tbody>';
+  var total = arts.length;
+  var h = '<table class="det-table"><thead><tr>'
+        + '<th>Artikel / Kurztext</th>'
+        + '<th class="r">Menge (‰)</th>'
+        + '</tr></thead><tbody>';
+
   for (var i = 0; i < arts.length; i++) {
-    h += '<tr><td class="det-artnr">' + esc(arts[i].artnr) +
-         '</td><td class="det-val r">' + fmtNum(arts[i].menge) + '</td></tr>';
+    var hidden = i >= TOP_N ? ' class="det-hidden"' : '';
+    var kt = arts[i].kurztext ? '<span class="det-ktext">' + esc(arts[i].kurztext) + '</span>' : '';
+    h += '<tr' + hidden + '>'
+      + '<td>' + kt + '<span class="det-artnr">' + esc(arts[i].artnr) + '</span></td>'
+      + '<td class="det-val">' + fmtNum(arts[i].menge) + '</td>'
+      + '</tr>';
   }
-  return h + '</tbody></table>';
+  h += '</tbody></table>';
+
+  if (total > TOP_N) {
+    var rest = total - TOP_N;
+    h += '<div class="det-show-more" id="sm-' + panelId + '">'
+       + '<button onclick="toggleAll(\'' + panelId + '\',' + rest + ')">&#9660; Alle anzeigen ('
+       + rest + ' weitere)</button></div>';
+  }
+  return h;
 }
+
+window.toggleAll = function(panelId, rest) {
+  var panel = document.getElementById(panelId);
+  if (!panel) return;
+  var rows = panel.querySelectorAll("tr.det-hidden");
+  var smDiv = document.getElementById("sm-" + panelId);
+  var btn = smDiv ? smDiv.querySelector("button") : null;
+  if (rows.length > 0) {
+    for (var i = 0; i < rows.length; i++) rows[i].classList.remove("det-hidden");
+    if (btn) btn.innerHTML = "&#9650; Weniger anzeigen";
+  } else {
+    var allRows = panel.querySelectorAll("tbody tr");
+    for (var j = TOP_N; j < allRows.length; j++) allRows[j].classList.add("det-hidden");
+    if (btn) btn.innerHTML = "&#9660; Alle anzeigen (" + rest + " weitere)";
+  }
+};
 
 function render(d) {
   var gesamt = +d.gesamt || 0;
   var anker  = +d.davon_ankernaegel || 0;
 
   document.getElementById("kv-gesamt").innerHTML =
-    fmtNum(gesamt) + '<span class="kpi-unit">Stk.</span>';
+    fmtNum(gesamt) + '<span class="kpi-unit">‰</span>';
   document.getElementById("kv-anker").innerHTML =
-    fmtNum(anker) + '<span class="kpi-unit">Stk.</span>';
+    fmtNum(anker) + '<span class="kpi-unit">‰</span>';
 
   var agRaw    = d.gruppen        || {};
   var agDetail = d.gruppen_detail || {};
   var ankerDet = d.ankernaegel_detail || {};
 
-  /* Sort main groups by value */
   var agArr = [];
   for (var k in agRaw) {
     if (AG_LABELS[k]) agArr.push({ key:k, label:AG_LABELS[k], menge:+agRaw[k]||0 });
@@ -226,51 +265,56 @@ function render(d) {
   var toggleIdxs = [];
   var idx = 0;
 
-  /* Main group rows */
   for (var i = 0; i < agArr.length; i++, idx++) {
     var ag   = agArr[i];
     var pct  = maxMenge > 0 ? Math.round(ag.menge / maxMenge * 100) : 0;
     var share = gesamt > 0 ? (ag.menge / gesamt * 100).toFixed(1) : "0.0";
-    var det  = agDetail[ag.key] || {};
-    var arts = det.top_artikel  || [];
+    var det   = agDetail[ag.key] || {};
+    var arts  = det.artikel || [];
+    var panelId = "ag-panel-" + idx;
 
     var chevHtml = arts.length
-      ? '<span class="ag-chev" id="ag-chev-' + idx + '">&#9658;</span>' : '';
+      ? '<span class="ag-chev" id="ag-chev-' + idx + '">►</span>' : '';
 
     html += '<tr class="ag-row' + (arts.length ? " ag-clickable" : "") +
-            '" id="ag-row-' + idx + '">' +
-      '<td class="ag-name">' + chevHtml + esc(ag.label) + '</td>' +
-      '<td class="ag-val">' + fmtNum(ag.menge) +
-        '<div class="bar-wrap"><div class="bar-fill" style="width:' + pct + '%"></div></div></td>' +
-      '<td class="ag-pct">' + share + '&thinsp;%</td>' +
-    '</tr>';
+            '" id="ag-row-' + idx + '">'
+      + '<td class="ag-name">' + chevHtml + esc(ag.label) + '</td>'
+      + '<td class="ag-val">' + fmtNum(ag.menge)
+        + '<div class="bar-wrap"><div class="bar-fill" style="width:' + pct + '%"></div></div></td>'
+      + '<td class="ag-pct">' + share + '&thinsp;%</td>'
+      + '</tr>';
 
     if (arts.length) {
-      html += '<tr class="ag-detail-row"><td colspan="3">' +
-              '<div class="ag-detail-panel" id="ag-panel-' + idx + '">' +
-              buildDetailHtml(arts) + '</div></td></tr>';
+      html += '<tr class="ag-detail-row"><td colspan="3">'
+            + '<div class="ag-detail-panel" id="' + panelId + '">'
+            + buildDetailHtml(arts, panelId)
+            + '</div></td></tr>';
       toggleIdxs.push(idx);
     }
   }
 
-  /* Ankernagel special row (davon — amber, dashed top border) */
+  /* Ankernagel Sonderzeile */
   if (anker > 0) {
     idx++;
     var ankerPct  = maxMenge > 0 ? Math.round(anker / maxMenge * 100) : 0;
-    var ankerArts = ankerDet.top_artikel || [];
+    var ankerArts = ankerDet.artikel || [];
+    var ankerPanelId = "ag-panel-" + idx;
     var ankerChev = ankerArts.length
-      ? '<span class="ag-chev" id="ag-chev-' + idx + '">&#9658;</span>' : '';
+      ? '<span class="ag-chev" id="ag-chev-' + idx + '">►</span>' : '';
+
     html += '<tr class="ag-row anker-row' + (ankerArts.length ? " ag-clickable" : "") +
-            '" id="ag-row-' + idx + '">' +
-      '<td class="ag-name">' + ankerChev + esc(ANKER_LABEL) + '</td>' +
-      '<td class="ag-val">' + fmtNum(anker) +
-        '<div class="bar-wrap"><div class="bar-fill anker" style="width:' + ankerPct + '%"></div></div></td>' +
-      '<td class="ag-pct">' + (gesamt > 0 ? (anker/gesamt*100).toFixed(1) : "0.0") + '&thinsp;%</td>' +
-    '</tr>';
+            '" id="ag-row-' + idx + '">'
+      + '<td class="ag-name">' + ankerChev + esc(ANKER_LABEL) + '</td>'
+      + '<td class="ag-val">' + fmtNum(anker)
+        + '<div class="bar-wrap"><div class="bar-fill anker" style="width:' + ankerPct + '%"></div></div></td>'
+      + '<td class="ag-pct">' + (gesamt > 0 ? (anker/gesamt*100).toFixed(1) : "0.0") + '&thinsp;%</td>'
+      + '</tr>';
+
     if (ankerArts.length) {
-      html += '<tr class="ag-detail-row"><td colspan="3">' +
-              '<div class="ag-detail-panel" id="ag-panel-' + idx + '">' +
-              buildDetailHtml(ankerArts) + '</div></td></tr>';
+      html += '<tr class="ag-detail-row"><td colspan="3">'
+            + '<div class="ag-detail-panel" id="' + ankerPanelId + '">'
+            + buildDetailHtml(ankerArts, ankerPanelId)
+            + '</div></td></tr>';
       toggleIdxs.push(idx);
     }
   }
