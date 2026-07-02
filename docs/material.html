@@ -8,7 +8,6 @@
 :root {
   --bg:#f5f6f8; --surface:#ffffff; --border:#e1e4e8; --text:#1a1e27;
   --text-sec:#6b7280; --accent:#1c5fa6; --green:#16a34a; --red:#dc2626;
-  --bar-bg:#e8edf5; --bar-fill:#3b82f6;
   --shadow:0 1px 4px rgba(0,0,0,.08); --r:8px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -16,6 +15,7 @@ html{font-size:14px;}
 body{background:var(--bg);color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
   padding:0 0 48px;-webkit-font-smoothing:antialiased;}
+/* Tab bar */
 .tab-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);
   padding:0 24px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
   position:sticky;top:0;z-index:10;}
@@ -25,76 +25,87 @@ body{background:var(--bg);color:var(--text);
   white-space:nowrap;transition:color .15s,border-color .15s;}
 .tab-bar a:hover{color:var(--text);}
 .tab-bar a.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
-.page-content{padding:20px 24px 0;max-width:900px;}
-.kpi-row{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+/* Layout */
+.page-content{padding:20px 24px 0;max-width:960px;}
+/* KPI row */
+.kpi-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
 .kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
-  box-shadow:var(--shadow);padding:16px 20px;flex:1 1 160px;min-width:140px;}
+  box-shadow:var(--shadow);padding:14px 18px;flex:1 1 180px;min-width:150px;}
 .kpi-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;
-  color:var(--text-sec);margin-bottom:6px;}
+  color:var(--text-sec);margin-bottom:5px;}
 .kpi-value{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1.1;}
-.kpi-sub{font-size:11px;color:var(--text-sec);margin-top:4px;}
+/* Compound card: Gesamt + Nagelpressen + Doppeldruck in einer Karte */
+.kpi-card-wide{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:14px 18px;flex:2 1 320px;min-width:260px;}
+.kpi-compound-top{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;}
+.kpi-compound-val{font-size:20px;font-weight:700;letter-spacing:-.5px;}
+.kpi-sub-row{display:flex;gap:20px;flex-wrap:wrap;}
+.kpi-sub-item{display:flex;flex-direction:column;}
+.kpi-sub-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;
+  color:var(--text-sec);margin-bottom:2px;}
+.kpi-sub-val{font-size:13px;font-weight:700;}
+/* Machine widget */
 .widget-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
-  box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden;}
-/* Machine header */
-.mach-hdr{display:flex;align-items:center;justify-content:space-between;
-  padding:14px 18px;cursor:pointer;user-select:none;
+  box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden;}
+.mach-hdr{display:flex;align-items:flex-start;justify-content:space-between;
+  padding:13px 18px;cursor:pointer;user-select:none;
   border-bottom:1px solid var(--border);transition:background .12s;}
 .mach-hdr:hover{background:#f8fafc;}
-.mach-title{font-size:13px;font-weight:700;letter-spacing:-.1px;margin-bottom:3px;}
-.mach-sub{font-size:11px;color:var(--text-sec);}
-.mach-sub b{font-weight:700;color:var(--text);}
+.mach-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+.mach-stats{font-size:11px;color:var(--text-sec);line-height:1.6;}
+.mach-stats b{font-weight:700;color:var(--text);}
 .mach-chev{font-size:10px;color:var(--text-sec);transition:transform .2s;
-  display:inline-block;flex-shrink:0;margin-left:12px;}
+  display:inline-block;flex-shrink:0;margin-left:12px;margin-top:3px;}
 .mach-chev.collapsed{transform:rotate(-90deg);}
-/* Material group rows */
+/* Material group */
 .mat-grp{border-bottom:1px solid #f1f3f6;cursor:pointer;transition:background .12s;}
 .mat-grp:last-child{border-bottom:none;}
 .mat-grp:hover{background:#f8fafc;}
-.mat-grp-hdr{display:flex;align-items:center;justify-content:space-between;
-  padding:10px 18px;}
-.mat-grp-name{font-size:12px;font-weight:700;color:var(--text);}
-.mat-grp-stats{font-size:11px;color:var(--text-sec);margin-top:2px;}
+.mat-grp-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:9px 18px;}
+.mat-grp-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.mat-grp-stats{font-size:11px;color:var(--text-sec);line-height:1.6;}
 .mat-grp-stats b{font-weight:700;color:var(--text);}
 .mat-grp-chev{font-size:9px;color:var(--text-sec);transition:transform .2s;
-  display:inline-block;flex-shrink:0;margin-left:10px;}
+  display:inline-block;flex-shrink:0;margin-left:10px;margin-top:2px;}
 .mat-grp-chev.open{transform:rotate(90deg);}
 /* Article panel */
-.art-panel{background:#f8fafc;border-top:1px solid var(--border);
-  padding:0;display:none;overflow-x:auto;}
+.art-panel{background:#f8fafc;border-top:1px solid var(--border);display:none;overflow-x:auto;}
 .art-panel.open{display:block;}
 .art-tbl{width:100%;border-collapse:collapse;font-size:12px;}
-.art-tbl th{text-align:left;padding:7px 12px;font-size:10px;font-weight:700;
+.art-tbl th{text-align:left;padding:7px 10px;font-size:10px;font-weight:700;
   text-transform:uppercase;letter-spacing:.4px;color:var(--text-sec);
   border-bottom:1px solid var(--border);white-space:nowrap;}
-.art-tbl th.num{text-align:right;}
-.art-tbl td{padding:6px 12px;border-bottom:1px solid #edf0f4;vertical-align:middle;}
+.art-tbl th.num,.art-tbl td.num{text-align:right;}
+.art-tbl td{padding:6px 10px;border-bottom:1px solid #edf0f4;vertical-align:middle;}
 .art-tbl tr:last-child td{border-bottom:none;}
-.art-tbl td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;}
+.art-tbl td.num{font-variant-numeric:tabular-nums;font-weight:600;}
 .art-tbl .art-nr{font-weight:700;color:var(--accent);white-space:nowrap;}
-.art-tbl .art-text{color:var(--text);max-width:260px;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-/* Section divider between machines */
-.section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
-  color:var(--text-sec);padding:12px 0 6px;}
+.art-tbl .art-text{color:var(--text);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+/* Mat label KPI row */
+.mat-kpi-row{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.mat-kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:11px 15px;flex:1 1 140px;min-width:120px;}
+.mat-kpi-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--text-sec);margin-bottom:4px;}
+.mat-kpi-val{font-size:16px;font-weight:700;}
+.mat-kpi-sub{font-size:11px;color:var(--text-sec);margin-top:2px;}
 /* Utility */
+.ts-bar{font-size:11px;color:var(--text-sec);margin-bottom:10px;}
 .state-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
   box-shadow:var(--shadow);padding:40px 32px;text-align:center;margin-bottom:14px;
   color:var(--text-sec);font-size:13px;}
-.ts-bar{font-size:11px;color:var(--text-sec);padding-top:4px;}
-.notice-bar{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);
-  padding:10px 16px;margin-bottom:14px;font-size:12px;color:#92400e;
-  display:flex;align-items:center;gap:8px;}
 @media(max-width:599px){
-  .page-content{padding:12px 12px 0;}.tab-bar{padding:0 12px;}
-  .tab-bar a{padding:12px 14px 10px;}.kpi-value{font-size:18px;}
-  .kpi-card{padding:12px 14px;}.mach-hdr{padding:12px 14px;}
-  .mat-grp-hdr{padding:9px 14px;}.art-tbl th,.art-tbl td{padding:5px 10px;}
+  .page-content{padding:10px 10px 0;}.tab-bar{padding:0 10px;}
+  .tab-bar a{padding:11px 12px 9px;}.kpi-value{font-size:18px;}
+  .kpi-compound-val{font-size:16px;}.mach-hdr,.mat-grp-hdr{padding:10px 12px;}
+  .art-tbl th,.art-tbl td{padding:5px 7px;}
 }
-@media(min-width:600px) and (max-width:1023px){.page-content{padding:16px 16px 0;}.kpi-value{font-size:20px;}}
-@media(min-width:1024px){.page-content{padding:24px 32px 0;}}
+@media(min-width:600px) and (max-width:1023px){.page-content{padding:14px 16px 0;}}
+@media(min-width:1024px){.page-content{padding:22px 32px 0;}}
 </style>
 </head>
 <body>
+
 <nav class="tab-bar">
   <a href="auftragsbestand.html">Auftragsbestand</a>
   <a href="presserei.html">Presserei</a>
@@ -103,92 +114,89 @@ body{background:var(--bg);color:var(--text);
 
 <div class="page-content">
   <div id="root-loading" class="state-card">Daten werden geladen&hellip;</div>
-
-  <div id="notice-bar" class="notice-bar" style="display:none">
-    <span>&#9888;</span>
-    <span id="notice-text"></span>
-  </div>
-
   <div id="root-data" style="display:none">
 
-    <!-- KPI Row 1 -->
+    <!-- Zeile 1: Verbrauch YTD | Offene Produktion | Gesamtlagerbestand -->
     <div class="kpi-row">
-      <div class="kpi-card">
-        <div class="kpi-label">Gesamtlagerbestand</div>
-        <div class="kpi-value" id="kv-bestand">&mdash;</div>
-        <div class="kpi-sub">kg gesamt</div>
-      </div>
       <div class="kpi-card">
         <div class="kpi-label">Verbrauch YTD</div>
         <div class="kpi-value" id="kv-ytd">&mdash;</div>
-        <div class="kpi-sub">kg seit Jahresbeginn</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label" id="kl-vm">Vormonat</div>
-        <div class="kpi-value" id="kv-vm">&mdash;</div>
-        <div class="kpi-sub">kg Verbrauch</div>
+        <div class="kpi-label">Offene Produktion</div>
+        <div class="kpi-value" id="kv-offene">&mdash;</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Gesamtlagerbestand</div>
+        <div class="kpi-value" id="kv-bestand">&mdash;</div>
       </div>
     </div>
 
-    <!-- KPI Row 2: Maschinen -->
-    <div class="kpi-row" id="kpi-mach-row"></div>
+    <!-- Zeile 2: Compound-Karten (Aktuell + Offene Prod aufgeteilt) -->
+    <div class="kpi-row">
+      <div class="kpi-card-wide">
+        <div class="kpi-label" id="kl-aktuell">Aktuell</div>
+        <div class="kpi-compound-top">
+          <div class="kpi-compound-val" id="kv-ak-gesamt">&mdash;</div>
+        </div>
+        <div class="kpi-sub-row" id="ak-mach-row"></div>
+      </div>
+      <div class="kpi-card-wide">
+        <div class="kpi-label">Offene Produktion</div>
+        <div class="kpi-compound-top">
+          <div class="kpi-compound-val" id="kv-op-gesamt">&mdash;</div>
+        </div>
+        <div class="kpi-sub-row" id="op-mach-row"></div>
+      </div>
+    </div>
 
-    <!-- KPI Row 3: Material -->
-    <div class="kpi-row" id="kpi-mat-row"></div>
+    <!-- Zeile 3: Materialgüte -->
+    <div class="mat-kpi-row" id="mat-kpi-row"></div>
 
     <!-- Timestamp -->
     <div class="ts-bar" id="ts-bar"></div>
 
     <!-- Machine widgets -->
-    <div id="mach-widgets" style="margin-top:14px;"></div>
+    <div id="mach-widgets"></div>
 
   </div>
 </div>
 
 <script>
 
+function fmtT(v) {
+  if (v == null || isNaN(v)) return '\u2014';
+  return (v / 1000).toLocaleString('de-DE', {minimumFractionDigits: 1, maximumFractionDigits: 1}) + '\u00a0t';
+}
 function fmtKg(v) {
   if (v == null || isNaN(v)) return '\u2014';
-  return Math.round(v).toLocaleString('de-DE') + ' kg';
-}
-function fmtKgShort(v) {
-  if (v == null || isNaN(v)) return '\u2014';
-  var n = Math.round(v);
-  if (n >= 1000000) return (n/1000000).toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1}) + ' Mio kg';
-  if (n >= 1000)    return (n/1000).toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1}) + ' t';
-  return n.toLocaleString('de-DE') + ' kg';
+  return Math.round(v).toLocaleString('de-DE') + '\u00a0kg';
 }
 
-function showNotice(msg) {
-  document.getElementById('notice-text').textContent = msg;
-  document.getElementById('notice-bar').style.display = '';
-}
-
-function buildMachWidget(mach, idx) {
+function buildMachWidget(mach, idx, aktuellLabel) {
   var card = document.createElement('div');
   card.className = 'widget-card';
 
-  // Machine header
   var hdr = document.createElement('div');
   hdr.className = 'mach-hdr';
   hdr.innerHTML =
     '<div>' +
       '<div class="mach-title">' + mach.label + '</div>' +
-      '<div class="mach-sub">Bestand: <b>' + fmtKg(mach.bestand) + '</b>' +
-        ' &bull; YTD: <b>' + fmtKg(mach.ytd) + '</b>' +
-        ' &bull; Vormonat: <b>' + fmtKg(mach.vormonat) + '</b>' +
+      '<div class="mach-stats">' +
+        'Bestand: <b>' + fmtT(mach.bestand) + '</b> &bull; ' +
+        'Offene Prod.: <b>' + fmtT(mach.offene_prod) + '</b> &bull; ' +
+        'YTD: <b>' + fmtT(mach.ytd) + '</b> &bull; ' +
+        aktuellLabel + ': <b>' + fmtT(mach.aktuell) + '</b>' +
       '</div>' +
     '</div>' +
     '<span class="mach-chev" id="mchev-' + idx + '">&#9650;</span>';
   card.appendChild(hdr);
 
-  // Machine body
   var body = document.createElement('div');
   body.id = 'mbody-' + idx;
 
   (mach.materialgruppen || []).forEach(function(mg, gi) {
     var grpId = idx + '-' + gi;
-
     var grpDiv = document.createElement('div');
     grpDiv.className = 'mat-grp';
 
@@ -197,9 +205,11 @@ function buildMachWidget(mach, idx) {
     grpHdr.innerHTML =
       '<div>' +
         '<div class="mat-grp-name">' + mg.label + '</div>' +
-        '<div class="mat-grp-stats">Bestand: <b>' + fmtKg(mg.bestand) + '</b>' +
-          ' &bull; YTD: <b>' + fmtKg(mg.ytd) + '</b>' +
-          ' &bull; Vormonat: <b>' + fmtKg(mg.vormonat) + '</b>' +
+        '<div class="mat-grp-stats">' +
+          'Bestand: <b>' + fmtT(mg.bestand) + '</b> &bull; ' +
+          'Offene Prod.: <b>' + fmtT(mg.offene_prod) + '</b> &bull; ' +
+          'YTD: <b>' + fmtT(mg.ytd) + '</b> &bull; ' +
+          aktuellLabel + ': <b>' + fmtT(mg.aktuell) + '</b>' +
         '</div>' +
       '</div>' +
       '<span class="mat-grp-chev" id="gchev-' + grpId + '">&#9658;</span>';
@@ -208,41 +218,38 @@ function buildMachWidget(mach, idx) {
     artPanel.className = 'art-panel';
     artPanel.id = 'ap-' + grpId;
 
-    // Article table
     var tbl = document.createElement('table');
     tbl.className = 'art-tbl';
     tbl.innerHTML =
       '<thead><tr>' +
         '<th>Art.-Nr.</th>' +
         '<th>Kurztext</th>' +
+        '<th class="num">Offene&nbsp;Prod. (kg)</th>' +
         '<th class="num">Bestand (kg)</th>' +
         '<th class="num">YTD (kg)</th>' +
-        '<th class="num" id="vm-col-' + grpId + '">Vormonat (kg)</th>' +
+        '<th class="num">' + aktuellLabel + ' (kg)</th>' +
       '</tr></thead>';
+
     var tbody = document.createElement('tbody');
     (mg.artikel || []).forEach(function(art) {
       var tr = document.createElement('tr');
       tr.innerHTML =
         '<td class="art-nr">' + art.artnr + '</td>' +
         '<td class="art-text" title="' + art.text + '">' + art.text + '</td>' +
+        '<td class="num">' + Math.round(art.offene_prod).toLocaleString('de-DE') + '</td>' +
         '<td class="num">' + Math.round(art.bestand).toLocaleString('de-DE') + '</td>' +
         '<td class="num">' + Math.round(art.ytd).toLocaleString('de-DE') + '</td>' +
-        '<td class="num">' + Math.round(art.vormonat).toLocaleString('de-DE') + '</td>';
+        '<td class="num">' + Math.round(art.aktuell).toLocaleString('de-DE') + '</td>';
       tbody.appendChild(tr);
     });
     tbl.appendChild(tbody);
     artPanel.appendChild(tbl);
 
     grpHdr.addEventListener('click', function() {
-      var panel = document.getElementById('ap-' + grpId);
-      var chev  = document.getElementById('gchev-' + grpId);
-      if (panel.classList.contains('open')) {
-        panel.classList.remove('open');
-        chev.classList.remove('open');
-      } else {
-        panel.classList.add('open');
-        chev.classList.add('open');
-      }
+      var p = document.getElementById('ap-' + grpId);
+      var c = document.getElementById('gchev-' + grpId);
+      p.classList.toggle('open');
+      c.classList.toggle('open');
     });
 
     grpDiv.appendChild(grpHdr);
@@ -252,7 +259,6 @@ function buildMachWidget(mach, idx) {
 
   card.appendChild(body);
 
-  // Toggle machine body
   hdr.addEventListener('click', function() {
     var b = document.getElementById('mbody-' + idx);
     var c = document.getElementById('mchev-' + idx);
@@ -269,46 +275,49 @@ function buildMachWidget(mach, idx) {
 }
 
 function render(d) {
-  // KPI Row 1
-  document.getElementById('kv-bestand').textContent = fmtKgShort(d.gesamt_bestand);
-  document.getElementById('kv-ytd').textContent     = fmtKgShort(d.gesamt_ytd);
-  document.getElementById('kv-vm').textContent      = fmtKgShort(d.gesamt_vormonat);
-  if (d.vormonat_label) {
-    document.getElementById('kl-vm').textContent = d.vormonat_label;
-  }
+  var aLabel = d.aktuell_label || 'Aktuell';
 
-  // KPI Row 2: per Maschine
-  var machRow = document.getElementById('kpi-mach-row');
+  // Zeile 1
+  document.getElementById('kv-ytd').textContent     = fmtT(d.gesamt_ytd);
+  document.getElementById('kv-offene').textContent  = fmtT(d.gesamt_offene_prod);
+  document.getElementById('kv-bestand').textContent = fmtT(d.gesamt_bestand);
+
+  // Zeile 2: compound Aktuell
+  document.getElementById('kl-aktuell').textContent   = aLabel;
+  document.getElementById('kv-ak-gesamt').textContent = fmtT(d.gesamt_aktuell);
+  document.getElementById('kv-op-gesamt').textContent = fmtT(d.gesamt_offene_prod);
+
+  var akRow = document.getElementById('ak-mach-row');
+  var opRow = document.getElementById('op-mach-row');
   (d.maschinen || []).forEach(function(m) {
-    var card = document.createElement('div');
-    card.className = 'kpi-card';
-    card.innerHTML =
-      '<div class="kpi-label">' + m.label + '</div>' +
-      '<div class="kpi-value">' + fmtKgShort(m.vormonat) + '</div>' +
-      '<div class="kpi-sub">Vormonat &bull; Bestand: ' + fmtKgShort(m.bestand) + '</div>';
-    machRow.appendChild(card);
+    var akItem = document.createElement('div');
+    akItem.className = 'kpi-sub-item';
+    akItem.innerHTML = '<span class="kpi-sub-lbl">' + m.label + '</span><span class="kpi-sub-val">' + fmtT(m.aktuell) + '</span>';
+    akRow.appendChild(akItem);
+
+    var opItem = document.createElement('div');
+    opItem.className = 'kpi-sub-item';
+    opItem.innerHTML = '<span class="kpi-sub-lbl">' + m.label + '</span><span class="kpi-sub-val">' + fmtT(m.offene_prod) + '</span>';
+    opRow.appendChild(opItem);
   });
 
-  // KPI Row 3: per Material (global)
-  var matRow = document.getElementById('kpi-mat-row');
-  var matSums = {};
-  (d.maschinen || []).forEach(function(m) {
-    (m.materialgruppen || []).forEach(function(mg) {
-      if (!matSums[mg.key]) { matSums[mg.key] = {label:mg.label, vm:0, bestand:0}; }
-      matSums[mg.key].vm      += mg.vormonat || 0;
-      matSums[mg.key].bestand += mg.bestand  || 0;
-    });
-  });
-  var matOrder = ['Stiftdraht','Kaltstauchdraht','Edelstahl'];
-  matOrder.forEach(function(k) {
-    if (!matSums[k]) return;
-    var s = matSums[k];
+  // Zeile 3: Materialg\u00fcte
+  var matRow = document.getElementById('mat-kpi-row');
+  var matDefs = [
+    { key: 'mat_stiftdraht',  label: 'Stiftdraht' },
+    { key: 'mat_kaltstauch',  label: 'Kaltstauchdraht' },
+    { key: 'mat_edelstahl',   label: 'Edelstahl' }
+  ];
+  matDefs.forEach(function(def) {
+    var s = d[def.key];
+    if (!s) return;
     var card = document.createElement('div');
-    card.className = 'kpi-card';
+    card.className = 'mat-kpi';
     card.innerHTML =
-      '<div class="kpi-label">' + s.label + '</div>' +
-      '<div class="kpi-value" style="font-size:17px">' + fmtKgShort(s.vm) + '</div>' +
-      '<div class="kpi-sub">Vormonat &bull; Bestand: ' + fmtKgShort(s.bestand) + '</div>';
+      '<div class="mat-kpi-lbl">' + def.label + '</div>' +
+      '<div class="mat-kpi-val">' + fmtT(s.aktuell) + '</div>' +
+      '<div class="mat-kpi-sub">Offene Prod.: ' + fmtT(s.offene_prod) + '</div>' +
+      '<div class="mat-kpi-sub">Bestand: ' + fmtT(s.bestand) + '</div>';
     matRow.appendChild(card);
   });
 
@@ -316,20 +325,20 @@ function render(d) {
   if (d.timestamp) {
     var ts = new Date(d.timestamp);
     document.getElementById('ts-bar').textContent =
-      'Stand: ' + ts.toLocaleDateString('de-DE') + ' ' + ts.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+      'Stand: ' + ts.toLocaleDateString('de-DE') + ' ' +
+      ts.toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
   }
 
   // Machine widgets
   var container = document.getElementById('mach-widgets');
   (d.maschinen || []).forEach(function(mach, idx) {
-    container.appendChild(buildMachWidget(mach, idx));
+    container.appendChild(buildMachWidget(mach, idx, aLabel));
   });
 
   document.getElementById('root-loading').style.display = 'none';
   document.getElementById('root-data').style.display    = '';
 }
 
-// Fetch
 fetch('_data/material.json?t=' + Date.now())
   .then(function(r) {
     if (!r.ok) throw new Error('HTTP ' + r.status);

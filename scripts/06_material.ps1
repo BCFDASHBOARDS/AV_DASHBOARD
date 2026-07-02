@@ -8,6 +8,9 @@
 # zugeordnet (pending-flush-Verfahren).
 # Materialkategorie: 01/04=Stiftdraht, 03/06=Kaltstauchdraht,
 #                    08/09=Edelstahl
+#
+# Neue Zeilen in der Excel koennen einfach eingefuegt werden --
+# das Script liest alle Zeilen dynamisch, kein Hardcoding.
 # ============================================================
 
 $SCRIPTS  = $PSScriptRoot
@@ -57,57 +60,88 @@ $maxCol = $ws.Dimension.Columns
 Write-Host "Sheet geladen: $maxRow Zeilen, $maxCol Spalten."
 
 # ---- Spalten-Indices (1-basiert) ----------------------------
-# B=2  C=3  D=4  E=5  AG=33(2026 YTD)  AH=34(Jan26)..AM=39(Jun26)
+# B=2  C=3  D=4(offene Prod)  E=5(Bestand)
+# AG=33(2026 YTD)  AH=34(Jan26)..
 
 $COL_ARTNR   = 2
 $COL_KTEXT   = 3
-$COL_BESTAND = 5
-$COL_YTD     = -1   # "YYYY YTD" - dynamisch suchen
-$COL_VM      = -1   # "Mmm YY" Vormonat - dynamisch suchen
-
-# Vormonat-Label ermitteln
-$monatKuerzel = @("Jan","Feb","Mrz","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez")
-$prevDate     = (Get-Date).AddMonths(-1)
-$prevLabel    = $monatKuerzel[$prevDate.Month - 1] + " " + $prevDate.ToString("yy")
-$yearLabel    = (Get-Date).Year.ToString() + " YTD"
+$COL_OFFENE  = 4   # D: Offene Produktion
+$COL_BESTAND = 5   # E: Lagerbestand
+$COL_YTD     = -1  # "YYYY YTD" - dynamisch
+$COL_AKTUELL = -1  # Neuester Monat mit Daten - dynamisch
 
 # Spalten durch Scan von Zeile 1 finden
+$monatKuerzel = @("Jan","Feb","Mrz","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez")
+$curYear      = (Get-Date).Year
+$yearLabel    = "$curYear YTD"
+$aktuellLabel = ""
+
+$monthColMap = @{}  # month number -> col index
+
 for ($c = 1; $c -le $maxCol; $c++) {
     $hdr = [string]($ws.Cells[1, $c].Value)
-    if ($hdr -eq $yearLabel)  { $COL_YTD = $c }
-    if ($hdr -eq $prevLabel)  { $COL_VM  = $c }
+    if ($hdr -eq $yearLabel) { $COL_YTD = $c }
+    # Monatsspalten des aktuellen Jahres: "Mmm YY"
+    $yr2 = ($curYear.ToString()).Substring(2,2)
+    for ($m = 1; $m -le 12; $m++) {
+        if ($hdr -eq ($monatKuerzel[$m-1] + " " + $yr2)) {
+            $monthColMap[$m] = $c
+        }
+    }
 }
 
 if ($COL_YTD -lt 0) {
     Write-Host "[WARN] Spalte '$yearLabel' nicht gefunden, Fallback auf AG (33)." -ForegroundColor Yellow
     $COL_YTD = 33
 }
-if ($COL_VM -lt 0) {
-    Write-Host "[WARN] Spalte '$prevLabel' nicht gefunden, Vormonat-Werte = 0." -ForegroundColor Yellow
+
+# Neuesten Monat mit Daten finden (von aktuellem Monat rueckwaerts)
+$curMonth = (Get-Date).Month
+for ($m = $curMonth; $m -ge 1; $m--) {
+    if (-not $monthColMap.ContainsKey($m)) { continue }
+    $colM = $monthColMap[$m]
+    $hasData = $false
+    for ($r = 2; $r -le $maxRow; $r++) {
+        $v = $ws.Cells[$r, $colM].Value
+        if ($v -ne $null -and (Dbl $v) -ne 0) { $hasData = $true; break }
+    }
+    if ($hasData) {
+        $COL_AKTUELL  = $colM
+        $aktuellLabel = $monatKuerzel[$m-1] + " " + ($curYear.ToString()).Substring(2,2)
+        break
+    }
 }
 
-Write-Host "Spalten: Bestand=$COL_BESTAND  YTD=$COL_YTD ($yearLabel)  VM=$COL_VM ($prevLabel)"
+if ($COL_AKTUELL -lt 0) {
+    Write-Host "[WARN] Kein Monat mit Daten gefunden." -ForegroundColor Yellow
+    $COL_AKTUELL = $COL_YTD
+    $aktuellLabel = "n/a"
+}
+
+Write-Host "Spalten: Bestand=$COL_BESTAND  OffeneProd=$COL_OFFENE  YTD=$COL_YTD ($yearLabel)  Aktuell=$COL_AKTUELL ($aktuellLabel)"
 
 # ---- Zeilen parsen ------------------------------------------
+# Neue Zeilen in der Excel koennen einfach hinzugefuegt werden,
+# solange sie vor der naechsten Subtotal-Zeile der Maschine stehen.
 
-$ART_RE   = '^[0-9]{2}-'
-$pending  = [System.Collections.Generic.List[object]]::new()
-$allArts  = [System.Collections.Generic.List[object]]::new()
+$ART_RE  = '^[0-9]{2}-'
+$pending = [System.Collections.Generic.List[object]]::new()
+$allArts = [System.Collections.Generic.List[object]]::new()
 
 for ($r = 2; $r -le $maxRow; $r++) {
     $artnr = "$($ws.Cells[$r, $COL_ARTNR].Value)".Trim()
 
     if ($artnr -match $ART_RE) {
         # Artikel-Zeile
-        $vm = if ($COL_VM -gt 0) { Dbl ($ws.Cells[$r, $COL_VM].Value) } else { 0.0 }
         $art = [PSCustomObject]@{
-            artnr    = $artnr
-            text     = "$($ws.Cells[$r, $COL_KTEXT].Value)".Trim()
-            bestand  = Dbl ($ws.Cells[$r, $COL_BESTAND].Value)
-            ytd      = Dbl ($ws.Cells[$r, $COL_YTD].Value)
-            vormonat = $vm
-            machine  = $null
-            material = Get-Material $artnr
+            artnr      = $artnr
+            text       = "$($ws.Cells[$r, $COL_KTEXT].Value)".Trim()
+            offene_prod = Dbl ($ws.Cells[$r, $COL_OFFENE].Value)
+            bestand    = Dbl ($ws.Cells[$r, $COL_BESTAND].Value)
+            ytd        = Dbl ($ws.Cells[$r, $COL_YTD].Value)
+            aktuell    = Dbl ($ws.Cells[$r, $COL_AKTUELL].Value)
+            machine    = $null
+            material   = Get-Material $artnr
         }
         $pending.Add($art)
     } else {
@@ -120,7 +154,7 @@ for ($r = 2; $r -le $maxRow; $r++) {
                     $allArts.Add($pa)
                 }
             }
-            $pending.RemoveAll({ param($pa) $pa.machine -ne $null }) | Out-Null
+            $pending.RemoveAll([Predicate[object]]{ param($pa) $pa.machine -ne $null }) | Out-Null
         }
     }
 }
@@ -129,9 +163,8 @@ Write-Host "Artikel gefunden: $($allArts.Count)"
 
 # ---- JSON-Struktur aufbauen ---------------------------------
 
-# Maschinenreihenfolge
-$machineOrder    = @("Nagelpressen","Doppeldruck")
-$materialOrder   = @("Stiftdraht","Kaltstauchdraht","Edelstahl","Sonstiges")
+$machineOrder  = @("Nagelpressen","Doppeldruck")
+$materialOrder = @("Stiftdraht","Kaltstauchdraht","Edelstahl","Sonstiges")
 
 $maschinen = [System.Collections.Generic.List[object]]::new()
 
@@ -139,9 +172,10 @@ foreach ($mach in $machineOrder) {
     $mArts = $allArts | Where-Object { $_.machine -eq $mach }
     if (-not $mArts) { continue }
 
-    $mBestand  = ($mArts | Measure-Object -Property bestand  -Sum).Sum
-    $mYtd      = ($mArts | Measure-Object -Property ytd      -Sum).Sum
-    $mVormonat = ($mArts | Measure-Object -Property vormonat -Sum).Sum
+    $mBestand  = ($mArts | Measure-Object -Property bestand    -Sum).Sum
+    $mYtd      = ($mArts | Measure-Object -Property ytd        -Sum).Sum
+    $mAktuell  = ($mArts | Measure-Object -Property aktuell    -Sum).Sum
+    $mOffene   = ($mArts | Measure-Object -Property offene_prod -Sum).Sum
 
     $materialgruppen = [System.Collections.Generic.List[object]]::new()
 
@@ -149,77 +183,46 @@ foreach ($mach in $machineOrder) {
         $matArts = $mArts | Where-Object { $_.material -eq $mat }
         if (-not $matArts) { continue }
 
-        $matB  = ($matArts | Measure-Object -Property bestand  -Sum).Sum
-        $matY  = ($matArts | Measure-Object -Property ytd      -Sum).Sum
-        $matVM = ($matArts | Measure-Object -Property vormonat -Sum).Sum
+        $matB   = ($matArts | Measure-Object -Property bestand    -Sum).Sum
+        $matY   = ($matArts | Measure-Object -Property ytd        -Sum).Sum
+        $matA   = ($matArts | Measure-Object -Property aktuell    -Sum).Sum
+        $matOP  = ($matArts | Measure-Object -Property offene_prod -Sum).Sum
 
         $artikelList = $matArts | ForEach-Object {
             [PSCustomObject]@{
-                artnr    = $_.artnr
-                text     = $_.text
-                bestand  = [Math]::Round($_.bestand,  2)
-                ytd      = [Math]::Round($_.ytd,      2)
-                vormonat = [Math]::Round($_.vormonat, 2)
+                artnr       = $_.artnr
+                text        = $_.text
+                offene_prod = [Math]::Round($_.offene_prod, 2)
+                bestand     = [Math]::Round($_.bestand,    2)
+                ytd         = [Math]::Round($_.ytd,        2)
+                aktuell     = [Math]::Round($_.aktuell,    2)
             }
         }
 
         $materialgruppen.Add([PSCustomObject]@{
-            key      = $mat
-            label    = $mat
-            bestand  = [Math]::Round($matB,  2)
-            ytd      = [Math]::Round($matY,  2)
-            vormonat = [Math]::Round($matVM, 2)
-            artikel  = @($artikelList)
+            key         = $mat
+            label       = $mat
+            offene_prod = [Math]::Round($matOP, 2)
+            bestand     = [Math]::Round($matB,  2)
+            ytd         = [Math]::Round($matY,  2)
+            aktuell     = [Math]::Round($matA,  2)
+            artikel     = @($artikelList)
         })
     }
 
     $maschinen.Add([PSCustomObject]@{
         key             = $mach
         label           = $mach
-        bestand         = [Math]::Round($mBestand,  2)
-        ytd             = [Math]::Round($mYtd,      2)
-        vormonat        = [Math]::Round($mVormonat, 2)
+        offene_prod     = [Math]::Round($mOffene,  2)
+        bestand         = [Math]::Round($mBestand, 2)
+        ytd             = [Math]::Round($mYtd,     2)
+        aktuell         = [Math]::Round($mAktuell, 2)
         materialgruppen = @($materialgruppen)
     })
 }
 
 # Gesamtsummen
-$gesamtBestand  = [Math]::Round(($allArts | Measure-Object -Property bestand  -Sum).Sum, 2)
-$gesamtYtd      = [Math]::Round(($allArts | Measure-Object -Property ytd      -Sum).Sum, 2)
-$gesamtVormonat = [Math]::Round(($allArts | Measure-Object -Property vormonat -Sum).Sum, 2)
-
-# Globale Summen je Materialkategorie (maschinenuebergreifend)
-$sumByMat = @{}
-foreach ($mat in $materialOrder) {
-    $mats = $allArts | Where-Object { $_.material -eq $mat }
-    if ($mats) {
-        $sumByMat[$mat] = [Math]::Round(($mats | Measure-Object -Property vormonat -Sum).Sum, 2)
-    }
-}
-
-$result = [PSCustomObject]@{
-    timestamp             = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
-    vormonat_label        = $prevLabel
-    gesamt_bestand        = $gesamtBestand
-    gesamt_ytd            = $gesamtYtd
-    gesamt_vormonat       = $gesamtVormonat
-    vormonat_stiftdraht   = if ($sumByMat["Stiftdraht"])        { $sumByMat["Stiftdraht"] }        else { 0.0 }
-    vormonat_kaltstauch   = if ($sumByMat["Kaltstauchdraht"])   { $sumByMat["Kaltstauchdraht"] }   else { 0.0 }
-    vormonat_edelstahl    = if ($sumByMat["Edelstahl"])         { $sumByMat["Edelstahl"] }         else { 0.0 }
-    maschinen             = @($maschinen)
-}
-
-# ---- Ausgabe ------------------------------------------------
-
-$dataDir = Join-Path $BASE "_data"
-if (-not (Test-Path $dataDir)) { New-Item -ItemType Directory -Path $dataDir | Out-Null }
-
-$json = $result | ConvertTo-Json -Depth 6 -Compress:$false
-[System.IO.File]::WriteAllText($JSON_OUT, $json, [System.Text.Encoding]::UTF8)
-
-Write-Host "[OK] material.json geschrieben: $JSON_OUT" -ForegroundColor Green
-Write-Host "     Bestand: $gesamtBestand kg  |  YTD: $gesamtYtd kg  |  Vormonat ($prevLabel): $gesamtVormonat kg"
-
-Close-ExcelPackage $pkg -NoSave
-exit 0
-          
+$gesamtBestand  = [Math]::Round(($allArts | Measure-Object -Property bestand    -Sum).Sum, 2)
+$gesamtYtd      = [Math]::Round(($allArts | Measure-Object -Property ytd        -Sum).Sum, 2)
+$gesamtAktuell  = [Math]::Round(($allArts | Measure-Object -Property aktuell    -Sum).Sum, 2)
+$gesamtOffene   = [Math]::Round(($allAr
