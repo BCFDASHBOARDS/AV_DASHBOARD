@@ -84,7 +84,7 @@ body{background:var(--bg);color:var(--text);
 
 .mach-body{display:none;background:#f5f7fa;border-top:1px solid #e8ebf0;padding:8px 18px 10px 34px;}
 
-/* ---- Order rows (2-line, like MAG article rows) ---- */
+/* ---- Order rows ---- */
 .ord-row{padding:6px 0;border-bottom:1px solid #eaedf1;}
 .ord-row:last-of-type{border-bottom:none;}
 .ord-row.hidden{display:none;}
@@ -183,6 +183,7 @@ body{background:var(--bg);color:var(--text);
   </div>
 </div>
 
+
 <script>
 (function () {
 "use strict";
@@ -243,7 +244,6 @@ function showInfo(msg) {
   var it = document.getElementById("info-text");
   if (ib && it) { it.innerHTML = msg; ib.style.display = ""; }
 }
-
 function showNotice(msg) {
   var nb = document.getElementById("notice-bar");
   var nt = document.getElementById("notice-text");
@@ -259,14 +259,12 @@ function buildOrderHtml(auftraege, machId) {
   if (!auftraege || !auftraege.length) {
     return '<div style="padding:8px 0;font-size:12px;color:var(--text-sec);">Keine Aufträge</div>';
   }
-  // Extrapolierte Aufträge ans Ende sortieren
   var sorted = auftraege.slice().sort(function(a,b){return (a.extrapoliert?1:0)-(b.extrapoliert?1:0);});
   var h = "";
   for (var i = 0; i < sorted.length; i++) {
     var a = sorted[i];
     var hidden = i >= TOP_N ? " hidden" : "";
     var exCls  = a.extrapoliert ? " extrapoliert" : "";
-    /* Restmenge = Soll - Ist (falls Ist vorhanden) */
     var rest = (a.ist != null && a.ist > 0) ? (a.menge - a.ist) : a.menge;
     var kt = a.kurztext || a.artnr || "—";
     h += '<div class="ord-row' + hidden + exCls + '">'
@@ -323,13 +321,13 @@ function render(d) {
 
   var gruppen = d.gruppen || [];
   var html = "";
-  var binds = []; /* {gId, mIds:[]} */
+  var binds = [];
 
   for (var gi = 0; gi < gruppen.length; gi++) {
     var g = gruppen[gi];
     var gId = "g" + gi;
-
     var machCount = (g.maschinen || []).length;
+
     html += '<div class="grp-item">'
           + '<div class="grp-hdr" id="gh-' + gId + '">'
           + '<div class="grp-left">'
@@ -343,7 +341,6 @@ function render(d) {
           + '<span class="grp-stat">' + fmtH(g.stunden) + '<span class="grp-stat-lbl">&thinsp;h</span></span>'
           + '</div>'
           + '</div>'
-          /* Group body — display:none initial für korrekte Accordion-Logik */
           + '<div class="grp-body" id="gb-' + gId + '" style="display:none">';
 
     var maschinen = g.maschinen || [];
@@ -370,21 +367,95 @@ function render(d) {
             + '</span>'
             + '</div>'
             + '</div>'
-            /* Machine orders — display:none initial für korrekte Accordion-Logik */
             + '<div class="mach-body" id="mb-' + mId + '" style="display:none">'
             + buildOrderHtml(m.auftraege, mId)
             + '</div>'
             + '</div>';
     }
 
-    html += '</div></div>'; /* end grp-body + grp-item */
+    html += '</div></div>';
     binds.push({ gId: gId, mIds: mIds });
   }
 
   document.getElementById("pb-rows").innerHTML = html;
 
-  /* Wire up toggles */
   for (var bi = 0; bi < binds.length; bi++) {
     (function(b) {
       var ghEl = document.getElementById("gh-" + b.gId);
-      var gbEl = document.getElementById("gb-" + b
+      var gbEl = document.getElementById("gb-" + b.gId);
+      var gcEl = document.getElementById("gc-" + b.gId);
+      if (ghEl) {
+        ghEl.addEventListener("click", function() {
+          var open = gbEl.style.display !== "none";
+          gbEl.style.display = open ? "none" : "";
+          if (gcEl) gcEl.classList.toggle("open", !open);
+        });
+      }
+      b.mIds.forEach(function(mId) {
+        var mhEl = document.getElementById("mh-" + mId);
+        var mbEl = document.getElementById("mb-" + mId);
+        var mcEl = document.getElementById("mc-" + mId);
+        if (mhEl) {
+          mhEl.addEventListener("click", function(e) {
+            e.stopPropagation();
+            var mOpen = mbEl.style.display !== "none";
+            mbEl.style.display = mOpen ? "none" : "";
+            if (mcEl) mcEl.classList.toggle("open", !mOpen);
+          });
+        }
+      });
+    })(binds[bi]);
+  }
+
+  if (d.timestamp) {
+    try {
+      document.getElementById("ts-bar").textContent =
+        "Datenstand: " + new Date(d.timestamp).toLocaleString("de-DE");
+    } catch(e) {}
+  }
+}
+
+var EMPTY = { kpi:{}, gruppen:[], timestamp:null };
+
+fetch("../_data/pressenbelegung.json?t=" + Date.now())
+  .then(function(r) {
+    if (r.status === 404) return { _kein_datenstand: true };
+    if (!r.ok) return { _error: "HTTP " + r.status };
+    return r.text().then(function(txt) {
+      if (txt.charCodeAt(0) === 0xFEFF) txt = txt.slice(1);
+      try { return JSON.parse(txt); }
+      catch(e) { return { _error: "JSON: " + e.message }; }
+    });
+  })
+  .then(function(data) {
+    showStructure();
+    if (data._kein_datenstand) {
+      showNotice("<b>Noch kein Datenstand</b> — bitte 08_pressenbelegung.ps1 ausführen.");
+      render(EMPTY); return;
+    }
+    if (data._error) {
+      showNotice("<b>Ladefehler:</b> " + esc(data._error));
+      render(EMPTY); return;
+    }
+    render(data);
+    var meta = data.meta || {};
+    if (meta.extrapoliert_count && meta.extrapoliert_count > 0) {
+      showInfo('Prognose eingeschlossen: <b>' + meta.extrapoliert_count +
+        ' noch nicht terminierte FA</b> &mdash; +' + fmtN(meta.extrapoliert_permille) +
+        '&thinsp;&#8240; &middot; +' + fmtKg(meta.extrapoliert_kg) + '&thinsp;t &mdash; ' +
+        'wahrscheinlicher Maschine zugeordnet (violett markiert).');
+    }
+  })
+  .catch(function(err) {
+    showStructure();
+    showNotice("<b>Netzwerkfehler:</b> " + esc(String(err)));
+    render(EMPTY);
+    console.error("Pressenbelegung-Fehler:", err);
+  });
+
+}());
+</script>
+
+
+</body>
+</html>
