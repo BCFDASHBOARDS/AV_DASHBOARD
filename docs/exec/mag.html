@@ -7,11 +7,10 @@
 <style>
 
 :root {
-  --bg:#f5f6f8; --surface:#ffffff; --border:#e1e4e8;
-  --text:#1a1e27; --text-sec:#6b7280; --accent:#1c5fa6;
+  --bg:#f5f6f8; --surface:#ffffff; --border:#e1e4e8; --text:#1a1e27;
+  --text-sec:#6b7280; --accent:#1c5fa6; --green:#16a34a; --red:#dc2626;
   --bar-bg:#e8edf5; --bar-fill:#3b82f6; --bar-anker:#f59e0b;
   --shadow:0 1px 4px rgba(0,0,0,.08); --r:8px;
-  --artnr-color:#374151;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{font-size:14px;}
@@ -27,7 +26,7 @@ body{background:var(--bg);color:var(--text);
   white-space:nowrap;transition:color .15s,border-color .15s;}
 .tab-bar a:hover{color:var(--text);}
 .tab-bar a.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
-.page-content{padding:20px 24px 0;max-width:700px;}
+.page-content{padding:20px 24px 0;max-width:900px;}
 .kpi-row{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
 .kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
   box-shadow:var(--shadow);padding:16px 20px;flex:1 1 160px;min-width:140px;}
@@ -39,58 +38,63 @@ body{background:var(--bg);color:var(--text);
 .widget-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
   box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden;}
 .widget-header{display:flex;align-items:center;justify-content:space-between;
-  padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;}
-.widget-title{font-size:13px;font-weight:700;}
-.wh-chev{font-size:11px;color:var(--text-sec);transition:transform .2s;}
-.wh-chev.collapsed{transform:rotate(-90deg);}
-.ag-table{width:100%;border-collapse:collapse;font-size:12px;}
-.ag-table th{padding:8px 18px;text-align:left;font-size:11px;font-weight:600;
-  text-transform:uppercase;letter-spacing:.4px;color:var(--text-sec);
-  border-bottom:1px solid var(--border);background:#f9fafb;}
-.ag-table th.r{text-align:right;}
-.ag-row td{padding:9px 18px;border-bottom:1px solid #f1f3f6;vertical-align:middle;}
-.ag-clickable{cursor:pointer;}
-.ag-clickable:hover td{background:#f8fafc;}
-.ag-name{font-weight:500;}
-.ag-chev{font-size:9px;color:var(--text-sec);transition:transform .2s;
-  display:inline-block;margin-right:5px;}
-.ag-chev.open{transform:rotate(90deg);}
-.ag-val{font-variant-numeric:tabular-nums;white-space:nowrap;}
-.ag-pct{color:var(--text-sec);text-align:right;white-space:nowrap;}
-.bar-wrap{height:4px;background:var(--bar-bg);border-radius:2px;overflow:hidden;margin-top:4px;min-width:60px;}
-.bar-fill{height:100%;background:var(--bar-fill);border-radius:2px;}
-.bar-fill.anker{background:var(--bar-anker);}
-.anker-row td{background:#fffbeb !important;border-top:1px dashed #fde68a;}
-.anker-row .ag-name{color:#92400e;font-style:italic;}
-.ag-detail-row td{padding:0;border-bottom:1px solid #f1f3f6;}
-.ag-detail-panel{display:none;padding:10px 18px 12px 36px;background:#f9fafb;}
+  padding:14px 18px;cursor:pointer;user-select:none;
+  border-bottom:1px solid var(--border);transition:background .12s;}
+.widget-header:hover{background:#f8fafc;}
+.widget-title{font-size:13px;font-weight:700;letter-spacing:-.1px;}
+.widget-chevron{font-size:10px;color:var(--text-sec);transition:transform .2s;display:inline-block;}
+.widget-chevron.collapsed{transform:rotate(-90deg);}
+.ag-row-item{padding:9px 18px;border-bottom:1px solid #f1f3f6;cursor:pointer;transition:background .12s;}
+.ag-row-item:last-child{border-bottom:none;}
+.ag-row-item:hover{background:#f8fafc;}
+.ag-row-item.anker{background:#fffbeb;}
+.ag-row-item.anker:hover{background:#fef3c7;}
+.ag-row-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+.ag-row-label{display:flex;align-items:center;gap:8px;}
+.ag-row-name{font-size:13px;font-weight:600;color:var(--text);}
+.ag-row-name.anker{color:#92400e;font-style:italic;}
+.ag-row-chev{font-size:9px;color:var(--text-sec);transition:transform .2s;display:inline-block;}
+.ag-row-chev.open{transform:rotate(90deg);}
+.ag-row-right{display:flex;align-items:center;gap:10px;}
+.ag-row-val{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
+.ag-row-share{font-size:11px;color:var(--text-sec);min-width:40px;text-align:right;}
+.row-bar{height:4px;background:var(--bar-bg);border-radius:2px;overflow:hidden;}
+.row-bar-fill{height:100%;background:var(--bar-fill);border-radius:2px;}
+.row-bar-fill.anker{background:var(--bar-anker);}
+.ag-detail-panel{background:#f8fafc;border-top:1px solid var(--border);
+  padding:10px 18px 14px;display:none;}
 .ag-detail-panel.open{display:block;}
-.det-table{width:100%;border-collapse:collapse;font-size:11px;}
-.det-table th{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;
-  color:var(--text-sec);padding:4px 6px;border-bottom:1px solid var(--border);text-align:left;}
-.det-table td{padding:5px 6px;border-bottom:1px solid #eef0f3;vertical-align:top;}
-.det-table tr:last-child td{border-bottom:none;}
-.det-artnr{font-family:monospace;color:var(--artnr-color);font-size:10px;white-space:nowrap;}
-.det-ktext{font-size:11px;color:var(--text);font-weight:500;display:block;margin-bottom:1px;}
-.det-val{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap;}
-.det-hidden{display:none;}
-.det-show-more{text-align:center;padding:7px 6px;border-top:1px solid var(--border);}
-.det-show-more button{background:none;border:1px solid var(--border);border-radius:4px;
-  padding:3px 10px;font-size:10px;color:var(--text-sec);cursor:pointer;}
-.det-show-more button:hover{background:#f1f3f6;color:var(--text);}
+.ag-art-row{display:flex;align-items:center;justify-content:space-between;
+  padding:5px 0;border-bottom:1px solid #edf0f4;}
+.ag-art-row:last-child{border-bottom:none;}
+.ag-art-row.hidden{display:none;}
+.ag-art-info{flex:1;min-width:0;}
+.ag-art-text{font-size:12px;font-weight:600;color:var(--text);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ag-art-nr{font-size:11px;color:var(--text-sec);margin-top:1px;font-family:monospace;}
+.ag-art-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.ag-art-val{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;}
+.ag-art-share{font-size:11px;color:var(--text-sec);min-width:36px;text-align:right;}
+.expand-wrap{padding:8px 18px 12px;}
+.expand-btn{display:block;width:100%;background:none;border:1px solid var(--border);
+  border-radius:6px;padding:7px;font-size:12px;font-weight:600;color:var(--accent);
+  cursor:pointer;text-align:center;transition:background .12s,border-color .12s;}
+.expand-btn:hover{background:#eff6ff;border-color:var(--accent);}
+.ts-bar{font-size:11px;color:var(--text-sec);padding-top:4px;}
 .state-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
-  box-shadow:var(--shadow);padding:40px 32px;text-align:center;
-  margin-bottom:14px;color:var(--text-sec);font-size:13px;}
+  box-shadow:var(--shadow);padding:40px 32px;text-align:center;margin-bottom:14px;
+  color:var(--text-sec);font-size:13px;}
 .notice-bar{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);
   padding:10px 16px;margin-bottom:14px;font-size:12px;color:#92400e;
   display:flex;align-items:center;gap:8px;}
-.ts-bar{font-size:11px;color:var(--text-sec);padding-top:4px;}
+.notice-bar b{font-weight:700;}
 @media(max-width:599px){
   .page-content{padding:12px 12px 0;}.tab-bar{padding:0 12px;}
-  .tab-bar a{padding:12px 14px 10px;}
-  .kpi-card{padding:12px 14px;}
-  .ag-row td{padding:8px 12px;}
+  .tab-bar a{padding:12px 14px 10px;}.kpi-value{font-size:18px;}
+  .kpi-card{padding:12px 14px;}.widget-header{padding:12px 14px;}
+  .ag-row-item{padding:8px 14px;}.expand-wrap{padding:6px 14px 10px;}
 }
+@media(min-width:600px) and (max-width:1023px){.page-content{padding:16px 16px 0;}.kpi-value{font-size:20px;}}
 @media(min-width:1024px){.page-content{padding:24px 32px 0;}}
 
 </style>
@@ -119,7 +123,7 @@ body{background:var(--bg);color:var(--text);
         <div class="kpi-value" id="kv-gesamt">&mdash;<span class="kpi-unit">&#8240;</span></div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">davon Ankern&auml;gel</div>
+        <div class="kpi-label">Nur Ankern&auml;gel</div>
         <div class="kpi-value" id="kv-anker">&mdash;<span class="kpi-unit">&#8240;</span></div>
         <div class="kpi-sub">in Gruppen enthalten</div>
       </div>
@@ -128,13 +132,10 @@ body{background:var(--bg);color:var(--text);
     <div class="widget-card">
       <div class="widget-header" id="wh-ag">
         <span class="widget-title">Produktgruppen</span>
-        <span class="wh-chev" id="chev-ag">&#9660;</span>
+        <span class="widget-chevron" id="chev-ag">&#9660;</span>
       </div>
       <div id="wb-ag">
-        <table class="ag-table">
-          <thead><tr><th>Gruppe</th><th>Menge (&#8240;)</th><th class="r">Anteil</th></tr></thead>
-          <tbody id="ag-rows"></tbody>
-        </table>
+        <div id="ag-rows"></div>
       </div>
     </div>
 
@@ -155,7 +156,7 @@ var AG_LABELS = {
   "BSN":               "Betonstifte",
   "KRL":               "K-Rolle"
 };
-var ANKER_LABEL = "Ankernägel (davon)";
+var ANKER_LABEL = "Nur Ankernägel";
 var TOP_N = 5;
 
 function fmtNum(v) {
@@ -186,41 +187,30 @@ function bindCollapse(hId, cId, bId) {
     chev.classList.toggle("collapsed", open);
   });
 }
-function bindAgToggle(idx) {
-  var row   = document.getElementById("ag-row-"   + idx);
-  var panel = document.getElementById("ag-panel-" + idx);
-  var chev  = document.getElementById("ag-chev-"  + idx);
-  if (!row || !panel) return;
-  row.addEventListener("click", function () {
-    var open = panel.classList.contains("open");
-    panel.classList.toggle("open", !open);
-    if (chev) chev.classList.toggle("open", !open);
-  });
-}
 
-function buildDetailHtml(arts, panelId) {
+function buildDetailHtml(arts, panelId, groupTotal) {
   if (!arts || !arts.length) return "";
   var total = arts.length;
-  var h = '<table class="det-table"><thead><tr>'
-        + '<th>Artikel / Kurztext</th>'
-        + '<th class="r">Menge (‰)</th>'
-        + '</tr></thead><tbody>';
-
+  var h = "";
   for (var i = 0; i < arts.length; i++) {
-    var hidden = i >= TOP_N ? ' class="det-hidden"' : '';
-    var kt = arts[i].kurztext ? '<span class="det-ktext">' + esc(arts[i].kurztext) + '</span>' : '';
-    h += '<tr' + hidden + '>'
-      + '<td>' + kt + '<span class="det-artnr">' + esc(arts[i].artnr) + '</span></td>'
-      + '<td class="det-val">' + fmtNum(arts[i].menge) + '</td>'
-      + '</tr>';
+    var hidden = i >= TOP_N ? ' hidden' : '';
+    var share = groupTotal > 0 ? (arts[i].menge / groupTotal * 100).toFixed(1) : "0.0";
+    var kt = arts[i].kurztext || arts[i].artnr;
+    h += '<div class="ag-art-row' + hidden + '">'
+       + '<div class="ag-art-info">'
+       + '<div class="ag-art-text">' + esc(kt) + '</div>'
+       + '<div class="ag-art-nr">'  + esc(arts[i].artnr) + '</div>'
+       + '</div>'
+       + '<div class="ag-art-right">'
+       + '<span class="ag-art-val">' + fmtNum(arts[i].menge) + '</span>'
+       + '<span class="ag-art-share">' + share + '&thinsp;%</span>'
+       + '</div></div>';
   }
-  h += '</tbody></table>';
-
   if (total > TOP_N) {
     var rest = total - TOP_N;
-    h += '<div class="det-show-more" id="sm-' + panelId + '">'
-       + '<button onclick="toggleAll(\'' + panelId + '\',' + rest + ')">&#9660; Alle anzeigen ('
-       + rest + ' weitere)</button></div>';
+    h += '<div class="expand-wrap" id="ew-' + panelId + '">'
+       + '<button class="expand-btn" onclick="toggleAll(\'' + panelId + '\',' + rest + ')">'
+       + '&#9660;&nbsp;Alle anzeigen (' + rest + ' weitere)</button></div>';
   }
   return h;
 }
@@ -228,27 +218,39 @@ function buildDetailHtml(arts, panelId) {
 window.toggleAll = function(panelId, rest) {
   var panel = document.getElementById(panelId);
   if (!panel) return;
-  var rows = panel.querySelectorAll("tr.det-hidden");
-  var smDiv = document.getElementById("sm-" + panelId);
-  var btn = smDiv ? smDiv.querySelector("button") : null;
+  var rows = panel.querySelectorAll(".ag-art-row.hidden");
+  var ewDiv = document.getElementById("ew-" + panelId);
+  var btn = ewDiv ? ewDiv.querySelector("button") : null;
   if (rows.length > 0) {
-    for (var i = 0; i < rows.length; i++) rows[i].classList.remove("det-hidden");
-    if (btn) btn.innerHTML = "&#9650; Weniger anzeigen";
+    for (var i = 0; i < rows.length; i++) rows[i].classList.remove("hidden");
+    if (btn) btn.innerHTML = "&#9650;&nbsp;Weniger anzeigen";
   } else {
-    var allRows = panel.querySelectorAll("tbody tr");
-    for (var j = TOP_N; j < allRows.length; j++) allRows[j].classList.add("det-hidden");
-    if (btn) btn.innerHTML = "&#9660; Alle anzeigen (" + rest + " weitere)";
+    var allRows = panel.querySelectorAll(".ag-art-row");
+    for (var j = TOP_N; j < allRows.length; j++) allRows[j].classList.add("hidden");
+    if (btn) btn.innerHTML = "&#9660;&nbsp;Alle anzeigen (" + rest + " weitere)";
   }
 };
+
+function bindRowToggle(itemId, panelId, chevId) {
+  var item  = document.getElementById(itemId);
+  var panel = document.getElementById(panelId);
+  var chev  = document.getElementById(chevId);
+  if (!item || !panel) return;
+  item.addEventListener("click", function() {
+    var open = panel.classList.contains("open");
+    panel.classList.toggle("open", !open);
+    if (chev) chev.classList.toggle("open", !open);
+  });
+}
 
 function render(d) {
   var gesamt = +d.gesamt || 0;
   var anker  = +d.davon_ankernaegel || 0;
 
   document.getElementById("kv-gesamt").innerHTML =
-    fmtNum(gesamt) + '<span class="kpi-unit">‰</span>';
+    fmtNum(gesamt) + '<span class="kpi-unit">&#8240;</span>';
   document.getElementById("kv-anker").innerHTML =
-    fmtNum(anker) + '<span class="kpi-unit">‰</span>';
+    fmtNum(anker) + '<span class="kpi-unit">&#8240;</span>';
 
   var agRaw    = d.gruppen        || {};
   var agDetail = d.gruppen_detail || {};
@@ -262,66 +264,77 @@ function render(d) {
 
   var maxMenge = agArr.length > 0 ? agArr[0].menge : 1;
   var html = "";
-  var toggleIdxs = [];
+  var binds = [];
   var idx = 0;
 
   for (var i = 0; i < agArr.length; i++, idx++) {
-    var ag   = agArr[i];
-    var pct  = maxMenge > 0 ? Math.round(ag.menge / maxMenge * 100) : 0;
-    var share = gesamt > 0 ? (ag.menge / gesamt * 100).toFixed(1) : "0.0";
-    var det   = agDetail[ag.key] || {};
-    var arts  = det.artikel || [];
-    var panelId = "ag-panel-" + idx;
+    var ag      = agArr[i];
+    var pct     = maxMenge > 0 ? Math.round(ag.menge / maxMenge * 100) : 0;
+    var share   = gesamt > 0 ? (ag.menge / gesamt * 100).toFixed(1) : "0.0";
+    var det     = agDetail[ag.key] || {};
+    var arts    = det.artikel || [];
+    var iid     = "ag-item-"  + idx;
+    var pid     = "ag-panel-" + idx;
+    var cid     = "ag-chev-"  + idx;
+    var hasArts = arts.length > 0;
 
-    var chevHtml = arts.length
-      ? '<span class="ag-chev" id="ag-chev-' + idx + '">►</span>' : '';
+    html += '<div class="ag-row-item" id="' + iid + '">'
+          + '<div class="ag-row-top">'
+          + '<div class="ag-row-label">'
+          + (hasArts ? '<span class="ag-row-chev" id="' + cid + '">&#9658;</span>' : '')
+          + '<span class="ag-row-name">' + esc(ag.label) + '</span>'
+          + '</div>'
+          + '<div class="ag-row-right">'
+          + '<span class="ag-row-val">' + fmtNum(ag.menge) + '&thinsp;&#8240;</span>'
+          + '<span class="ag-row-share">' + share + '&thinsp;%</span>'
+          + '</div></div>'
+          + '<div class="row-bar"><div class="row-bar-fill" style="width:' + pct + '%"></div></div>'
+          + '</div>';
 
-    html += '<tr class="ag-row' + (arts.length ? " ag-clickable" : "") +
-            '" id="ag-row-' + idx + '">'
-      + '<td class="ag-name">' + chevHtml + esc(ag.label) + '</td>'
-      + '<td class="ag-val">' + fmtNum(ag.menge)
-        + '<div class="bar-wrap"><div class="bar-fill" style="width:' + pct + '%"></div></div></td>'
-      + '<td class="ag-pct">' + share + '&thinsp;%</td>'
-      + '</tr>';
-
-    if (arts.length) {
-      html += '<tr class="ag-detail-row"><td colspan="3">'
-            + '<div class="ag-detail-panel" id="' + panelId + '">'
-            + buildDetailHtml(arts, panelId)
-            + '</div></td></tr>';
-      toggleIdxs.push(idx);
+    if (hasArts) {
+      html += '<div class="ag-detail-panel" id="' + pid + '">'
+            + buildDetailHtml(arts, pid, ag.menge)
+            + '</div>';
+      binds.push([iid, pid, cid]);
     }
   }
 
-  /* Ankernagel Sonderzeile */
+  /* Ankernägel Sonderzeile */
   if (anker > 0) {
     idx++;
-    var ankerPct  = maxMenge > 0 ? Math.round(anker / maxMenge * 100) : 0;
-    var ankerArts = ankerDet.artikel || [];
-    var ankerPanelId = "ag-panel-" + idx;
-    var ankerChev = ankerArts.length
-      ? '<span class="ag-chev" id="ag-chev-' + idx + '">►</span>' : '';
+    var aPct   = maxMenge > 0 ? Math.round(anker / maxMenge * 100) : 0;
+    var aShare = gesamt > 0 ? (anker / gesamt * 100).toFixed(1) : "0.0";
+    var aArts  = ankerDet.artikel || [];
+    var aiid   = "ag-item-"  + idx;
+    var apid   = "ag-panel-" + idx;
+    var acid   = "ag-chev-"  + idx;
+    var aHas   = aArts.length > 0;
 
-    html += '<tr class="ag-row anker-row' + (ankerArts.length ? " ag-clickable" : "") +
-            '" id="ag-row-' + idx + '">'
-      + '<td class="ag-name">' + ankerChev + esc(ANKER_LABEL) + '</td>'
-      + '<td class="ag-val">' + fmtNum(anker)
-        + '<div class="bar-wrap"><div class="bar-fill anker" style="width:' + ankerPct + '%"></div></div></td>'
-      + '<td class="ag-pct">' + (gesamt > 0 ? (anker/gesamt*100).toFixed(1) : "0.0") + '&thinsp;%</td>'
-      + '</tr>';
+    html += '<div class="ag-row-item anker" id="' + aiid + '">'
+          + '<div class="ag-row-top">'
+          + '<div class="ag-row-label">'
+          + (aHas ? '<span class="ag-row-chev" id="' + acid + '">&#9658;</span>' : '')
+          + '<span class="ag-row-name anker">' + esc(ANKER_LABEL) + '</span>'
+          + '</div>'
+          + '<div class="ag-row-right">'
+          + '<span class="ag-row-val">' + fmtNum(anker) + '&thinsp;&#8240;</span>'
+          + '<span class="ag-row-share">' + aShare + '&thinsp;%</span>'
+          + '</div></div>'
+          + '<div class="row-bar"><div class="row-bar-fill anker" style="width:' + aPct + '%"></div></div>'
+          + '</div>';
 
-    if (ankerArts.length) {
-      html += '<tr class="ag-detail-row"><td colspan="3">'
-            + '<div class="ag-detail-panel" id="' + ankerPanelId + '">'
-            + buildDetailHtml(ankerArts, ankerPanelId)
-            + '</div></td></tr>';
-      toggleIdxs.push(idx);
+    if (aHas) {
+      html += '<div class="ag-detail-panel" id="' + apid + '">'
+            + buildDetailHtml(aArts, apid, anker)
+            + '</div>';
+      binds.push([aiid, apid, acid]);
     }
   }
 
-  if (!html) html = '<tr><td colspan="3" style="text-align:center;padding:24px;color:#6b7280">Keine Daten</td></tr>';
   document.getElementById("ag-rows").innerHTML = html;
-  for (var ti = 0; ti < toggleIdxs.length; ti++) bindAgToggle(toggleIdxs[ti]);
+  for (var bi = 0; bi < binds.length; bi++) {
+    bindRowToggle(binds[bi][0], binds[bi][1], binds[bi][2]);
+  }
 
   if (d.timestamp) {
     try {
