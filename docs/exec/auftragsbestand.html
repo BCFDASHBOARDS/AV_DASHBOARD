@@ -119,8 +119,8 @@ body{background:var(--bg);color:var(--text);
 
 <nav class="tab-bar">
   <a href="auftragsbestand.html" class="active">Auftragsbestand</a>
-  <a href="presserei.html">Presserei</a>
-  <a href="material.html">Material</a>
+  <a href="../presserei.html">Presserei</a>
+  <a href="../material.html">Material</a>
 </nav>
 
 <div class="page-content">
@@ -455,7 +455,7 @@ var EMPTY = { gesamtbestand:null, tageseingang:null, wocheneingang:null,
               monatseingang:null, davon_ankernaegel:null,
               alle_kunden:[], artikelgruppen:{}, gruppen_detail:{}, plausi:null };
 
-fetch("_data/auftragsbestand.json?t=" + Date.now())
+fetch("../_data/auftragsbestand.json?t=" + Date.now())
   .then(function(r) {
     if (r.status === 404) return { _kein_datenstand: true };
     if (!r.ok) return { _error: "HTTP " + r.status };
