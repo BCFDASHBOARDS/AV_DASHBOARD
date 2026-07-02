@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Material &mdash; BCF Dashboard</title>
+<style>
+:root {
+  --bg:#f5f6f8; --surface:#ffffff; --border:#e1e4e8;
+  --text:#1a1e27; --text-sec:#6b7280; --accent:#1c5fa6;
+  --green:#16a34a; --shadow:0 1px 4px rgba(0,0,0,.08); --r:8px;
+  --danger-row:#fef2f2;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  padding:0 0 48px;-webkit-font-smoothing:antialiased;}
+
+/* TABS */
+.tab-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 24px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  position:sticky;top:0;z-index:10;}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab-bar a{display:inline-block;padding:14px 20px 12px;font-size:13px;font-weight:500;
+  color:var(--text-sec);text-decoration:none;border-bottom:2px solid transparent;
+  white-space:nowrap;transition:color .15s,border-color .15s;}
+.tab-bar a:hover{color:var(--text);}
+.tab-bar a.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
+
+/* PAGE */
+.page-content{padding:20px 24px 0;max-width:960px;}
+.page-header{margin-bottom:16px;}
+.page-header h1{font-size:20px;font-weight:700;letter-spacing:-.3px;}
+.page-header .sub{font-size:12px;color:var(--text-sec);margin-top:3px;}
+.ts-bar{font-size:11px;color:var(--text-sec);padding:8px 0 4px;}
+
+/* KPI ROW */
+.kpi-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:16px 20px;flex:1 1 180px;min-width:150px;}
+.kpi-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--text-sec);margin-bottom:6px;}
+.kpi-value{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1.1;}
+
+/* STAT ROWS */
+.stat-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);margin-bottom:12px;padding:14px 20px;}
+.stat-block-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--text-sec);margin-bottom:10px;}
+.stat-row{display:flex;gap:0;flex-wrap:nowrap;}
+.stat-cell{flex:1 1 0;min-width:0;padding:6px 12px 6px 0;}
+.stat-cell:not(:last-child){border-right:1px solid var(--border);margin-right:12px;}
+.stat-cell-label{font-size:11px;color:var(--text-sec);margin-bottom:3px;}
+.stat-cell-value{font-size:16px;font-weight:700;letter-spacing:-.3px;white-space:nowrap;}
+
+/* MATERIALGÜTE CARDS */
+.mat-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.mat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:14px 18px;flex:1 1 160px;min-width:140px;}
+.mat-card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
+  color:var(--accent);margin-bottom:8px;}
+.mat-card-row{display:flex;justify-content:space-between;align-items:baseline;
+  font-size:12px;margin-bottom:4px;}
+.mat-card-row-label{color:var(--text-sec);}
+.mat-card-row-val{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;}
+
+/* LAGERBESTAND WIDGET */
+.lager-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden;}
+.lager-header{padding:14px 18px 12px;border-bottom:1px solid var(--border);}
+.lager-header-title{font-size:13px;font-weight:700;letter-spacing:-.1px;}
+.lager-header-value{font-size:12px;font-weight:600;color:var(--text-sec);margin-top:2px;}
+.lager-machines{display:flex;gap:0;flex-wrap:wrap;}
+.lager-machine{flex:1 1 200px;padding:12px 18px;border-right:1px solid var(--border);}
+.lager-machine:last-child{border-right:none;}
+.lager-machine-name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
+  color:var(--accent);margin-bottom:6px;}
+.lager-machine-total{font-size:15px;font-weight:700;margin-bottom:8px;}
+.lager-sub{display:flex;flex-direction:column;gap:0;}
+.lager-sub-row{display:flex;justify-content:space-between;font-size:12px;
+  padding:4px 0;border-top:1px solid #f1f3f6;}
+.lager-sub-label{color:var(--text-sec);}
+.lager-sub-val{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;}
+
+/* MACHINE WIDGETS */
+.machine-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden;}
+.machine-header{display:flex;align-items:flex-start;justify-content:space-between;
+  padding:14px 18px 12px;cursor:pointer;user-select:none;border-bottom:1px solid var(--border);}
+.machine-header:hover{background:#fafbfc;}
+.machine-title{font-size:13px;font-weight:700;}
+.machine-kpis{font-size:11px;color:var(--text-sec);margin-top:3px;}
+.machine-kpis span{display:inline-block;margin-right:14px;}
+.machine-chevron{font-size:14px;color:var(--text-sec);flex-shrink:0;margin-top:2px;
+  transition:transform .2s;}
+.machine-chevron.open{transform:rotate(90deg);}
+.machine-body{display:none;}
+.machine-body.open{display:block;}
+
+/* MATERIALGRUPPE */
+.matgrp-block{border-bottom:1px solid var(--border);}
+.matgrp-block:last-child{border-bottom:none;}
+.matgrp-header{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;cursor:pointer;user-select:none;background:#f9fafb;}
+.matgrp-header:hover{background:#f3f5f8;}
+.matgrp-title{font-size:12px;font-weight:600;color:var(--text);}
+.matgrp-kpis{font-size:11px;color:var(--text-sec);margin-top:2px;}
+.matgrp-kpis span{margin-right:12px;}
+.matgrp-chevron{font-size:12px;color:var(--text-sec);transition:transform .2s;}
+.matgrp-chevron.open{transform:rotate(90deg);}
+.matgrp-body{display:none;}
+.matgrp-body.open{display:block;}
+
+/* ARTICLE TABLE */
+.art-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.art-table{width:100%;border-collapse:collapse;font-size:12px;}
+.art-table th{padding:7px 18px;text-align:left;font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.4px;color:var(--text-sec);
+  border-bottom:1px solid var(--border);background:#f9fafb;white-space:nowrap;}
+.art-table th.r,.art-table td.r{text-align:right;}
+.art-table td{padding:7px 18px;border-bottom:1px solid #f1f3f6;
+  vertical-align:top;white-space:nowrap;}
+.art-table tr:last-child td{border-bottom:none;}
+.art-table tr:hover td{background:#f8fafc;}
+.art-table tr.art-row-warn td{background:var(--danger-row);}
+.art-table tr.art-row-warn:hover td{background:#fde8e8;}
+.art-artnr{font-family:monospace;font-size:11px;color:var(--text-sec);}
+.art-text{font-weight:600;}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap;}
+
+/* STATE */
+.state-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:40px 32px;text-align:center;margin-bottom:14px;
+  color:var(--text-sec);font-size:13px;}
+.notice-bar{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);
+  padding:10px 16px;margin-bottom:14px;font-size:12px;color:#92400e;
+  display:flex;align-items:center;gap:8px;}
+
+@media(max-width:599px){
+  .page-content{padding:12px 12px 0;}.tab-bar{padding:0 12px;}
+  .tab-bar a{padding:12px 14px 10px;}.kpi-card{padding:12px 14px;}
+  .stat-row{flex-wrap:wrap;}
+  .stat-cell:not(:last-child){border-right:none;margin-right:0;
+    border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:8px;}
+  .lager-machine{border-right:none;border-bottom:1px solid var(--border);}
+  .lager-machine:last-child{border-bottom:none;}
+}
+@media(min-width:1024px){.page-content{padding:24px 32px 0;}}
+</style>
+</head>
+<body>
+
+<nav class="tab-bar">
+  <a href="presserei.html">Presserei</a>
+  <a href="material.html" class="active">Material</a>
+</nav>
+
+<div class="page-content">
+
+  <div id="notice-bar" class="notice-bar" style="display:none">
+    <span>&#9888;</span><span id="notice-text"></span>
+  </div>
+  <div id="root-loading" class="state-card">Daten werden geladen&hellip;</div>
+  <div id="root-data" style="display:none">
+
+    <div class="page-header">
+      <h1>Material</h1>
+      <div class="sub" id="page-sub"></div>
+    </div>
+
+    <!-- ROW 1: 2 KPI cards (Gesamtlagerbestand hier entfernt) -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Verbrauch YTD</div>
+        <div class="kpi-value" id="kpi-ytd">&mdash;</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Offene Produktion</div>
+        <div class="kpi-value" id="kpi-offene">&mdash;</div>
+      </div>
+    </div>
+
+    <!-- STAT BLOCK: Offene Produktion -->
+    <div class="stat-block">
+      <div class="stat-block-title">Offene Produktion</div>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <div class="stat-cell-label">Gesamt</div>
+          <div class="stat-cell-value" id="sr-op-ges">&mdash;</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Nagelpressen</div>
+          <div class="stat-cell-value" id="sr-op-nag">&mdash;</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Doppeldruck</div>
+          <div class="stat-cell-value" id="sr-op-dop">&mdash;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAT BLOCK: Aktueller Monat -->
+    <div class="stat-block">
+      <div class="stat-block-title" id="sr-ak-title">Gemeldete Pressenleitung</div>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <div class="stat-cell-label">Gesamt</div>
+          <div class="stat-cell-value" id="sr-ak-ges">&mdash;</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Nagelpressen</div>
+          <div class="stat-cell-value" id="sr-ak-nag">&mdash;</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Doppeldruck</div>
+          <div class="stat-cell-value" id="sr-ak-dop">&mdash;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAT BLOCK: Vormonat -->
+    <div class="stat-block" id="sr-vm-block" style="display:none">
+      <div class="stat-block-title" id="sr-vm-title">Gemeldete Pressenleitung Vormonat</div>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <div class="stat-cell-label">Gesamt</div>
+          <div class="stat-cell-value" id="sr-vm-ges">&mdash;</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Nagelpressen</div>
+          <div class="stat-cell-value" id="sr-vm-nag">&mdash;</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Doppeldruck</div>
+          <div class="stat-cell-value" id="sr-vm-dop">&mdash;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GESAMTLAGERBESTAND (unter Vormonat) -->
+    <div class="lager-block" id="lager-block"></div>
+
+    <!-- MATERIALGÜTE -->
+    <div class="mat-row" id="mat-row"></div>
+
+    <!-- MACHINE WIDGETS -->
+    <div id="machines-container"></div>
+
+    <div class="ts-bar" id="ts-bar"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var MONTH_NAMES = {
+  "Jan":"Januar","Feb":"Februar","Mrz":"März","Apr":"April",
+  "Mai":"Mai","Jun":"Juni","Jul":"Juli","Aug":"August",
+  "Sep":"September","Okt":"Oktober","Nov":"November","Dez":"Dezember"
+};
+
+function expandLabel(label) {
+  if(!label) return label;
+  var parts = (label+"").trim().split(/\s+/);
+  if(parts.length !== 2) return label;
+  var mName = MONTH_NAMES[parts[0]] || parts[0];
+  var yr = parseInt(parts[1], 10);
+  var fullYr = (yr < 100) ? 2000 + yr : yr;
+  return mName + " " + fullYr;
+}
+
+function fmtT(v){
+  if(v==null||isNaN(+v)) return "—";
+  return (+v/1000).toLocaleString("de-DE",{minimumFractionDigits:1,maximumFractionDigits:1})+" t";
+}
+function fmtKg(v){
+  if(v==null||isNaN(+v)) return "—";
+  return Math.round(+v).toLocaleString("de-DE")+" kg";
+}
+function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function machineByKey(arr,key){
+  for(var i=0;i<arr.length;i++){ if(arr[i].key===key) return arr[i]; }
+  return null;
+}
+function matgrpByKey(m,key){
+  var mg=m&&m.materialgruppen;
+  if(!mg) return null;
+  for(var i=0;i<mg.length;i++){ if(mg[i].key===key) return mg[i]; }
+  return null;
+}
+
+function byId(id){ return document.getElementById(id); }
+function showNotice(msg){
+  byId("notice-bar").style.display="";
+  byId("notice-text").innerHTML=msg;
+}
+
+fetch("_data/material.json?t="+Date.now())
+  .then(function(r){
+    if(r.status===404) return {_no_data:true};
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    return r.json().catch(function(){ throw new Error("JSON-Parse-Fehler"); });
+  })
+  .then(function(d){
+    byId("root-loading").style.display="none";
+    byId("root-data").style.display="";
+
+    if(d._no_data){
+      showNotice("<b>Noch kein Datenstand</b> — bitte 06_material.ps1 ausführen.");
+      return;
+    }
+
+    var akLabel  = d.aktuell_label  || "Aktuell";
+    var vmLabel  = d.vormonat_label || "";
+    var akFull   = expandLabel(akLabel);
+    var vmFull   = expandLabel(vmLabel);
+
+    if(d.timestamp){
+      try{
+        var ts=new Date(d.timestamp).toLocaleString("de-DE");
+        byId("page-sub").textContent="BCF Dashboard · Datenstand "+ts;
+        byId("ts-bar").textContent="Datenstand: "+ts;
+      }catch(e){}
+    }
+
+    /* ROW 1 KPIs */
+    byId("kpi-ytd").textContent    = fmtT(d.gesamt_ytd);
+    byId("kpi-offene").textContent = fmtT(d.gesamt_offene_prod);
+
+    var masch = d.maschinen||[];
+    var nag   = machineByKey(masch,"Nagelpressen");
+    var dop   = machineByKey(masch,"Doppeldruck");
+
+    /* Offene Produktion */
+    byId("sr-op-ges").textContent = fmtT(d.gesamt_offene_prod);
+    byId("sr-op-nag").textContent = fmtT(nag?nag.offene_prod:null);
+    byId("sr-op-dop").textContent = fmtT(dop?dop.offene_prod:null);
+
+    /* Aktuell */
+    byId("sr-ak-title").textContent = "Gemeldete Pressenleitung "+akFull;
+    byId("sr-ak-ges").textContent   = fmtT(d.gesamt_aktuell);
+    byId("sr-ak-nag").textContent   = fmtT(nag?nag.aktuell:null);
+    byId("sr-ak-dop").textContent   = fmtT(dop?dop.aktuell:null);
+
+    /* Vormonat */
+    if(vmLabel && d.gesamt_vormonat!=null){
+      byId("sr-vm-block").style.display="";
+      byId("sr-vm-title").textContent  = "Gemeldete Pressenleitung "+vmFull;
+      byId("sr-vm-ges").textContent    = fmtT(d.gesamt_vormonat);
+      byId("sr-vm-nag").textContent    = fmtT(nag?nag.vormonat:null);
+      byId("sr-vm-dop").textContent    = fmtT(dop?dop.vormonat:null);
+    }
+
+    /* GESAMTLAGERBESTAND */
+    function lagerMach(m){
+      if(!m) return "";
+      var stift=matgrpByKey(m,"Stiftdraht");
+   
