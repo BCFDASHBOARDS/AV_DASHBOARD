@@ -6,16 +6,17 @@
 <title>Material &mdash; BCF Dashboard</title>
 <style>
 :root {
-  --bg:#f5f6f8; --surface:#ffffff; --border:#e1e4e8; --text:#1a1e27;
-  --text-sec:#6b7280; --accent:#1c5fa6; --green:#16a34a; --red:#dc2626;
-  --shadow:0 1px 4px rgba(0,0,0,.08); --r:8px;
+  --bg:#f5f6f8; --surface:#ffffff; --border:#e1e4e8;
+  --text:#1a1e27; --text-sec:#6b7280; --accent:#1c5fa6;
+  --green:#16a34a; --shadow:0 1px 4px rgba(0,0,0,.08); --r:8px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{font-size:14px;}
 body{background:var(--bg);color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
   padding:0 0 48px;-webkit-font-smoothing:antialiased;}
-/* Tab bar */
+
+/* TABS */
 .tab-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);
   padding:0 24px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
   position:sticky;top:0;z-index:10;}
@@ -25,83 +26,122 @@ body{background:var(--bg);color:var(--text);
   white-space:nowrap;transition:color .15s,border-color .15s;}
 .tab-bar a:hover{color:var(--text);}
 .tab-bar a.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
-/* Layout */
+
+/* PAGE */
 .page-content{padding:20px 24px 0;max-width:960px;}
-/* KPI row */
+.page-header{margin-bottom:16px;}
+.page-header h1{font-size:20px;font-weight:700;letter-spacing:-.3px;}
+.page-header .sub{font-size:12px;color:var(--text-sec);margin-top:3px;}
+.ts-bar{font-size:11px;color:var(--text-sec);padding:8px 0 4px;}
+
+/* KPI ROW -- 3 cards */
 .kpi-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
 .kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
-  box-shadow:var(--shadow);padding:14px 18px;flex:1 1 180px;min-width:150px;}
+  box-shadow:var(--shadow);padding:16px 20px;flex:1 1 180px;min-width:150px;}
 .kpi-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;
-  color:var(--text-sec);margin-bottom:5px;}
+  color:var(--text-sec);margin-bottom:6px;}
 .kpi-value{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1.1;}
-/* Compound card: Gesamt + Nagelpressen + Doppeldruck in einer Karte */
-.kpi-card-wide{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
-  box-shadow:var(--shadow);padding:14px 18px;flex:2 1 320px;min-width:260px;}
-.kpi-compound-top{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;}
-.kpi-compound-val{font-size:20px;font-weight:700;letter-spacing:-.5px;}
-.kpi-sub-row{display:flex;gap:20px;flex-wrap:wrap;}
-.kpi-sub-item{display:flex;flex-direction:column;}
-.kpi-sub-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;
-  color:var(--text-sec);margin-bottom:2px;}
-.kpi-sub-val{font-size:13px;font-weight:700;}
-/* Machine widget */
-.widget-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+
+/* STAT ROWS (Offene Prod / Aktuell / Vormonat) */
+.stat-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);margin-bottom:12px;padding:14px 20px;}
+.stat-block-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--text-sec);margin-bottom:10px;}
+.stat-row{display:flex;gap:0;flex-wrap:nowrap;}
+.stat-cell{flex:1 1 0;min-width:0;padding:6px 12px 6px 0;}
+.stat-cell:not(:last-child){border-right:1px solid var(--border);margin-right:12px;}
+.stat-cell-label{font-size:11px;color:var(--text-sec);margin-bottom:3px;}
+.stat-cell-value{font-size:16px;font-weight:700;letter-spacing:-.3px;white-space:nowrap;}
+
+/* MATERIALGÜTE CARDS */
+.mat-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.mat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:14px 18px;flex:1 1 160px;min-width:140px;}
+.mat-card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
+  color:var(--accent);margin-bottom:8px;}
+.mat-card-row{display:flex;justify-content:space-between;align-items:baseline;
+  font-size:12px;margin-bottom:4px;}
+.mat-card-row-label{color:var(--text-sec);}
+.mat-card-row-val{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;}
+
+/* LAGERBESTAND WIDGET */
+.lager-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
   box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden;}
-.mach-hdr{display:flex;align-items:flex-start;justify-content:space-between;
-  padding:13px 18px;cursor:pointer;user-select:none;
-  border-bottom:1px solid var(--border);transition:background .12s;}
-.mach-hdr:hover{background:#f8fafc;}
-.mach-title{font-size:13px;font-weight:700;margin-bottom:4px;}
-.mach-stats{font-size:11px;color:var(--text-sec);line-height:1.6;}
-.mach-stats b{font-weight:700;color:var(--text);}
-.mach-chev{font-size:10px;color:var(--text-sec);transition:transform .2s;
-  display:inline-block;flex-shrink:0;margin-left:12px;margin-top:3px;}
-.mach-chev.collapsed{transform:rotate(-90deg);}
-/* Material group */
-.mat-grp{border-bottom:1px solid #f1f3f6;cursor:pointer;transition:background .12s;}
-.mat-grp:last-child{border-bottom:none;}
-.mat-grp:hover{background:#f8fafc;}
-.mat-grp-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:9px 18px;}
-.mat-grp-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;}
-.mat-grp-stats{font-size:11px;color:var(--text-sec);line-height:1.6;}
-.mat-grp-stats b{font-weight:700;color:var(--text);}
-.mat-grp-chev{font-size:9px;color:var(--text-sec);transition:transform .2s;
-  display:inline-block;flex-shrink:0;margin-left:10px;margin-top:2px;}
-.mat-grp-chev.open{transform:rotate(90deg);}
-/* Article panel */
-.art-panel{background:#f8fafc;border-top:1px solid var(--border);display:none;overflow-x:auto;}
-.art-panel.open{display:block;}
-.art-tbl{width:100%;border-collapse:collapse;font-size:12px;}
-.art-tbl th{text-align:left;padding:7px 10px;font-size:10px;font-weight:700;
+.lager-header{padding:14px 18px 12px;border-bottom:1px solid var(--border);}
+.lager-header-title{font-size:13px;font-weight:700;letter-spacing:-.1px;}
+.lager-header-value{font-size:12px;font-weight:600;color:var(--text-sec);margin-top:2px;}
+.lager-machines{display:flex;gap:0;flex-wrap:wrap;}
+.lager-machine{flex:1 1 200px;padding:12px 18px;border-right:1px solid var(--border);}
+.lager-machine:last-child{border-right:none;}
+.lager-machine-name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
+  color:var(--accent);margin-bottom:6px;}
+.lager-machine-total{font-size:15px;font-weight:700;margin-bottom:8px;}
+.lager-sub{display:flex;flex-direction:column;gap:0;}
+.lager-sub-row{display:flex;justify-content:space-between;font-size:12px;
+  padding:4px 0;border-top:1px solid #f1f3f6;}
+.lager-sub-label{color:var(--text-sec);}
+.lager-sub-val{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;}
+
+/* MACHINE WIDGETS */
+.machine-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden;}
+.machine-header{display:flex;align-items:flex-start;justify-content:space-between;
+  padding:14px 18px 12px;cursor:pointer;user-select:none;border-bottom:1px solid var(--border);}
+.machine-header:hover{background:#fafbfc;}
+.machine-title{font-size:13px;font-weight:700;}
+.machine-kpis{font-size:11px;color:var(--text-sec);margin-top:3px;}
+.machine-kpis span{display:inline-block;margin-right:14px;}
+.machine-chevron{font-size:14px;color:var(--text-sec);flex-shrink:0;margin-top:2px;
+  transition:transform .2s;}
+.machine-chevron.open{transform:rotate(90deg);}
+.machine-body{display:none;}
+.machine-body.open{display:block;}
+
+/* MATERIALGRUPPE inside machine */
+.matgrp-block{border-bottom:1px solid var(--border);}
+.matgrp-block:last-child{border-bottom:none;}
+.matgrp-header{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;cursor:pointer;user-select:none;background:#f9fafb;}
+.matgrp-header:hover{background:#f3f5f8;}
+.matgrp-title{font-size:12px;font-weight:600;color:var(--text);}
+.matgrp-kpis{font-size:11px;color:var(--text-sec);margin-top:2px;}
+.matgrp-kpis span{margin-right:12px;}
+.matgrp-chevron{font-size:12px;color:var(--text-sec);transition:transform .2s;}
+.matgrp-chevron.open{transform:rotate(90deg);}
+.matgrp-body{display:none;}
+.matgrp-body.open{display:block;}
+
+/* ARTICLE TABLE */
+.art-table{width:100%;border-collapse:collapse;font-size:12px;}
+.art-table th{padding:7px 18px;text-align:left;font-size:11px;font-weight:600;
   text-transform:uppercase;letter-spacing:.4px;color:var(--text-sec);
-  border-bottom:1px solid var(--border);white-space:nowrap;}
-.art-tbl th.num,.art-tbl td.num{text-align:right;}
-.art-tbl td{padding:6px 10px;border-bottom:1px solid #edf0f4;vertical-align:middle;}
-.art-tbl tr:last-child td{border-bottom:none;}
-.art-tbl td.num{font-variant-numeric:tabular-nums;font-weight:600;}
-.art-tbl .art-nr{font-weight:700;color:var(--accent);white-space:nowrap;}
-.art-tbl .art-text{color:var(--text);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-/* Mat label KPI row */
-.mat-kpi-row{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
-.mat-kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
-  box-shadow:var(--shadow);padding:11px 15px;flex:1 1 140px;min-width:120px;}
-.mat-kpi-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
-  color:var(--text-sec);margin-bottom:4px;}
-.mat-kpi-val{font-size:16px;font-weight:700;}
-.mat-kpi-sub{font-size:11px;color:var(--text-sec);margin-top:2px;}
-/* Utility */
-.ts-bar{font-size:11px;color:var(--text-sec);margin-bottom:10px;}
+  border-bottom:1px solid var(--border);background:#f9fafb;}
+.art-table th.r,.art-table td.r{text-align:right;}
+.art-table td{padding:7px 18px;border-bottom:1px solid #f1f3f6;vertical-align:top;}
+.art-table tr:last-child td{border-bottom:none;}
+.art-table tr:hover td{background:#f8fafc;}
+.art-artnr{font-family:monospace;font-size:11px;color:var(--text-sec);}
+.art-text{font-weight:600;}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap;}
+
+/* STATE */
 .state-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
   box-shadow:var(--shadow);padding:40px 32px;text-align:center;margin-bottom:14px;
   color:var(--text-sec);font-size:13px;}
+.notice-bar{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r);
+  padding:10px 16px;margin-bottom:14px;font-size:12px;color:#92400e;
+  display:flex;align-items:center;gap:8px;}
+
 @media(max-width:599px){
-  .page-content{padding:10px 10px 0;}.tab-bar{padding:0 10px;}
-  .tab-bar a{padding:11px 12px 9px;}.kpi-value{font-size:18px;}
-  .kpi-compound-val{font-size:16px;}.mach-hdr,.mat-grp-hdr{padding:10px 12px;}
-  .art-tbl th,.art-tbl td{padding:5px 7px;}
+  .page-content{padding:12px 12px 0;}.tab-bar{padding:0 12px;}
+  .tab-bar a{padding:12px 14px 10px;}.kpi-card{padding:12px 14px;}
+  .stat-row{flex-wrap:wrap;}
+  .stat-cell:not(:last-child){border-right:none;margin-right:0;
+    border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:8px;}
+  .lager-machine{border-right:none;border-bottom:1px solid var(--border);}
+  .lager-machine:last-child{border-bottom:none;}
 }
-@media(min-width:600px) and (max-width:1023px){.page-content{padding:14px 16px 0;}}
-@media(min-width:1024px){.page-content{padding:22px 32px 0;}}
+@media(min-width:1024px){.page-content{padding:24px 32px 0;}}
 </style>
 </head>
 <body>
@@ -113,249 +153,201 @@ body{background:var(--bg);color:var(--text);
 </nav>
 
 <div class="page-content">
+
+  <div id="notice-bar" class="notice-bar" style="display:none">
+    <span>&#9888;</span><span id="notice-text"></span>
+  </div>
   <div id="root-loading" class="state-card">Daten werden geladen&hellip;</div>
   <div id="root-data" style="display:none">
 
-    <!-- Zeile 1: Verbrauch YTD | Offene Produktion | Gesamtlagerbestand -->
+    <div class="page-header">
+      <h1>Material</h1>
+      <div class="sub" id="page-sub"></div>
+    </div>
+
+    <!-- ROW 1: 3 KPI cards -->
     <div class="kpi-row">
       <div class="kpi-card">
         <div class="kpi-label">Verbrauch YTD</div>
-        <div class="kpi-value" id="kv-ytd">&mdash;</div>
+        <div class="kpi-value" id="kpi-ytd">&mdash;</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Offene Produktion</div>
-        <div class="kpi-value" id="kv-offene">&mdash;</div>
+        <div class="kpi-value" id="kpi-offene">&mdash;</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Gesamtlagerbestand</div>
-        <div class="kpi-value" id="kv-bestand">&mdash;</div>
+        <div class="kpi-value" id="kpi-bestand">&mdash;</div>
       </div>
     </div>
 
-    <!-- Zeile 2: Compound-Karten (Aktuell + Offene Prod aufgeteilt) -->
-    <div class="kpi-row">
-      <div class="kpi-card-wide">
-        <div class="kpi-label" id="kl-aktuell">Aktuell</div>
-        <div class="kpi-compound-top">
-          <div class="kpi-compound-val" id="kv-ak-gesamt">&mdash;</div>
+    <!-- STAT BLOCK: Offene Produktion -->
+    <div class="stat-block">
+      <div class="stat-block-title">Offene Produktion</div>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <div class="stat-cell-label">Gesamt</div>
+          <div class="stat-cell-value" id="sr-op-ges">&mdash;</div>
         </div>
-        <div class="kpi-sub-row" id="ak-mach-row"></div>
-      </div>
-      <div class="kpi-card-wide">
-        <div class="kpi-label">Offene Produktion</div>
-        <div class="kpi-compound-top">
-          <div class="kpi-compound-val" id="kv-op-gesamt">&mdash;</div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Nagelpressen</div>
+          <div class="stat-cell-value" id="sr-op-nag">&mdash;</div>
         </div>
-        <div class="kpi-sub-row" id="op-mach-row"></div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Doppeldruck</div>
+          <div class="stat-cell-value" id="sr-op-dop">&mdash;</div>
+        </div>
       </div>
     </div>
 
-    <!-- Zeile 3: Materialgüte -->
-    <div class="mat-kpi-row" id="mat-kpi-row"></div>
+    <!-- STAT BLOCK: Aktueller Monat -->
+    <div class="stat-block">
+      <div class="stat-block-title" id="sr-ak-title">Aktuell</div>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <div class="stat-cell-label">Gesamt</div>
+          <div class="stat-cell-value" id="sr-ak-ges">&mdash;</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Nagelpressen</div>
+          <div class="stat-cell-value" id="sr-ak-nag">&mdash;</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Doppeldruck</div>
+          <div class="stat-cell-value" id="sr-ak-dop">&mdash;</div>
+        </div>
+      </div>
+    </div>
 
-    <!-- Timestamp -->
+    <!-- STAT BLOCK: Vormonat (hidden until data available) -->
+    <div class="stat-block" id="sr-vm-block" style="display:none">
+      <div class="stat-block-title" id="sr-vm-title">Vormonat</div>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <div class="stat-cell-label">Gesamt</div>
+          <div class="stat-cell-value" id="sr-vm-ges">&mdash;</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Nagelpressen</div>
+          <div class="stat-cell-value" id="sr-vm-nag">&mdash;</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Doppeldruck</div>
+          <div class="stat-cell-value" id="sr-vm-dop">&mdash;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MATERIALGÜTE -->
+    <div class="mat-row" id="mat-row"></div>
+
+    <!-- GESAMTLAGERBESTAND mit Maschinen + Materialdifferenzierung -->
+    <div class="lager-block" id="lager-block"></div>
+
+    <!-- MACHINE WIDGETS -->
+    <div id="machines-container"></div>
+
     <div class="ts-bar" id="ts-bar"></div>
-
-    <!-- Machine widgets -->
-    <div id="mach-widgets"></div>
-
   </div>
 </div>
 
 <script>
+(function(){
+"use strict";
 
-function fmtT(v) {
-  if (v == null || isNaN(v)) return '\u2014';
-  return (v / 1000).toLocaleString('de-DE', {minimumFractionDigits: 1, maximumFractionDigits: 1}) + '\u00a0t';
+function fmtT(v){
+  if(v==null||isNaN(+v)) return "—";
+  return (+v/1000).toLocaleString("de-DE",{minimumFractionDigits:1,maximumFractionDigits:1})+" t";
 }
-function fmtKg(v) {
-  if (v == null || isNaN(v)) return '\u2014';
-  return Math.round(v).toLocaleString('de-DE') + '\u00a0kg';
+function fmtKg(v){
+  if(v==null||isNaN(+v)) return "—";
+  return Math.round(+v).toLocaleString("de-DE")+" kg";
 }
+function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
-function buildMachWidget(mach, idx, aktuellLabel) {
-  var card = document.createElement('div');
-  card.className = 'widget-card';
-
-  var hdr = document.createElement('div');
-  hdr.className = 'mach-hdr';
-  hdr.innerHTML =
-    '<div>' +
-      '<div class="mach-title">' + mach.label + '</div>' +
-      '<div class="mach-stats">' +
-        'Bestand: <b>' + fmtT(mach.bestand) + '</b> &bull; ' +
-        'Offene Prod.: <b>' + fmtT(mach.offene_prod) + '</b> &bull; ' +
-        'YTD: <b>' + fmtT(mach.ytd) + '</b> &bull; ' +
-        aktuellLabel + ': <b>' + fmtT(mach.aktuell) + '</b>' +
-      '</div>' +
-    '</div>' +
-    '<span class="mach-chev" id="mchev-' + idx + '">&#9650;</span>';
-  card.appendChild(hdr);
-
-  var body = document.createElement('div');
-  body.id = 'mbody-' + idx;
-
-  (mach.materialgruppen || []).forEach(function(mg, gi) {
-    var grpId = idx + '-' + gi;
-    var grpDiv = document.createElement('div');
-    grpDiv.className = 'mat-grp';
-
-    var grpHdr = document.createElement('div');
-    grpHdr.className = 'mat-grp-hdr';
-    grpHdr.innerHTML =
-      '<div>' +
-        '<div class="mat-grp-name">' + mg.label + '</div>' +
-        '<div class="mat-grp-stats">' +
-          'Bestand: <b>' + fmtT(mg.bestand) + '</b> &bull; ' +
-          'Offene Prod.: <b>' + fmtT(mg.offene_prod) + '</b> &bull; ' +
-          'YTD: <b>' + fmtT(mg.ytd) + '</b> &bull; ' +
-          aktuellLabel + ': <b>' + fmtT(mg.aktuell) + '</b>' +
-        '</div>' +
-      '</div>' +
-      '<span class="mat-grp-chev" id="gchev-' + grpId + '">&#9658;</span>';
-
-    var artPanel = document.createElement('div');
-    artPanel.className = 'art-panel';
-    artPanel.id = 'ap-' + grpId;
-
-    var tbl = document.createElement('table');
-    tbl.className = 'art-tbl';
-    tbl.innerHTML =
-      '<thead><tr>' +
-        '<th>Art.-Nr.</th>' +
-        '<th>Kurztext</th>' +
-        '<th class="num">Offene&nbsp;Prod. (kg)</th>' +
-        '<th class="num">Bestand (kg)</th>' +
-        '<th class="num">YTD (kg)</th>' +
-        '<th class="num">' + aktuellLabel + ' (kg)</th>' +
-      '</tr></thead>';
-
-    var tbody = document.createElement('tbody');
-    (mg.artikel || []).forEach(function(art) {
-      var tr = document.createElement('tr');
-      tr.innerHTML =
-        '<td class="art-nr">' + art.artnr + '</td>' +
-        '<td class="art-text" title="' + art.text + '">' + art.text + '</td>' +
-        '<td class="num">' + Math.round(art.offene_prod).toLocaleString('de-DE') + '</td>' +
-        '<td class="num">' + Math.round(art.bestand).toLocaleString('de-DE') + '</td>' +
-        '<td class="num">' + Math.round(art.ytd).toLocaleString('de-DE') + '</td>' +
-        '<td class="num">' + Math.round(art.aktuell).toLocaleString('de-DE') + '</td>';
-      tbody.appendChild(tr);
-    });
-    tbl.appendChild(tbody);
-    artPanel.appendChild(tbl);
-
-    grpHdr.addEventListener('click', function() {
-      var p = document.getElementById('ap-' + grpId);
-      var c = document.getElementById('gchev-' + grpId);
-      p.classList.toggle('open');
-      c.classList.toggle('open');
-    });
-
-    grpDiv.appendChild(grpHdr);
-    grpDiv.appendChild(artPanel);
-    body.appendChild(grpDiv);
-  });
-
-  card.appendChild(body);
-
-  hdr.addEventListener('click', function() {
-    var b = document.getElementById('mbody-' + idx);
-    var c = document.getElementById('mchev-' + idx);
-    if (b.style.display === 'none') {
-      b.style.display = '';
-      c.classList.remove('collapsed');
-    } else {
-      b.style.display = 'none';
-      c.classList.add('collapsed');
-    }
-  });
-
-  return card;
+function machineByKey(arr,key){
+  for(var i=0;i<arr.length;i++){ if(arr[i].key===key) return arr[i]; }
+  return null;
+}
+function matgrpByKey(m,key){
+  var mg=m&&m.materialgruppen;
+  if(!mg) return null;
+  for(var i=0;i<mg.length;i++){ if(mg[i].key===key) return mg[i]; }
+  return null;
 }
 
-function render(d) {
-  var aLabel = d.aktuell_label || 'Aktuell';
-
-  // Zeile 1
-  document.getElementById('kv-ytd').textContent     = fmtT(d.gesamt_ytd);
-  document.getElementById('kv-offene').textContent  = fmtT(d.gesamt_offene_prod);
-  document.getElementById('kv-bestand').textContent = fmtT(d.gesamt_bestand);
-
-  // Zeile 2: compound Aktuell
-  document.getElementById('kl-aktuell').textContent   = aLabel;
-  document.getElementById('kv-ak-gesamt').textContent = fmtT(d.gesamt_aktuell);
-  document.getElementById('kv-op-gesamt').textContent = fmtT(d.gesamt_offene_prod);
-
-  var akRow = document.getElementById('ak-mach-row');
-  var opRow = document.getElementById('op-mach-row');
-  (d.maschinen || []).forEach(function(m) {
-    var akItem = document.createElement('div');
-    akItem.className = 'kpi-sub-item';
-    akItem.innerHTML = '<span class="kpi-sub-lbl">' + m.label + '</span><span class="kpi-sub-val">' + fmtT(m.aktuell) + '</span>';
-    akRow.appendChild(akItem);
-
-    var opItem = document.createElement('div');
-    opItem.className = 'kpi-sub-item';
-    opItem.innerHTML = '<span class="kpi-sub-lbl">' + m.label + '</span><span class="kpi-sub-val">' + fmtT(m.offene_prod) + '</span>';
-    opRow.appendChild(opItem);
-  });
-
-  // Zeile 3: Materialg\u00fcte
-  var matRow = document.getElementById('mat-kpi-row');
-  var matDefs = [
-    { key: 'mat_stiftdraht',  label: 'Stiftdraht' },
-    { key: 'mat_kaltstauch',  label: 'Kaltstauchdraht' },
-    { key: 'mat_edelstahl',   label: 'Edelstahl' }
-  ];
-  matDefs.forEach(function(def) {
-    var s = d[def.key];
-    if (!s) return;
-    var card = document.createElement('div');
-    card.className = 'mat-kpi';
-    card.innerHTML =
-      '<div class="mat-kpi-lbl">' + def.label + '</div>' +
-      '<div class="mat-kpi-val">' + fmtT(s.aktuell) + '</div>' +
-      '<div class="mat-kpi-sub">Offene Prod.: ' + fmtT(s.offene_prod) + '</div>' +
-      '<div class="mat-kpi-sub">Bestand: ' + fmtT(s.bestand) + '</div>';
-    matRow.appendChild(card);
-  });
-
-  // Timestamp
-  if (d.timestamp) {
-    var ts = new Date(d.timestamp);
-    document.getElementById('ts-bar').textContent =
-      'Stand: ' + ts.toLocaleDateString('de-DE') + ' ' +
-      ts.toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
-  }
-
-  // Machine widgets
-  var container = document.getElementById('mach-widgets');
-  (d.maschinen || []).forEach(function(mach, idx) {
-    container.appendChild(buildMachWidget(mach, idx, aLabel));
-  });
-
-  document.getElementById('root-loading').style.display = 'none';
-  document.getElementById('root-data').style.display    = '';
+function byId(id){ return document.getElementById(id); }
+function showNotice(msg){
+  byId("notice-bar").style.display="";
+  byId("notice-text").innerHTML=msg;
 }
 
-fetch('_data/material.json?t=' + Date.now())
-  .then(function(r) {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
+fetch("_data/material.json?t="+Date.now())
+  .then(function(r){
+    if(r.status===404) return {_no_data:true};
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    return r.json().catch(function(){ throw new Error("JSON-Parse-Fehler"); });
   })
-  .then(function(d) {
-    if (!d || d._kein_datenstand) {
-      document.getElementById('root-loading').textContent = 'Noch keine Daten vorhanden.';
+  .then(function(d){
+    byId("root-loading").style.display="none";
+    byId("root-data").style.display="";
+
+    if(d._no_data){
+      showNotice("<b>Noch kein Datenstand</b> — bitte 06_material.ps1 ausführen.");
       return;
     }
-    render(d);
-  })
-  .catch(function(e) {
-    document.getElementById('root-loading').textContent = 'Fehler beim Laden: ' + e.message;
-    document.getElementById('root-loading').style.color = '#dc2626';
-  });
 
-</script>
-</body>
-</html>
+    var akLabel=d.aktuell_label||"Aktuell";
+    var vmLabel=d.vormonat_label||"";
+
+    if(d.timestamp){
+      try{
+        var ts=new Date(d.timestamp).toLocaleString("de-DE");
+        byId("page-sub").textContent="BCF Dashboard · Datenstand "+ts;
+        byId("ts-bar").textContent="Datenstand: "+ts;
+      }catch(e){}
+    }
+
+    /* ROW 1 */
+    byId("kpi-ytd").textContent    =fmtT(d.gesamt_ytd);
+    byId("kpi-offene").textContent =fmtT(d.gesamt_offene_prod);
+    byId("kpi-bestand").textContent=fmtT(d.gesamt_bestand);
+
+    var masch=d.maschinen||[];
+    var nag=machineByKey(masch,"Nagelpressen");
+    var dop=machineByKey(masch,"Doppeldruck");
+
+    /* Offene Produktion */
+    byId("sr-op-ges").textContent=fmtT(d.gesamt_offene_prod);
+    byId("sr-op-nag").textContent=fmtT(nag?nag.offene_prod:null);
+    byId("sr-op-dop").textContent=fmtT(dop?dop.offene_prod:null);
+
+    /* Aktuell */
+    byId("sr-ak-title").textContent=akLabel;
+    byId("sr-ak-ges").textContent  =fmtT(d.gesamt_aktuell);
+    byId("sr-ak-nag").textContent  =fmtT(nag?nag.aktuell:null);
+    byId("sr-ak-dop").textContent  =fmtT(dop?dop.aktuell:null);
+
+    /* Vormonat */
+    if(vmLabel&&d.gesamt_vormonat!=null){
+      byId("sr-vm-block").style.display="";
+      byId("sr-vm-title").textContent=vmLabel;
+      byId("sr-vm-ges").textContent  =fmtT(d.gesamt_vormonat);
+      byId("sr-vm-nag").textContent  =fmtT(nag?nag.vormonat:null);
+      byId("sr-vm-dop").textContent  =fmtT(dop?dop.vormonat:null);
+    }
+
+    /* MATERIALGÜTE */
+    var matCfg=[
+      {key:"mat_stiftdraht", label:"Stiftdraht"},
+      {key:"mat_kaltstauch", label:"Kaltstauchdraht"},
+      {key:"mat_edelstahl",  label:"Edelstahl"}
+    ];
+    var matHtml="";
+    for(var mi=0;mi<matCfg.length;mi++){
+      var mc=matCfg[mi]; var mv=d[mc.key]||{};
+      matHtml+="<div class=\"mat-card\">"+
+        "<div class=\"mat-card-title\">"+esc(mc.label)+"</div>"+
+        "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">Lagerbestand</span><span class=\"mat-card-row-val\">"+fmtT(mv.bestand)+"</span></div>"+
+        "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">Offene Prod</span><span class=\"mat-card-row-val\">"+fmtT(mv.offene_prod)+"</span></div>"+
+        "<div class=\"mat-card-row\"><span class=\"mat-card-row-label\">"+esc(akLabel)+"<

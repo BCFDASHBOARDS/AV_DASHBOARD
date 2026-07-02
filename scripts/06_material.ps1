@@ -118,7 +118,15 @@ if ($COL_AKTUELL -lt 0) {
     $aktuellLabel = "n/a"
 }
 
-Write-Host "Spalten: Bestand=$COL_BESTAND  OffeneProd=$COL_OFFENE  YTD=$COL_YTD ($yearLabel)  Aktuell=$COL_AKTUELL ($aktuellLabel)"
+# Vormonat: eine Spalte vor Aktuell (gleiche Jahresreihe, aufeinanderfolgende Spalten)
+$COL_VORMONAT  = -1
+$vormonatLabel = ""
+if ($COL_AKTUELL -gt 34) {
+    $COL_VORMONAT  = $COL_AKTUELL - 1
+    $vormonatLabel = [string]($ws.Cells[1, $COL_VORMONAT].Value)
+}
+
+Write-Host "Spalten: Bestand=$COL_BESTAND  OffeneProd=$COL_OFFENE  YTD=$COL_YTD ($yearLabel)  Aktuell=$COL_AKTUELL ($aktuellLabel)  VM=$COL_VORMONAT ($vormonatLabel)"
 
 # ---- Zeilen parsen ------------------------------------------
 # Neue Zeilen in der Excel koennen einfach hinzugefuegt werden,
@@ -133,15 +141,17 @@ for ($r = 2; $r -le $maxRow; $r++) {
 
     if ($artnr -match $ART_RE) {
         # Artikel-Zeile
+        $vm = if ($COL_VORMONAT -gt 0) { Dbl ($ws.Cells[$r, $COL_VORMONAT].Value) } else { 0.0 }
         $art = [PSCustomObject]@{
-            artnr      = $artnr
-            text       = "$($ws.Cells[$r, $COL_KTEXT].Value)".Trim()
+            artnr       = $artnr
+            text        = "$($ws.Cells[$r, $COL_KTEXT].Value)".Trim()
             offene_prod = Dbl ($ws.Cells[$r, $COL_OFFENE].Value)
-            bestand    = Dbl ($ws.Cells[$r, $COL_BESTAND].Value)
-            ytd        = Dbl ($ws.Cells[$r, $COL_YTD].Value)
-            aktuell    = Dbl ($ws.Cells[$r, $COL_AKTUELL].Value)
-            machine    = $null
-            material   = Get-Material $artnr
+            bestand     = Dbl ($ws.Cells[$r, $COL_BESTAND].Value)
+            ytd         = Dbl ($ws.Cells[$r, $COL_YTD].Value)
+            vormonat    = $vm
+            aktuell     = Dbl ($ws.Cells[$r, $COL_AKTUELL].Value)
+            machine     = $null
+            material    = Get-Material $artnr
         }
         $pending.Add($art)
     } else {
@@ -174,6 +184,7 @@ foreach ($mach in $machineOrder) {
 
     $mBestand  = ($mArts | Measure-Object -Property bestand    -Sum).Sum
     $mYtd      = ($mArts | Measure-Object -Property ytd        -Sum).Sum
+    $mVormonat = ($mArts | Measure-Object -Property vormonat   -Sum).Sum
     $mAktuell  = ($mArts | Measure-Object -Property aktuell    -Sum).Sum
     $mOffene   = ($mArts | Measure-Object -Property offene_prod -Sum).Sum
 
@@ -185,6 +196,7 @@ foreach ($mach in $machineOrder) {
 
         $matB   = ($matArts | Measure-Object -Property bestand    -Sum).Sum
         $matY   = ($matArts | Measure-Object -Property ytd        -Sum).Sum
+        $matVM  = ($matArts | Measure-Object -Property vormonat   -Sum).Sum
         $matA   = ($matArts | Measure-Object -Property aktuell    -Sum).Sum
         $matOP  = ($matArts | Measure-Object -Property offene_prod -Sum).Sum
 
@@ -195,6 +207,7 @@ foreach ($mach in $machineOrder) {
                 offene_prod = [Math]::Round($_.offene_prod, 2)
                 bestand     = [Math]::Round($_.bestand,    2)
                 ytd         = [Math]::Round($_.ytd,        2)
+                vormonat    = [Math]::Round($_.vormonat,   2)
                 aktuell     = [Math]::Round($_.aktuell,    2)
             }
         }
@@ -205,24 +218,10 @@ foreach ($mach in $machineOrder) {
             offene_prod = [Math]::Round($matOP, 2)
             bestand     = [Math]::Round($matB,  2)
             ytd         = [Math]::Round($matY,  2)
+            vormonat    = [Math]::Round($matVM, 2)
             aktuell     = [Math]::Round($matA,  2)
             artikel     = @($artikelList)
         })
     }
 
-    $maschinen.Add([PSCustomObject]@{
-        key             = $mach
-        label           = $mach
-        offene_prod     = [Math]::Round($mOffene,  2)
-        bestand         = [Math]::Round($mBestand, 2)
-        ytd             = [Math]::Round($mYtd,     2)
-        aktuell         = [Math]::Round($mAktuell, 2)
-        materialgruppen = @($materialgruppen)
-    })
-}
-
-# Gesamtsummen
-$gesamtBestand  = [Math]::Round(($allArts | Measure-Object -Property bestand    -Sum).Sum, 2)
-$gesamtYtd      = [Math]::Round(($allArts | Measure-Object -Property ytd        -Sum).Sum, 2)
-$gesamtAktuell  = [Math]::Round(($allArts | Measure-Object -Property aktuell    -Sum).Sum, 2)
-$gesamtOffene   = [Math]::Round(($allAr
+    $maschinen.Add(
