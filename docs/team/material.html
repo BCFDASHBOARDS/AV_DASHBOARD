@@ -307,7 +307,7 @@ fetch("../_data/material.json?t="+Date.now())
     }
     byId("lager-block").innerHTML="<div class=\"lager-header\"><div class=\"lager-header-title\">Gesamtlagerbestand</div><div class=\"lager-header-value\">"+fmtT(d.gesamt_bestand)+"</div></div><div class=\"lager-machines\">"+lagerMach(nag)+lagerMach(dop)+"</div>";
 
-    var matCfg=[{key:"mat_stiftdraht",label:"Stiftdraht"},{key:"mat_kaltstauch",label:"Kaltstauchdraht"},{key:"mat_edelstahl",label:"Edelstahl"}];
+    var matCfg=[{key:"mat_stiftdraht",label:"Stiftdraht"},{key:"mat_kaltstauch",label:"Kaltstauch"},{key:"mat_edelstahl",label:"Edelstahl"}];
     var matHtml="";
     for(var mi=0;mi<matCfg.length;mi++){
       var mc=matCfg[mi];var mv=d[mc.key]||{};
